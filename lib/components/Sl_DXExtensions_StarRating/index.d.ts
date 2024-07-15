@@ -1,3 +1,0 @@
-export { default } from './StarRating';
-export type { StarRatingProps } from './StarRating.types';
-//# sourceMappingURL=index.d.ts.map
