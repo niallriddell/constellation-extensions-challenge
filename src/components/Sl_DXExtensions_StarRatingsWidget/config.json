@@ -1,0 +1,27 @@
+{
+   "name": "Sl_DXExtensions_StarRatingsWidget",
+   "label": "Ratings",
+   "description": "Ratings",
+   "organization": "Sl",
+   "version": "1.0.0",
+   "library": "DXExtensions",
+   "allowedApplications": [],
+   "componentKey": "Sl_DXExtensions_StarRatingsWidget",
+   "type": "Widget",
+   "subtype": "CASE",
+   "properties": [
+      {
+         "name": "label",
+         "label": "Label value",
+         "format": "TEXT"
+      },
+      {
+         "name": "customerId",
+         "label": "Customer ID property",
+         "format": "PROPERTY"
+      }
+   ],
+   "defaultConfig": {
+      "label": "@L Ratings"
+   }
+}

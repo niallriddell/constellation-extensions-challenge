@@ -1,0 +1,170 @@
+import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+
+import type { Action, ModalMethods } from '@pega/cosmos-react-core';
+import {
+  SummaryList,
+  withConfiguration,
+  useModalManager,
+  useElement,
+  registerIcon
+} from '@pega/cosmos-react-core';
+
+import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
+
+import type { PConnFieldProps } from './PConnProps';
+
+import { getRatings, type Rating } from './ratingData';
+import { searchByRating, searchByCustomer } from './searchFunctions';
+import { createAction } from './actions';
+import { createSummaryItem } from './summaryListUtils';
+import SummaryListViewAllModal, { type SummaryListViewAllProps } from './SummaryListViewAllModal';
+import StarRatingPopover from './StarRatingPopover';
+
+registerIcon(star);
+
+// interface for props
+export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
+  customerId?: string;
+  listDataView: string;
+}
+
+const SlDxExtensionsStarRatingsWidget = ({
+  getPConnect,
+  label,
+  customerId,
+  listDataView
+}: SlDxExtensionsStarRatingsWidgetProps) => {
+  const contextName = getPConnect().getContextName();
+  const caseKey = getPConnect().getCaseInfo().getKey();
+  const caseClass = getPConnect().getCaseInfo().getClassName();
+
+  const [loading, setLoading] = useState(true);
+  const [ratings, setRatings] = useState<Array<Rating>>([]);
+  const [actionId, setActionId] = useState<string | undefined>();
+  const [selectedRating, setSelectedRating] = useState<Rating>(
+    {
+      rating: 0,
+      customerId: customerId || 'No Customer',
+      stars: 5,
+      caseClass,
+      caseId: caseKey
+    }
+  );
+
+  const [popoverTarget, setPopoverTarget] = useElement(null);
+  const { create: createModal } = useModalManager();
+
+  const onUpdateRating = (newRating: Rating) => {
+    // TODO: Update ratings on server.  In memory only for now.
+    if (!newRating?.guid) {
+      newRating.guid = 'NEW';
+      setRatings([newRating, ...ratings]);
+      return;
+    }
+    setRatings([newRating, ...ratings.slice(1)]);
+  }
+
+  const processRatings = (allRatings: Array<Rating>, customerId?: string, caseKey?: string) => {
+    if (!customerId || !caseKey) {
+      return allRatings;
+    }
+
+    const caseRatingIndex = allRatings
+      .findIndex(rating => rating.caseId === caseKey);
+
+    if (caseRatingIndex >= 0) {
+      return [allRatings.splice(caseRatingIndex, 1)[0], ...allRatings];
+    }
+
+    return allRatings;
+  }
+
+  const fetchRatings = async (listDataView: string, contextName: string, customerId?: string, caseKey?: string) => {
+    const allRatings = await getRatings(listDataView, customerId, contextName);
+    if (allRatings && allRatings.length > 0) {
+      setRatings(processRatings(allRatings, customerId, caseKey));
+    }
+    setLoading(false);
+  }
+  const summaryItems = ratings.map(item => {
+    const summaryItem = createSummaryItem(item, getPConnect, caseKey);
+    return {
+      ...summaryItem,
+      actions: summaryItem.actions?.map((action: Action) => ({
+        ...action,
+        onClick(id: string, e: MouseEvent, menuButton?: HTMLButtonElement) {
+          setActionId(id);
+          setPopoverTarget(menuButton || e.currentTarget);
+          setSelectedRating(summaryItem.rating);
+        }
+      }))
+    };
+  })
+  useEffect(() => {
+    fetchRatings(listDataView, contextName, customerId, caseKey);
+    modalRef.current?.update({ items: summaryItems })
+  }, [listDataView, customerId, contextName, caseKey, summaryItems]);
+
+  useEffect(() => {
+    modalRef.current?.update({ items: summaryItems })
+  });
+
+
+
+  const summaryActions =
+    customerId && ratings.length && ratings[0].caseId !== caseKey
+      || ratings.length === 0
+      ? [createAction('Add', getPConnect)].map((action: Action) => ({
+        ...action,
+        onClick(id: string, e: MouseEvent) {
+          setActionId(id);
+          setPopoverTarget(e.currentTarget);
+        }
+      })) : []
+
+  const modalRef = useRef<ModalMethods<SummaryListViewAllProps>>();
+
+  const openViewAll = () => {
+    modalRef.current = createModal<SummaryListViewAllProps>(
+      SummaryListViewAllModal,
+      {
+        name: label,
+        loading,
+        items: summaryItems,
+        actions: summaryActions,
+        searchFunction: customerId ? searchByRating : searchByCustomer,
+        currentRating: selectedRating,
+        onUpdateRating
+      }
+    );
+  }
+
+  return (
+    <>
+      <SummaryList
+        icon='star'
+        items={summaryItems.slice(0, 3)}
+        loading={loading}
+        count={!loading ? ratings.length : undefined}
+        headingTag='h3'
+        name={label}
+        actions={summaryActions}
+        onViewAll={openViewAll}
+
+      />
+      {popoverTarget &&
+        <StarRatingPopover
+          popoverTarget={popoverTarget}
+          setPopoverTarget={setPopoverTarget}
+          currentRating={selectedRating}
+          onUpdateRating={onUpdateRating}
+          actionId={actionId}
+        />
+      }
+    </>
+  );
+}
+
+export default withConfiguration(SlDxExtensionsStarRatingsWidget);
+
+
