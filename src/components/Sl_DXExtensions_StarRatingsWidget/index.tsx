@@ -37,7 +37,7 @@ export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
 // - Add PubSub for updating utilities panel count
 // - [Optional] - Add websocket handler to update utilities panel count on server
 //                change
-// - 
+// - Localization of all strings
 const SlDxExtensionsStarRatingsWidget = ({
   getPConnect,
   label,
