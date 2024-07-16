@@ -92,8 +92,6 @@ const SlDxExtensionsStarRatingsWidget = ({
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
-    // TODO: Add in the correct data page selected in authoring. The property that 
-    // will contain the savable data page will be specified in the config.json.
     upsert(savable, updatedRating).then(rating =>
       rating ? setRatings(
         [rating, ...(upsert === createRating ? ratings : ratings.slice(1))]
