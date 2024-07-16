@@ -1,21 +1,28 @@
-# Using Custom Components in Constellation
+# This is a companion repository to the Constellation DX Components academy course on academy.pega.com
 
 ## Overview
 
-This project provides you with an environment to extend Constellation by giving you tools to create and publish custom components that are not available from the Constellation installation.
+This repository is intended to be cloned using standard git command line tools.   
 
 ## Prerequisites
 
-Ensure you have access to the following in your system:
+To fully use this repository ensure you have access to the following in your system:
 
-- Pega Infinity Server version 23 or later
+- Pega Infinity Server version 24.1 or later via the academy exercise system linked to this specific challenge
 
 - Git version 2.30 or later
 
-- System node version 18, 20
+- System node version 20
 
-- System npm version 8, 10 (9 is not supported)
+- System npm version 10
 
-## Latest Documentation
+## Usage instructions 
 
-Find the latest documentation on using **DX Component Builder** [here](https://docs.pega.com/bundle/constellation-dx-components/page/constellation-dx-components/custom-components/whats-new-constellation-dx-components-pega-infinity-23.html)
+execute the following command in the directory you want to do the challenge in:
+
+```
+git clone https://github.com/niallriddell/constellation-extensions-challenge.git widget-challenge
+cd widget-challenge
+npm update
+npm run startStorybook
+```
