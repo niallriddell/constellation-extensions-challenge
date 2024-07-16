@@ -80,9 +80,9 @@ const SlDxExtensionsStarRatingsWidget = ({
   const onUpdateRating = (updatedRating: Rating) => {
     updatedRating.guid = updatedRating?.guid ? updatedRating.guid : 'NEW';
 
-    const crudOperation = updatedRating.guid === 'NEW' ? createRating : updateRating;
+    const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
-    crudOperation('D_Savable', updatedRating).then(rating =>
+    upsert('D_Savable', updatedRating).then(rating =>
       rating ? setRatings(
         [rating, ...(updatedRating.guid === 'NEW' ? ratings : ratings.slice(1))]
       ) : undefined
