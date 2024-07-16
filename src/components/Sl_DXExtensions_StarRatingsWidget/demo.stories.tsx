@@ -79,7 +79,11 @@ const mockRestClient = (): Partial<typeof RestClient> => {
       data: {
         responseData: {
           ...args[1].body.data,
-          pyGUID: args[1].body.data.pyGUID ? args[1].body.data.pyGUID : Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString()
+          pyGUID: args[1].body.data.pyGUID
+            ?
+            args[1].body.data.pyGUID
+            :
+            Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString()
         }
       }
     })
