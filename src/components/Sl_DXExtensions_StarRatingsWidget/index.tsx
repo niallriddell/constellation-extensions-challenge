@@ -65,14 +65,18 @@ const SlDxExtensionsStarRatingsWidget = ({
   const { create: createModal } = useModalManager();
   const [popoverTarget, setPopoverTarget] = useElement<Element>(null);
 
-  const onUpdateRating = (newRating: Rating) => {
-    // In memory only for now.
-    if (!newRating?.guid) {
-      newRating.guid = 'NEW';
-      setRatings([newRating, ...ratings]);
-      return;
-    }
-    setRatings([newRating, ...ratings.slice(1)]);
+  const onUpdateRating = (updatedRating: Rating) => {
+    // Currently only in memory.  
+    // if (!updatedRating?.guid) {
+    //   updatedRating.guid = 'NEW';
+    //   setRatings([updatedRating, ...ratings]);
+    //   return;
+    // }
+    // setRatings([updatedRating, ...ratings.slice(1)]);
+
+    updatedRating.guid = updatedRating?.guid ? updatedRating.guid : 'NEW';
+    setRatings([updatedRating, ...(updatedRating.guid === 'NEW' ? ratings : ratings.slice(1))]);
+
   }
 
   const summaryItems = useMemo(() =>
