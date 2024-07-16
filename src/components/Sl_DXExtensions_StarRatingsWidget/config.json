@@ -1,27 +1,171 @@
 {
-   "name": "Sl_DXExtensions_StarRatingsWidget",
-   "label": "Ratings",
-   "description": "Ratings",
+   "name": "Sl_DXExtensions_StarRatingWidget",
+   "label": "Star Rating Widget",
+   "description": "Star Rating Widget",
    "organization": "Sl",
    "version": "1.0.0",
    "library": "DXExtensions",
    "allowedApplications": [],
-   "componentKey": "Sl_DXExtensions_StarRatingsWidget",
+   "componentKey": "Sl_DXExtensions_StarRatingWidget",
    "type": "Widget",
-   "subtype": "CASE",
+   "subtype": [
+      "PAGE",
+      "CASE"
+   ],
    "properties": [
       {
          "name": "label",
-         "label": "Label value",
+         "label": "Widget heading",
+         "defaultValue": "Ratings",
          "format": "TEXT"
       },
       {
-         "name": "customerId",
-         "label": "Customer ID property",
-         "format": "PROPERTY"
+         "name": "customerIDProperty",
+         "label": "Customer unique id property on case",
+         "format": "PROPERTY",
+         "visibility": "@VIEWAUTHORINGCONTEXT != 'page'"
+      },
+      {
+         "label": "Data pages for customer class",
+         "format": "GROUP",
+         "collapsible": true,
+         "defaultCollapsed": false,
+         "visibility": "@VIEWAUTHORINGCONTEXT = 'page'",
+         "properties": [
+            {
+               "format": "SELECT",
+               "label": "Select the customer class",
+               "name": "customerDataClass",
+               "placeholder": " ",
+               "defaultValue": " ",
+               "source": {
+                  "name": "D_pzDataTypesForApplicationNoWork",
+                  "displayProp": "pyLabel",
+                  "valueProp": "pyMetadataKey",
+                  "parameters": {
+                     "AppName": "@ENV APPLICATION_NAME"
+                  },
+                  "filter": "$this.pyMetadataKey NOT_STARTS_WITH 'Data-Admin'"
+               }
+            },
+            {
+               "format": "CONTENTPICKER",
+               "label": "Lookup datapage for customer class",
+               "name": "customerLookupDatapage",
+               "visibility": "$this.customerDataClass !=' '",
+               "source": {
+                  "name": "D_GetDataPagesForClassList",
+                  "displayProp": "pyLookUpDataPage",
+                  "valueProp": "pyLookUpDataPage",
+                  "parameters": {
+                     "ContextClass": "$this.customerDataClass",
+                     "ExcludeLookUp": false,
+                     "ExcludeList": true,
+                     "ExcludeSavable": true
+                  }
+               }
+            }
+         ]
+      },
+      {
+         "label": "Data pages for rating class",
+         "format": "GROUP",
+         "collapsible": true,
+         "defaultCollapsed": false,
+         "properties": [
+            {
+               "format": "SELECT",
+               "label": "Select the rating class",
+               "name": "ratingDataClass",
+               "placeholder": " ",
+               "defaultValue": " ",
+               "source": {
+                  "name": "D_pzDataTypesForApplicationNoWork",
+                  "displayProp": "pyLabel",
+                  "valueProp": "pyMetadataKey",
+                  "parameters": {
+                     "AppName": "@ENV APPLICATION_NAME"
+                  },
+                  "filter": "$this.pyMetadataKey NOT_STARTS_WITH 'Data-Admin'"
+               }
+            },
+            {
+               "format": "CONTENTPICKER",
+               "label": "Lookup datapage for rating class",
+               "name": "ratingLookupDatapage",
+               "visibility": "$this.ratingDataClass !=' '",
+               "source": {
+                  "name": "D_GetDataPagesForClassList",
+                  "displayProp": "pyLookUpDataPage",
+                  "valueProp": "pyLookUpDataPage",
+                  "parameters": {
+                     "ContextClass": "$this.ratingDataClass",
+                     "ExcludeLookUp": false,
+                     "ExcludeList": true,
+                     "ExcludeSavable": true
+                  }
+               }
+            },
+            {
+               "format": "CONTENTPICKER",
+               "label": "List datapage for rating class",
+               "name": "ratingListDatapage",
+               "visibility": "$this.ratingDataClass !=' '",
+               "source": {
+                  "name": "D_GetDataPagesForClassList",
+                  "displayProp": "pyListDataPage",
+                  "valueProp": "pyListDataPage",
+                  "parameters": {
+                     "ContextClass": "$this.ratingDataClass",
+                     "ExcludeLookUp": true,
+                     "ExcludeList": false,
+                     "ExcludeSavable": true
+                  }
+               }
+            },
+            {
+               "format": "CONTENTPICKER",
+               "label": "Savable datapage for class",
+               "name": "ratingSavableDatapage",
+               "visibility": "$this.ratingDataClass !=' '",
+               "source": {
+                  "name": "D_GetDataPagesForClassList",
+                  "displayProp": "pySavableDataPage",
+                  "valueProp": "pySavableDataPage",
+                  "parameters": {
+                     "ContextClass": "$this.ratingDataClass",
+                     "ExcludeLookUp": true,
+                     "ExcludeList": true,
+                     "ExcludeSavable": false
+                  }
+               }
+            }
+         ]
+      },
+      {
+         "name": "iconName",
+         "label": "Icon Name",
+         "format": "TEXT",
+         "required": true,
+         "visibility": "true == false"
+      },
+      {
+         "label": "Conditions",
+         "format": "GROUP",
+         "properties": [
+            {
+               "name": "visibility",
+               "label": "Visibility",
+               "format": "VISIBILITY"
+            }
+         ]
       }
    ],
    "defaultConfig": {
-      "label": "@L Ratings"
+      "label": "@L $this.label",
+      "ratingDataClass": " ",
+      "customerDataClass": " ",
+      "fields": null,
+      "iconName": "star"
    }
 }
