@@ -78,10 +78,12 @@ const SlDxExtensionsStarRatingsWidget = ({
   // associated with the data class.
   // Persist your data to the server first and update the UI to align.  
   const onUpdateRating = (updatedRating: Rating) => {
-    updatedRating.guid = updatedRating?.guid ? updatedRating.guid : 'NEW';
+    updatedRating.guid = updatedRating?.guid || 'NEW';
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
+    // TODO: Add in the correct data page selected in authoring. The property that 
+    // will contain the savable data page will be specified in the config.json.
     upsert('D_Savable', updatedRating).then(rating =>
       rating ? setRatings(
         [rating, ...(upsert === createRating ? ratings : ratings.slice(1))]
