@@ -1,5 +1,6 @@
 import { Rating } from './ratingData';
 
+// Demonstrates the ability to have different filter functions if required.
 export interface SearchFunction<T> {
   (obj: T, str: string): boolean;
 }

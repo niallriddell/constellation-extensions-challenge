@@ -1,6 +1,13 @@
 import type { Filter, Query } from "@pega/pcore-pconnect-typedefs/datapage/types";
 import { BiMap } from "./bimap";
 
+// All mapping between the component internal data model and the external data model
+// is done here.  This is not strictly necessary and the approach taken here can be
+// generalized further to dynamically map the external data model to the staic internal
+// data model.  It's useful to define your internal data model in types so that you get
+// the benefit of IDE auto-completion and type-checking at development time.
+
+// Component data model
 export type Rating = {
   caseClass: string;
   caseId: string;
@@ -11,6 +18,7 @@ export type Rating = {
   updateDateTime?: string;
 }
 
+// External data model
 type RatingData = {
   CaseClassName: string;
   CaseID: string;
@@ -21,6 +29,7 @@ type RatingData = {
   pxUpdateDateTime?: string;
 }
 
+// Custom BiMap to allow two way lookup of keys
 export const mapper = new BiMap<keyof Rating, keyof RatingData>;
 
 mapper.set('caseClass', 'CaseClassName');
@@ -31,6 +40,8 @@ mapper.set('stars', 'NumberOfStars');
 mapper.set('guid', 'pyGUID');
 mapper.set('updateDateTime', 'pxUpdateDateTime');
 
+// Utility funciton that auto-generates the select object. 
+// Currently adds all mapped properties.
 function toSelectObject<
   K extends keyof Rating,
   V extends keyof RatingData>
@@ -44,6 +55,10 @@ function toSelectObject<
   return { select: arr };
 }
 
+// Utility function that transforms external data to internal 
+// data.  For large data sets this is likely to be to inefficient 
+// as we iterate the ecternal data and create a new internal one with
+// the remapped keys.
 function mapRatingDataToRating(ratingDataArray: Array<RatingData>,
   biMap: BiMap<keyof Rating, keyof RatingData>)
   : Array<Rating> {
@@ -57,7 +72,11 @@ function mapRatingDataToRating(ratingDataArray: Array<RatingData>,
     return rating as Rating;
   });
 }
-// TODO: use getPageDataAsync to fetch a single Rating 
+// Uses getPageDataAsync api to fetch a single Rating.
+// Returns a rating or undefined wrapped in a promise.
+// Better error handling and recovery should be implemented
+// for production solutions.  Here we just log thr error to 
+// the console.
 export const getRating = async (
   dataView: string,
   guid: string,
@@ -84,11 +103,15 @@ export const getRating = async (
   }
 }
 
+// Temporary solution to fix an issue with the typescript data shapes in
+// getDataAsync not correctly matching the real data returned.
+// TODO:- Update this when the typedefs are fixed.
 interface RatingDataResponse {
   data: any[] | RatingData[];
   status?: number;
 }
 
+// Helper function that returns an array of ratings for a customerId.
 export const getRatings = async (
   dataView: string,
   customerId?: string,
@@ -140,3 +163,22 @@ export const getRatings = async (
   } catch (error) { console.error(error) }
 }
 
+// TODO: Add in the createDataObject rest api endpoint
+export const updateRating = async (
+  dataView: string,
+  rating: Partial<Rating>,
+  context?: string): Promise<Rating | undefined> => {
+
+  console.log("updateRating:", dataView, context);
+  return rating as Rating;
+}
+
+// TODO: Add in the createDataObject rest api endpoint
+export const createRating = async (
+  dataView: string,
+  rating: Partial<Rating>,
+  context?: string): Promise<Rating | undefined> => {
+
+  console.log("createRating:", dataView, context);
+  return rating as Rating;
+}

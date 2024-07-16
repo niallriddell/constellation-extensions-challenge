@@ -13,7 +13,7 @@ import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.ic
 
 import type { PConnFieldProps } from './PConnProps';
 
-import { getRatings, type Rating } from './ratingData';
+import { createRating, getRatings, updateRating, type Rating } from './ratingData';
 import { searchByRating, searchByCustomer } from './searchFunctions';
 import { createAction } from './actions';
 import { createSummaryItem } from './summaryListUtils';
@@ -80,8 +80,13 @@ const SlDxExtensionsStarRatingsWidget = ({
   // Persist your data to the server first and update the UI to align.  
   const onUpdateRating = (updatedRating: Rating) => {
     updatedRating.guid = updatedRating?.guid ? updatedRating.guid : 'NEW';
-    setRatings(
-      [updatedRating, ...(updatedRating.guid === 'NEW' ? ratings : ratings.slice(1))]
+
+    const crudOperation = updatedRating.guid === 'NEW' ? createRating : updateRating;
+
+    crudOperation('D_Savable', updatedRating).then(rating =>
+      rating ? setRatings(
+        [rating, ...(updatedRating.guid === 'NEW' ? ratings : ratings.slice(1))]
+      ) : undefined
     );
   }
 
@@ -154,8 +159,8 @@ const SlDxExtensionsStarRatingsWidget = ({
         }
       })) : []
 
-  // We use a ref here so that we can refresh the modal with any data updates.
   const openViewAll = () => {
+    // We use a ref here so that we can refresh the modal with any data updates.
     modalRef.current = createModal<SummaryListViewAllProps>(
       SummaryListViewAllModal,
       {
