@@ -122,7 +122,6 @@
    "defaultConfig": {
       "label": "@L $this.label",
       "ratingDataClass": " ",
-      "fields": null,
       "iconName": "star"
    }
 }
