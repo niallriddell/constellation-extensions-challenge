@@ -29,8 +29,7 @@ export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
   listDataView: string;
 }
 // TODO: 
-// - Add create and update data object logic
-// - Wire up create and update data object logic to update handler
+// - Add create and update data object logic to ratingData.ts
 // - Improve formatting of text below rating 
 // - Update config.json to allow selection of data class and associated data pages
 // - Wire in new props to line up with config.json
