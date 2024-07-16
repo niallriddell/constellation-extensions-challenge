@@ -23,7 +23,7 @@ import StarRatingPopover from './StarRatingPopover';
 
 registerIcon(star);
 
-// interface for props
+// TODO: Add any additional properties here that are configured in the config.json
 export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
   customerId?: string;
   listDataView: string;
@@ -37,6 +37,8 @@ export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
 // - [Optional] - Add websocket handler to update utilities panel count on server
 //                change
 // - Localization of all strings
+
+// TODO: Add any additional properties here that are configured in the config.json
 const SlDxExtensionsStarRatingsWidget = ({
   getPConnect,
   label,

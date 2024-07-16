@@ -23,6 +23,13 @@ export interface SummaryListViewAllProps {
   onUpdateRating: (newRating: Rating) => void;
 }
 
+// This is the ViewAll modal implementation.  It's primary purpose is to
+// display all of the items and also any associated actions.  Mutation logic 
+// is handled in the parent component.
+// The search filter is also implemented here.  We have the ability to use 
+// different filter functions based on different contexts.  If we were to 
+// expand this to a PAGE & CASE widget we could filter by customer instead of
+// rating.
 const SummaryListViewAllModal = ({
   name,
   loading,
@@ -33,49 +40,22 @@ const SummaryListViewAllModal = ({
   onUpdateRating
 }: SummaryListViewAllProps) => {
 
-
-  console.log('in pure phase', {
-    name,
-    loading,
-    items,
-    actions,
-    searchFunction,
-    currentRating,
-    onUpdateRating
-  });
-
   const [search, setSearch] = useState('');
   const [actionId, setActionId] = useState<string | undefined>();
   const [popoverTarget, setPopoverTarget] = useElement(null);
   const [selectedRating, setSelectedRating] = useState<Rating>(currentRating);
 
   const onClickHandler = useCallback(
-    (id: string, e: MouseEvent<HTMLElement>, menuButton?: HTMLElement, rating?: Rating) => {
+    (id: string, e: MouseEvent<HTMLElement>,
+      menuButton?: HTMLElement,
+      rating?: Rating
+    ) => {
       setActionId(id);
       setPopoverTarget(menuButton || e.currentTarget);
       if (rating) setSelectedRating(rating);
     },
     [setPopoverTarget]
   );
-
-
-  //   const onUpdateModalRating = (newRating:Rating) => {
-  //
-  //   
-  //
-  //
-  //
-  //     // TODO: Update ratings on server.  In memory only for now.
-  // if (!newRating?.guid) {
-  //   newRating.guid = 'NEW';
-  //   setRatings([newRating, ...ratings]);
-  //   if (summaryListRef?.current) console.log(summaryListRef)
-  //   return;
-  // }
-  // setRatings([newRating, ...ratings.slice(1)]);
-  //
-  //   }
-
 
   const newItems = useMemo(() => items.map(item => {
     const { actions: newActions } = item;
@@ -93,7 +73,6 @@ const SummaryListViewAllModal = ({
 
     return { ...item, actions: updatedActions };
   }), [items, onClickHandler]);
-
 
   const updatedActions = useMemo(
     () => actions.map((action: Action) => {

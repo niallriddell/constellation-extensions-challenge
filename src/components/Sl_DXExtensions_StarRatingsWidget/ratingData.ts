@@ -179,8 +179,8 @@ export const createRating = async (
   rating: Partial<Rating>,
   context?: string): Promise<Rating | undefined> => {
 
-  console.log("createRating:", dataView, context);
+  rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
+  console.log("createRating:", dataView, rating, context);
   // Tempoary guid purely for mock implementation.
-  rating.guid = Math.floor(Math.random() * Number.MAX_VALUE).toString();
   return rating as Rating;
 }
