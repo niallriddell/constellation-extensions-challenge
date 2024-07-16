@@ -5,7 +5,8 @@ import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 
-import SlDxExtensionsStarRatingsWidget, { type SlDxExtensionsStarRatingsWidgetProps } from './index';
+import SlDxExtensionsStarRatingsWidget,
+{ type SlDxExtensionsStarRatingsWidgetProps } from './index';
 
 import ratingData from './mock';
 
@@ -59,7 +60,8 @@ const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
       const filter = args[4]?.filter as Filter;
       const queryCustomerID = filter?.filterConditions.F1.rhs.value;
       let { data } = ratingData;
-      if (queryCustomerID && queryCustomerID.length) data = data.filter(rating => rating.CustomerID === queryCustomerID);
+      if (queryCustomerID && queryCustomerID.length) data = data
+        .filter(rating => rating.CustomerID === queryCustomerID);
 
       return Promise.resolve({ data, status: 200 });
     },
@@ -85,17 +87,18 @@ const mockPConnect = (): Partial<typeof PConnect> => ({
   } as CaseInfo)
 });
 
-export const StarRatingsWidgetWithCurrentCaseRating: Story = (args: SlDxExtensionsStarRatingsWidgetProps) => {
-  const props = {
-    getPConnect: mockPConnect as () => typeof PConnect
-  }
+export const StarRatingsWidgetWithCurrentCaseRating: Story =
+  (args: SlDxExtensionsStarRatingsWidgetProps) => {
+    const props = {
+      getPConnect: mockPConnect as () => typeof PConnect
+    }
 
-  return (
-    <>
-      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
-    </>
-  );
-};
+    return (
+      <>
+        <SlDxExtensionsStarRatingsWidget {...props} {...args} />
+      </>
+    );
+  };
 
 StarRatingsWidgetWithCurrentCaseRating.args = {
   label: 'Ratings',
@@ -103,17 +106,18 @@ StarRatingsWidgetWithCurrentCaseRating.args = {
   listDataView: 'D_CustomerRatingsList'
 };
 
-export const StarRatingsWidgetWithoutCurrentCaseRating: Story = (args: SlDxExtensionsStarRatingsWidgetProps) => {
-  const props = {
-    getPConnect: mockPConnect as () => typeof PConnect
-  }
+export const StarRatingsWidgetWithoutCurrentCaseRating: Story =
+  (args: SlDxExtensionsStarRatingsWidgetProps) => {
+    const props = {
+      getPConnect: mockPConnect as () => typeof PConnect
+    }
 
-  return (
-    <>
-      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
-    </>
-  );
-};
+    return (
+      <>
+        <SlDxExtensionsStarRatingsWidget {...props} {...args} />
+      </>
+    );
+  };
 
 StarRatingsWidgetWithoutCurrentCaseRating.args = {
   label: 'Ratings',
