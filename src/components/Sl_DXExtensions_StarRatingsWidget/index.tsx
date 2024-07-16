@@ -84,7 +84,7 @@ const SlDxExtensionsStarRatingsWidget = ({
 
     upsert('D_Savable', updatedRating).then(rating =>
       rating ? setRatings(
-        [rating, ...(updatedRating.guid === 'NEW' ? ratings : ratings.slice(1))]
+        [rating, ...(upsert === createRating ? ratings : ratings.slice(1))]
       ) : undefined
     );
   }
