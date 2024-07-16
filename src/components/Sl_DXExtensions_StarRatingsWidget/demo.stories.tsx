@@ -5,6 +5,7 @@ import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client/index'
+import type SemanticUrlUtils from '@pega/pcore-pconnect-typedefs/router/semanticurl-utils'
 
 import SlDxExtensionsStarRatingsWidget,
 { type SlDxExtensionsStarRatingsWidgetProps } from './index';
@@ -91,6 +92,20 @@ const mockRestClient = (): Partial<typeof RestClient> => {
 }
 
 window.PCore.getRestClient = mockRestClient as () => typeof RestClient;
+
+const mockSemanticUrlUtils = (): Partial<typeof SemanticUrlUtils> => {
+  return {
+    getResolvedSemanticURL: () => '',
+    getActions: () => ({
+      ACTION_OPENWORKBYHANDLE: 'Test',
+      ACTION_SHOWDATA: 'Test',
+      ACTION_SHOWVIEW: 'Test',
+    })
+  }
+}
+
+window.PCore.getSemanticUrlUtils =
+  mockSemanticUrlUtils as () => typeof SemanticUrlUtils;
 
 const mockPConnect = (): Partial<typeof PConnect> => ({
   getValue: (value: string) => {

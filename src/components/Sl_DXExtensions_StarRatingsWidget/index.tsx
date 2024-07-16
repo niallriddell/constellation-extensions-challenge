@@ -31,7 +31,6 @@ export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
   ratingSavableDatapage: string[];
 }
 // TODO: 
-// - Improve formatting of text below rating 
 // - Add PubSub for updating utilities panel count
 // - [Optional] - Add websocket handler to update utilities panel count on server
 //                change
