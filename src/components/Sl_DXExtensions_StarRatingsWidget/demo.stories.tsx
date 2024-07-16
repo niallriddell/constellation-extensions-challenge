@@ -103,7 +103,10 @@ export const StarRatingsWidgetWithCurrentCaseRating: Story =
 StarRatingsWidgetWithCurrentCaseRating.args = {
   label: 'Ratings',
   customerId: 'Q1234',
-  listDataView: 'D_CustomerRatingsList'
+  ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
+  ratingLookupDatapage: ['D_CustomerRating'],
+  ratingListDatapage: ['D_CustomerRatingList'],
+  ratingSavableDatapage: ['D_CustomerRatingSavable'],
 };
 
 export const StarRatingsWidgetWithoutCurrentCaseRating: Story =
@@ -122,6 +125,9 @@ export const StarRatingsWidgetWithoutCurrentCaseRating: Story =
 StarRatingsWidgetWithoutCurrentCaseRating.args = {
   label: 'Ratings',
   customerId: 'Q123',
-  listDataView: 'D_CustomerRatingsList'
+  ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
+  ratingLookupDatapage: ['D_CustomerRating'],
+  ratingListDatapage: ['D_CustomerRatingList'],
+  ratingSavableDatapage: ['D_CustomerRatingSavable'],
 };
 

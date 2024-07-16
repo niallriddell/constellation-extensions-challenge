@@ -26,7 +26,10 @@ registerIcon(star);
 // TODO: Add any additional properties here that are configured in the config.json
 export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
   customerId?: string;
-  listDataView: string;
+  ratingDataClass: string;
+  ratingLookupDatapage: string[];
+  ratingListDatapage: string[];
+  ratingSavableDatapage: string[];
 }
 // TODO: 
 // - Add create and update data object logic to ratingData.ts
@@ -43,13 +46,21 @@ const SlDxExtensionsStarRatingsWidget = ({
   getPConnect,
   label,
   customerId,
-  listDataView
+  ratingDataClass,
+  ratingLookupDatapage,
+  ratingListDatapage,
+  ratingSavableDatapage,
 }: SlDxExtensionsStarRatingsWidgetProps) => {
+  const lookup = ratingLookupDatapage[0];
+  const list = ratingListDatapage[0];
+  const savable = ratingSavableDatapage[0];
 
-  // At this stage our widget is a CASE widget only and therefore we know we're in the
+  console.log(ratingDataClass, ratingLookupDatapage, ratingListDatapage, ratingSavableDatapage);
+  console.log(ratingDataClass, lookup, list, savable);
+  // At this stage our widget is a CASE widget only and etherefore we know we're in the
   // current case context during runtime.  
   // Utility widgets do not store their data in the case directly so can also 
-  // be used on Resolved cases.
+  // be stused on Resolved cases.
   const contextName = getPConnect().getContextName();
   const caseKey = getPConnect().getCaseInfo().getKey();
   const caseClass = getPConnect().getCaseInfo().getClassName();
@@ -86,7 +97,7 @@ const SlDxExtensionsStarRatingsWidget = ({
 
     // TODO: Add in the correct data page selected in authoring. The property that 
     // will contain the savable data page will be specified in the config.json.
-    upsert('D_Savable', updatedRating).then(rating =>
+    upsert(savable, updatedRating).then(rating =>
       rating ? setRatings(
         [rating, ...(upsert === createRating ? ratings : ratings.slice(1))]
       ) : undefined
@@ -139,14 +150,14 @@ const SlDxExtensionsStarRatingsWidget = ({
     }
 
     const fetchRatings = async () => {
-      const allRatings = await getRatings(listDataView, customerId, contextName);
+      const allRatings = await getRatings(list, customerId, contextName);
       if (allRatings && allRatings.length > 0) {
         setRatings(processRatings(allRatings));
       }
       setLoading(false);
     }
     fetchRatings();
-  }, [listDataView, customerId, contextName, caseKey]);
+  }, [list, customerId, contextName, caseKey]);
 
   // As we always insert the current case rating at the top of the ratings array
   // we check if the first element of the array is for the current case.  If not we

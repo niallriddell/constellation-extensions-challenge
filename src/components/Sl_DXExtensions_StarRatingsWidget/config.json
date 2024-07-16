@@ -8,10 +8,7 @@
    "allowedApplications": [],
    "componentKey": "Sl_DXExtensions_StarRatingWidget",
    "type": "Widget",
-   "subtype": [
-      "PAGE",
-      "CASE"
-   ],
+   "subtype": "CASE",
    "properties": [
       {
          "name": "label",
@@ -20,52 +17,9 @@
          "format": "TEXT"
       },
       {
-         "name": "customerIDProperty",
+         "name": "customerId",
          "label": "Customer unique id property on case",
-         "format": "PROPERTY",
-         "visibility": "@VIEWAUTHORINGCONTEXT != 'page'"
-      },
-      {
-         "label": "Data pages for customer class",
-         "format": "GROUP",
-         "collapsible": true,
-         "defaultCollapsed": false,
-         "visibility": "@VIEWAUTHORINGCONTEXT = 'page'",
-         "properties": [
-            {
-               "format": "SELECT",
-               "label": "Select the customer class",
-               "name": "customerDataClass",
-               "placeholder": " ",
-               "defaultValue": " ",
-               "source": {
-                  "name": "D_pzDataTypesForApplicationNoWork",
-                  "displayProp": "pyLabel",
-                  "valueProp": "pyMetadataKey",
-                  "parameters": {
-                     "AppName": "@ENV APPLICATION_NAME"
-                  },
-                  "filter": "$this.pyMetadataKey NOT_STARTS_WITH 'Data-Admin'"
-               }
-            },
-            {
-               "format": "CONTENTPICKER",
-               "label": "Lookup datapage for customer class",
-               "name": "customerLookupDatapage",
-               "visibility": "$this.customerDataClass !=' '",
-               "source": {
-                  "name": "D_GetDataPagesForClassList",
-                  "displayProp": "pyLookUpDataPage",
-                  "valueProp": "pyLookUpDataPage",
-                  "parameters": {
-                     "ContextClass": "$this.customerDataClass",
-                     "ExcludeLookUp": false,
-                     "ExcludeList": true,
-                     "ExcludeSavable": true
-                  }
-               }
-            }
-         ]
+         "format": "PROPERTY"
       },
       {
          "label": "Data pages for rating class",
