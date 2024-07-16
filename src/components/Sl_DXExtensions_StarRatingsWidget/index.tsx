@@ -63,7 +63,7 @@ const SlDxExtensionsStarRatingsWidget = ({
   const modalRef = useRef<ModalMethods<SummaryListViewAllProps>>();
 
   const { create: createModal } = useModalManager();
-  const [popoverTarget, setPopoverTarget] = useElement<HTMLDivElement>(null);
+  const [popoverTarget, setPopoverTarget] = useElement<Element>(null);
 
   const onUpdateRating = (newRating: Rating) => {
     // In memory only for now.
