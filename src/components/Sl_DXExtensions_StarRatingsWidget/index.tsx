@@ -32,10 +32,7 @@ export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
   ratingSavableDatapage: string[];
 }
 // TODO: 
-// - Add create and update data object logic to ratingData.ts
 // - Improve formatting of text below rating 
-// - Update config.json to allow selection of data class and associated data pages
-// - Wire in new props to line up with config.json
 // - Add PubSub for updating utilities panel count
 // - [Optional] - Add websocket handler to update utilities panel count on server
 //                change
