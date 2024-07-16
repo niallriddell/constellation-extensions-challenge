@@ -55,7 +55,7 @@ const SlDxExtensionsStarRatingsWidget = ({
   // At this stage our widget is a CASE widget only and etherefore we know we're in the
   // current case context during runtime.  
   // Utility widgets do not store their data in the case directly so can also 
-  // be stused on Resolved cases.
+  // be used on Resolved cases.
   const contextName = getPConnect().getContextName();
   const caseKey = getPConnect().getCaseInfo().getKey();
   const caseClass = getPConnect().getCaseInfo().getClassName();
