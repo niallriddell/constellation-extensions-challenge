@@ -2,7 +2,6 @@ import {
   type Action,
   Rating as CosmosRating,
   SummaryListItem,
-  Text,
   MetaList,
   Link,
   DateTimeDisplay
