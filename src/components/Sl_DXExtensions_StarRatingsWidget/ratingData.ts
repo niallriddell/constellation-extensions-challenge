@@ -238,8 +238,4 @@ export const createRating = async (
     }
     return mapRatingDataToRating([response.data.responseData], mapper)[0]
   }
-  // rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
-  // console.log("createRating:", dataView, rating, context);
-  // // Tempoary guid purely for mock implementation.
-  // return rating as Rating;
 }

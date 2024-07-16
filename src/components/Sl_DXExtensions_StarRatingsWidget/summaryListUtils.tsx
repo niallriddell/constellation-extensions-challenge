@@ -46,7 +46,7 @@ export const createSummaryItem = (
       format='short'
     />]
 
-  if (isCurrent) items.push(<Text variant='h4'>Current case</Text>)
+  if (isCurrent) items.push(<Text variant='h4'>{getPConnect().getLocalizedValue('Current case')}</Text>)
 
   const secondary = (
     <MetaList
@@ -70,7 +70,7 @@ export const createSummaryItem = (
     primary: (
       <CosmosRating
         value={rating.rating}
-        metaInfo={`${rating.rating} of ${rating.stars}`}
+        metaInfo={`${rating.rating} ${getPConnect().getLocalizedValue('of')} ${rating.stars}`}
       />
     ),
     secondary
