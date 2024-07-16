@@ -180,5 +180,7 @@ export const createRating = async (
   context?: string): Promise<Rating | undefined> => {
 
   console.log("createRating:", dataView, context);
+  // Tempoary guid purely for mock implementation.
+  rating.guid = Math.floor(Math.random() * Number.MAX_VALUE).toString();
   return rating as Rating;
 }
