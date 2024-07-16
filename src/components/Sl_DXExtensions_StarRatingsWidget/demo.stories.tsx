@@ -84,7 +84,8 @@ const mockRestClient = (): Partial<typeof RestClient> => {
             ?
             args[1].body.data.pyGUID
             :
-            Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString()
+            Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(),
+          pxUpdateDateTime: (new Date).toISOString()
         }
       }
     })

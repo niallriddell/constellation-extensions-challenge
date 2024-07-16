@@ -4,8 +4,10 @@ import {
   SummaryListItem,
   MetaList,
   Link,
-  DateTimeDisplay
+  DateTimeDisplay,
+  Text
 } from '@pega/cosmos-react-core';
+import { ReactNode } from 'react';
 
 import { createAction } from './actions';
 import type { Rating } from './ratingData';
@@ -30,20 +32,26 @@ export const createSummaryItem = (
     }
   );
 
+  const items: ReactNode[] = [
+    <Link href={linkURL} variant='link' previewable onPreview={() =>
+      getPConnect()
+        .getActionsApi()
+        .showCasePreview(rating.caseId, {
+          caseClassName: rating.caseClass
+        })
+    }>{rating.caseId.split(' ')[1]}</Link>,
+    <DateTimeDisplay
+      value={rating.updateDateTime}
+      variant='datetime'
+      format='short'
+    />]
+
+  if (isCurrent) items.push(<Text variant='h4'>Current case</Text>)
+
   const secondary = (
     <MetaList
       wrapItems={false}
-      items={[
-        <Link href={linkURL} variant='link' previewable onPreview={() =>
-          getPConnect()
-            .getActionsApi()
-            .showCasePreview(rating.caseId, {
-              caseClassName: rating.caseClass
-            })
-        }>{rating.caseId.split(' ')[1]}</Link>,
-        <DateTimeDisplay value={rating.updateDateTime} variant='datetime' format='short' />,
-      ]
-      }
+      items={items}
     />
   )
 
