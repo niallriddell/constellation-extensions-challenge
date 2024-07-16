@@ -4,6 +4,7 @@ import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
 import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
+import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client/index'
 
 import SlDxExtensionsStarRatingsWidget,
 { type SlDxExtensionsStarRatingsWidgetProps } from './index';
@@ -70,6 +71,22 @@ const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
 };
 
 window.PCore.getDataPageUtils = mockDataPageUtils as () => typeof DataPageUtils;
+
+const mockRestClient = (): Partial<typeof RestClient> => {
+  return {
+    invokeRestApi: (...args) => Promise.resolve({
+      status: 200,
+      data: {
+        responseData: {
+          ...args[1].body.data,
+          pyGUID: args[1].body.data.pyGUID ? args[1].body.data.pyGUID : Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString()
+        }
+      }
+    })
+  }
+}
+
+window.PCore.getRestClient = mockRestClient as () => typeof RestClient;
 
 const mockPConnect = (): Partial<typeof PConnect> => ({
   getValue: (value: string) => {

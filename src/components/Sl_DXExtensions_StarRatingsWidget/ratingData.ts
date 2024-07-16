@@ -167,20 +167,79 @@ export const getRatings = async (
 export const updateRating = async (
   dataView: string,
   rating: Partial<Rating>,
-  context?: string): Promise<Rating | undefined> => {
+  context?: string,
+  classId?: string
+): Promise<Rating | undefined> => {
 
-  console.log("updateRating:", dataView, context);
-  return rating as Rating;
+  const optionsObject = {
+    body: {
+      data: {
+        [mapper.getValue("rating") as string]: rating.rating,
+        [mapper.getValue('stars') as string]: rating.stars,
+        [mapper.getValue("caseId") as string]: rating.caseId,
+        [mapper.getValue("customerId") as string]: rating.customerId,
+        [mapper.getValue("caseClass") as string]: rating.caseClass,
+        [mapper.getValue("guid") as string]: rating.guid
+      }
+    },
+    queryPayload: {
+      data_view_ID: dataView
+    }
+  };
+
+  const response = await PCore.getRestClient().invokeRestApi('updateDataObject', optionsObject, context);
+
+  if (response?.status === 200) {
+    if (classId) {
+      PCore.getPubSubUtils().publish(
+        PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
+        {
+          classId
+        }
+      );
+    }
+    return mapRatingDataToRating([response.data.responseData], mapper)[0]
+  }
 }
 
 // TODO: Add in the createDataObject rest api endpoint
 export const createRating = async (
   dataView: string,
   rating: Partial<Rating>,
-  context?: string): Promise<Rating | undefined> => {
+  context?: string,
+  classId?: string
+): Promise<Rating | undefined> => {
 
-  rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
-  console.log("createRating:", dataView, rating, context);
-  // Tempoary guid purely for mock implementation.
-  return rating as Rating;
+  const optionsObject = {
+    body: {
+      data: {
+        [mapper.getValue("rating") as string]: rating.rating,
+        [mapper.getValue('stars') as string]: rating.stars,
+        [mapper.getValue("caseId") as string]: rating.caseId,
+        [mapper.getValue("customerId") as string]: rating.customerId,
+        [mapper.getValue("caseClass") as string]: rating.caseClass,
+      }
+    },
+    queryPayload: {
+      data_view_ID: dataView
+    }
+  };
+
+  const response = await PCore.getRestClient().invokeRestApi('createDataObject', optionsObject, context);
+
+  if (response?.status === 200) {
+    if (classId) {
+      PCore.getPubSubUtils().publish(
+        PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
+        {
+          classId
+        }
+      );
+    }
+    return mapRatingDataToRating([response.data.responseData], mapper)[0]
+  }
+  // rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
+  // console.log("createRating:", dataView, rating, context);
+  // // Tempoary guid purely for mock implementation.
+  // return rating as Rating;
 }
