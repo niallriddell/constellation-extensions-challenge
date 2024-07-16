@@ -31,7 +31,6 @@ export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
   ratingSavableDatapage: string[];
 }
 // TODO: 
-// - Add PubSub for updating utilities panel count
 // - [Optional] - Add websocket handler to update utilities panel count on server
 //                change
 // - Localization of all strings
@@ -49,8 +48,8 @@ const SlDxExtensionsStarRatingsWidget = ({
   const list = ratingListDatapage[0];
   const savable = ratingSavableDatapage[0];
 
-  console.log(ratingDataClass, ratingLookupDatapage, ratingListDatapage, ratingSavableDatapage);
-  console.log(ratingDataClass, lookup, list, savable);
+  if (!lookup) { } // hack to stop linting errors for no unused.
+
   // At this stage our widget is a CASE widget only and etherefore we know we're in the
   // current case context during runtime.  
   // Utility widgets do not store their data in the case directly so can also 
@@ -78,6 +77,16 @@ const SlDxExtensionsStarRatingsWidget = ({
   const { create: createModal } = useModalManager();
   const [popoverTarget, setPopoverTarget] = useElement<Element>(null);
 
+  const publishWidgetCountUpdated = () => {
+    PCore.getPubSubUtils().publish('WidgetUpdated',
+      {
+        widget: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
+        count: ratings.length + 1,
+        caseID: caseKey
+      }
+    );
+  }
+
   // All non-transient updates to rating data are performed via this function.
   // New rating objects don't yet have a GUID as this is created by Infinity, so we
   // assign a temporary one until we perform a successful create.  Updates use the 
@@ -89,11 +98,14 @@ const SlDxExtensionsStarRatingsWidget = ({
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
-    upsert(savable, updatedRating).then(rating =>
-      rating ? setRatings(
-        [rating, ...(upsert === createRating ? ratings : ratings.slice(1))]
-      ) : undefined
-    );
+    upsert(savable, updatedRating, undefined, ratingDataClass).then(rating => {
+      if (rating) {
+        setRatings(
+          [rating, ...(upsert === createRating ? ratings : ratings.slice(1))]
+        );
+        if (upsert === createRating) publishWidgetCountUpdated();
+      }
+    });
   }
 
   // We iterate over the ratings to create the SummaryItems.  Memoization helps to 

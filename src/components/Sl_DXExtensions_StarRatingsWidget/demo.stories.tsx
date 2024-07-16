@@ -6,6 +6,7 @@ import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client/index'
 import type SemanticUrlUtils from '@pega/pcore-pconnect-typedefs/router/semanticurl-utils'
+import type PubSubUtils from '@pega/pcore-pconnect-typedefs/utils/pubsub-utils'
 
 import SlDxExtensionsStarRatingsWidget,
 { type SlDxExtensionsStarRatingsWidgetProps } from './index';
@@ -31,6 +32,12 @@ window.PCore.getConstants = () => {
   return {
     CASE_INFO: {
       CASE_INFO_ID: 'caseInfo.ID'
+    },
+    PUB_SUB_EVENTS: {
+      DATA_EVENTS: {
+        DATA_OBJECT_CREATED: 'created',
+        DATA_OBJECT_UPDATED: 'updated'
+      }
     }
   } as Readonly<any>;
 };
@@ -107,6 +114,13 @@ const mockSemanticUrlUtils = (): Partial<typeof SemanticUrlUtils> => {
 
 window.PCore.getSemanticUrlUtils =
   mockSemanticUrlUtils as () => typeof SemanticUrlUtils;
+
+const mockPubSubUtils = (): Partial<typeof PubSubUtils> => {
+  return {
+    publish: (...args) => { console.log(args) }
+  }
+}
+window.PCore.getPubSubUtils = mockPubSubUtils as () => typeof PubSubUtils;
 
 const mockPConnect = (): Partial<typeof PConnect> => ({
   getValue: (value: string) => {
