@@ -124,7 +124,13 @@ const SlDxExtensionsStarRatingsWidget = ({
           }
         }))
       };
-    }), [ratings, getPConnect, caseKey, setSelectedAction, setPopoverTarget, setSelectedRating]);
+    }), [
+    ratings,
+    getPConnect,
+    caseKey,
+    setSelectedAction,
+    setPopoverTarget,
+    setSelectedRating]);
   // We don't anticipate a large number of ratings per customer, so for now we can
   // use array processing to find the current case rating in the ratings array.
   const processRatings = useCallback((allRatings: Array<Rating>) => {
@@ -151,7 +157,7 @@ const SlDxExtensionsStarRatingsWidget = ({
   }, [contextName, list, processRatings, customerId]);
 
   // TODO: We could show toast here or even mutate our ratings array instead of
-  // doing a full requrey to fetch all customer ratings when data changes. 
+  // doing a full requery to fetch all customer ratings when data changes. 
   const handleDataObjectEvent = (payload: any) => {
     console.log(payload)
   }
@@ -177,26 +183,43 @@ const SlDxExtensionsStarRatingsWidget = ({
       getPConnect().getContextName()
     );
 
-    PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED, handleDataObjectEvent, 'updateSubId');
-    PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED, handleDataObjectEvent, 'createSubId');
+    PCore.getPubSubUtils().subscribe(PCore
+      .getConstants()
+      .PUB_SUB_EVENTS
+      .DATA_EVENTS
+      .DATA_OBJECT_CREATED, handleDataObjectEvent, 'updateSubId');
+    PCore.getPubSubUtils().subscribe(PCore
+      .getConstants()
+      .PUB_SUB_EVENTS
+      .DATA_EVENTS
+      .DATA_OBJECT_UPDATED, handleDataObjectEvent, 'createSubId');
 
     return () => {
       PCore.getMessagingServiceManager().unsubscribe(ratingSubId);
-      PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED, 'updateSubId');
-      PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED, 'createSubId');
+      PCore.getPubSubUtils().unsubscribe(PCore
+        .getConstants()
+        .PUB_SUB_EVENTS
+        .DATA_EVENTS
+        .DATA_OBJECT_CREATED, 'updateSubId');
+      PCore.getPubSubUtils().unsubscribe(PCore
+        .getConstants()
+        .PUB_SUB_EVENTS
+        .DATA_EVENTS
+        .DATA_OBJECT_UPDATED, 'createSubId');
     };
   });
-  // An effect is required here because we're synchronising the open modal with changes in the 
-  // data manged by the parent component.
-  // When and when not to use an effect is well documented here: https://react.dev/learn/you-might-not-need-an-effect
+  // An effect is required here because we're synchronising the open modal with 
+  // changes in the data manged by the parent component.
+  // When and when not to use an effect is well documented here: 
+  // https://react.dev/learn/you-might-not-need-an-effect
   useEffect(() => {
     modalRef.current?.update({ items: summaryItems })
   });
 
 
   // As we always insert the current case rating at the top of the ratings array
-  // we check if the first element of the array is for the current case.  If not we
-  // display the 'Add' action. 
+  // we check if the first element of the array is for the current case.
+  // If not we display the 'Add' action. 
   const summaryActions =
     customerId && ratings.length && ratings[0].caseId !== caseKey
       || ratings.length === 0
