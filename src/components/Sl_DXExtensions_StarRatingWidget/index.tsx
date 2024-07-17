@@ -165,8 +165,7 @@ const SlDxExtensionsStarRatingsWidget = ({
 
     const ratingSubId = PCore.getMessagingServiceManager().subscribe(
       ratingSubObject,
-      debounce((...args) => {
-        console.log(args);
+      debounce(() => {
         fetchRatings();
       }
         , 10),
