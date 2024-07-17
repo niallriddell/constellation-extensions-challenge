@@ -82,12 +82,8 @@ export const getRating = async (
   guid: string,
   context?: string): Promise<Rating | undefined> => {
 
-  const guidProp: string | undefined = mapper.getValue('guid');
-
-  if (!guidProp) return;
-
   const parameters = {
-    [guidProp]: guid
+    [mapper.getValue('guid') as string]: guid
   }
 
   try {
