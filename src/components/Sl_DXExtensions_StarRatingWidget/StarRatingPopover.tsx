@@ -37,6 +37,7 @@ const StarRatingPopover = (
       strategy='absolute'
       placement='auto'
       target={popoverTarget}
+      portal={false}
       arrow
       style={{ width: '40ch' }}
     >
