@@ -12,6 +12,7 @@ import SlDxExtensionsStarRatingsWidget,
 { type SlDxExtensionsStarRatingsWidgetProps } from './index';
 
 import ratingData from './mock';
+import type MessagingServiceManager from '@pega/pcore-pconnect-typedefs/messagingservice/manager';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingsWidget> = {
   title: 'SL/Star Rating Widget',
@@ -137,6 +138,18 @@ const mockPConnect = (): Partial<typeof PConnect> => ({
     getClassName: () => 'SL-TellUseMore-Work-Incident'
   } as CaseInfo)
 });
+let allArgs: any[] = [];
+const mockMessagingServiceManager = (): Partial<typeof MessagingServiceManager> => {
+  return {
+    subscribe(...args) {
+      allArgs = args;
+      return 'SubId'
+    },
+    // subscribe: () => 'subID',
+    unsubscribe: () => { }
+  }
+}
+window.PCore.getMessagingServiceManager = mockMessagingServiceManager as () => typeof MessagingServiceManager;
 
 export const StarRatingsWidgetWithCurrentCaseRating: Story =
   (args: SlDxExtensionsStarRatingsWidgetProps) => {

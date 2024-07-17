@@ -1,6 +1,6 @@
-import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import type { Action, ModalMethods } from '@pega/cosmos-react-core';
+import { Action, debounce, ModalMethods } from '@pega/cosmos-react-core';
 import {
   SummaryList,
   withConfiguration,
@@ -126,7 +126,57 @@ const SlDxExtensionsStarRatingsWidget = ({
         }))
       };
     }), [ratings, getPConnect, caseKey, setSelectedAction, setPopoverTarget, setSelectedRating]);
+  // We don't anticipate a large number of ratings per customer, so for now we can
+  // use array processing to find the current case rating in the ratings array.
+  const processRatings = useCallback((allRatings: Array<Rating>) => {
+    if (!customerId || !caseKey) {
+      return allRatings;
+    }
 
+    const caseRatingIndex = allRatings
+      .findIndex(rating => rating.caseId === caseKey);
+
+    if (caseRatingIndex >= 0) {
+      return [allRatings.splice(caseRatingIndex, 1)[0], ...allRatings];
+    }
+
+    return allRatings;
+  }, [caseKey, customerId]);
+
+  const fetchRatings = useCallback(async () => {
+    const allRatings = await getRatings(list, customerId, contextName);
+    if (allRatings && allRatings.length > 0) {
+      setRatings(processRatings(allRatings));
+    }
+    setLoading(false);
+  }, [contextName, list, processRatings, customerId]);
+
+  useEffect(() => {
+    fetchRatings();
+  }, [fetchRatings]);
+
+  useEffect(() => {
+    const ratingSubObject = {
+      matcher: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
+      criteria: {
+        ID: customerId || ''
+      }
+    };
+
+    const ratingSubId = PCore.getMessagingServiceManager().subscribe(
+      ratingSubObject,
+      debounce((...args) => {
+        console.log(args);
+        fetchRatings();
+      }
+        , 10),
+      getPConnect().getContextName()
+    );
+
+    return () => {
+      PCore.getMessagingServiceManager().unsubscribe(ratingSubId);
+    };
+  });
   // An effect is required here because we're synchronising the open modal with changes in the 
   // data manged by the parent component.
   // When and when not to use an effect is well documented here: https://react.dev/learn/you-might-not-need-an-effect
@@ -134,33 +184,6 @@ const SlDxExtensionsStarRatingsWidget = ({
     modalRef.current?.update({ items: summaryItems })
   });
 
-  useEffect(() => {
-    // We don't anticipate a large number of ratings per customer, so for now we can
-    // use array processing to find the current case rating in the ratings array.
-    const processRatings = (allRatings: Array<Rating>) => {
-      if (!customerId || !caseKey) {
-        return allRatings;
-      }
-
-      const caseRatingIndex = allRatings
-        .findIndex(rating => rating.caseId === caseKey);
-
-      if (caseRatingIndex >= 0) {
-        return [allRatings.splice(caseRatingIndex, 1)[0], ...allRatings];
-      }
-
-      return allRatings;
-    }
-
-    const fetchRatings = async () => {
-      const allRatings = await getRatings(list, customerId, contextName);
-      if (allRatings && allRatings.length > 0) {
-        setRatings(processRatings(allRatings));
-      }
-      setLoading(false);
-    }
-    fetchRatings();
-  }, [list, customerId, contextName, caseKey]);
 
   // As we always insert the current case rating at the top of the ratings array
   // we check if the first element of the array is for the current case.  If not we
