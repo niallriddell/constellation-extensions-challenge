@@ -37,8 +37,8 @@ const StarRatingPopover = (
       container={{ inline: true, rowGap: 2, pad: 2 }}
       strategy='fixed'
       target={popoverTarget}
-      arrow
       portal={false}
+      arrow
       style={{ width: '40ch' }}
     >
       <Text variant="h2">{actionId === 'rating:edit' ? `Edit: ${pyId}` : `Add: ${pyId}`} rating</Text>
