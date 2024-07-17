@@ -51,7 +51,8 @@ const SummaryListViewAllModal = ({
       rating?: Rating,
       action?: Action
     ) => {
-      setSelectedAction(action || actions.filter(filterAction => filterAction.id === id)[0]);
+      setSelectedAction(action ||
+        actions.filter(filterAction => filterAction.id === id)[0]);
       setPopoverTarget(menuButton || e.currentTarget);
       if (rating) setSelectedRating(rating);
     },
