@@ -47,7 +47,7 @@ const SlDxExtensionsStarRatingsWidget = ({
   const list = ratingListDatapage[0];
   const savable = ratingSavableDatapage[0];
 
-  if (!lookup) { } // hack to stop linting errors for no unused.
+  console.log(lookup)
 
   // At this stage our widget is a CASE widget only and etherefore we know we're in the
   // current case context during runtime.  

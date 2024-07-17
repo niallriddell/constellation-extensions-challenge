@@ -1,11 +1,12 @@
-import { RefCallback, useState } from "react";
+import { MouseEvent, RefCallback, useState } from "react";
 
 import {
   withConfiguration,
   Popover,
   Grid,
   Button,
-  Text
+  Text,
+  // useElement
 } from "@pega/cosmos-react-core";
 
 import StarRating from '../Sl_DXExtensions_StarRating';
@@ -34,10 +35,10 @@ const StarRatingPopover = (
     <Popover
       as={Grid}
       container={{ inline: true, rowGap: 2, pad: 2 }}
-      strategy='absolute'
-      placement='auto'
+      strategy='fixed'
       target={popoverTarget}
       arrow
+      portal={false}
       style={{ width: '40ch' }}
     >
       <Text variant="h2">{actionId === 'rating:edit' ? `Edit: ${pyId}` : `Add: ${pyId}`} rating</Text>
