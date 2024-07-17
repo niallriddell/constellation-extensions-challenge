@@ -194,7 +194,8 @@ export const updateRating = async (
       PCore.getPubSubUtils().publish(
         PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
         {
-          classId
+          classId,
+          guid: rating.guid
         }
       );
     }
@@ -232,7 +233,8 @@ export const createRating = async (
       PCore.getPubSubUtils().publish(
         PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
         {
-          classId
+          classId,
+          guid: rating.guid
         }
       );
     }

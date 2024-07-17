@@ -26,28 +26,27 @@ registerIcon(star);
 export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
   customerId?: string;
   ratingDataClass: string;
-  ratingLookupDatapage: string[];
+  ratingLookupDatapage?: string[];
   ratingListDatapage: string[];
   ratingSavableDatapage: string[];
 }
 // TODO: 
-// - [Optional] - Add websocket handler to update utilities panel count on server
-//                change
-
+// - [Optional] - Add support for data object deletion 
+// - [Optional] - Add support for in array replacement of changed and 
+//                new data objects via pubsub handler and using lookup data page
 const SlDxExtensionsStarRatingsWidget = ({
   getPConnect,
   label,
   customerId,
   ratingDataClass,
-  ratingLookupDatapage,
+  // ratingLookupDatapage,
   ratingListDatapage,
   ratingSavableDatapage,
 }: SlDxExtensionsStarRatingsWidgetProps) => {
-  const lookup = ratingLookupDatapage[0];
+  // TODO: Implement data object lookup
+  // const lookup = ratingLookupDatapage[0];
   const list = ratingListDatapage[0];
   const savable = ratingSavableDatapage[0];
-
-  console.log(lookup)
 
   // At this stage our widget is a CASE widget only and etherefore we know we're in the
   // current case context during runtime.  
@@ -151,6 +150,12 @@ const SlDxExtensionsStarRatingsWidget = ({
     setLoading(false);
   }, [contextName, list, processRatings, customerId]);
 
+  // TODO: We could show toast here or even mutate our ratings array instead of
+  // doing a full requrey to fetch all customer ratings when data changes. 
+  const handleDataObjectEvent = (payload: any) => {
+    console.log(payload)
+  }
+
   useEffect(() => {
     fetchRatings();
   }, [fetchRatings]);
@@ -172,8 +177,13 @@ const SlDxExtensionsStarRatingsWidget = ({
       getPConnect().getContextName()
     );
 
+    PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED, handleDataObjectEvent, 'updateSubId');
+    PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED, handleDataObjectEvent, 'createSubId');
+
     return () => {
       PCore.getMessagingServiceManager().unsubscribe(ratingSubId);
+      PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED, 'updateSubId');
+      PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED, 'createSubId');
     };
   });
   // An effect is required here because we're synchronising the open modal with changes in the 
