@@ -1,7 +1,16 @@
-import { MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-import { Action, debounce, ModalMethods } from '@pega/cosmos-react-core';
 import {
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
+
+import {
+  Action,
+  debounce,
+  ModalMethods,
   SummaryList,
   withConfiguration,
   useModalManager,
@@ -9,21 +18,29 @@ import {
   registerIcon
 } from '@pega/cosmos-react-core';
 
-import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
+import * as star
+  from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
 
 import type { PConnFieldProps } from './PConnProps';
 
-import { createRating, getRatings, updateRating, type Rating } from './ratingData';
+import {
+  createRating,
+  getRatings,
+  updateRating,
+  type Rating
+} from './ratingData';
 import { searchByRating, searchByCustomer } from './searchFunctions';
 import { createAction } from './actions';
 import { createSummaryItem } from './summaryListUtils';
 import SummaryListViewAllModal,
-{ type SummaryListViewAllProps } from './SummaryListViewAllModal';
+{ type SummaryListViewAllProps }
+  from './SummaryListViewAllModal';
 import StarRatingPopover from './StarRatingPopover';
 
 registerIcon(star);
 
-export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
+export interface SlDxExtensionsStarRatingsWidgetProps
+  extends PConnFieldProps {
   customerId?: string;
   ratingDataClass: string;
   ratingLookupDatapage?: string[];
@@ -48,8 +65,8 @@ const SlDxExtensionsStarRatingsWidget = ({
   const list = ratingListDatapage[0];
   const savable = ratingSavableDatapage[0];
 
-  // At this stage our widget is a CASE widget only and etherefore we know we're in the
-  // current case context during runtime.  
+  // At this stage our widget is a CASE widget only and therefore we know 
+  // we're in the current case context during runtime.  
   // Utility widgets do not store their data in the case directly so can also 
   // be used on Resolved cases.
   const contextName = getPConnect().getContextName();
@@ -86,10 +103,10 @@ const SlDxExtensionsStarRatingsWidget = ({
   }
 
   // All non-transient updates to rating data are performed via this function.
-  // New rating objects don't yet have a GUID as this is created by Infinity, so we
-  // assign a temporary one until we perform a successful create.  Updates use the 
-  // existing GUID to lookup and update the data object via the savable data page 
-  // associated with the data class.
+  // New rating objects don't yet have a GUID as this is created by Infinity, 
+  // so we assign a temporary one until we perform a successful create.  
+  // Updates use the existing GUID to lookup and update the data object via 
+  // the savable data page associated with the data class.
   // Persist your data to the server first and update the UI to align.  
   const onUpdateRating = (updatedRating: Rating) => {
     updatedRating.guid = updatedRating?.guid || 'NEW';
@@ -106,10 +123,12 @@ const SlDxExtensionsStarRatingsWidget = ({
     });
   }
 
-  // We iterate over the ratings to create the SummaryItems.  Memoization helps to 
-  // avoid re-running expensive operations.  In our case it saves one execution on rerender. 
+  // We iterate over the ratings to create the SummaryItems.  
+  // Memoization helps to avoid re-running expensive operations.  
+  // In our case it saves one execution on rerender. 
   // On a small dataset it may not be worth memoizing as there is a tradeoff.
-  // We need to capture the selected rating so we know which rating to perform actions on. 
+  // We need to capture the selected rating so we know which rating to 
+  // perform actions on. 
   const summaryItems = useMemo(() =>
     ratings.map(item => {
       const summaryItem = createSummaryItem(item, getPConnect, caseKey);
@@ -131,8 +150,9 @@ const SlDxExtensionsStarRatingsWidget = ({
     setSelectedAction,
     setPopoverTarget,
     setSelectedRating]);
-  // We don't anticipate a large number of ratings per customer, so for now we can
-  // use array processing to find the current case rating in the ratings array.
+  // We don't anticipate a large number of ratings per customer, so for now 
+  // we can use array processing to find the current case rating in the 
+  // ratings array.
   const processRatings = useCallback((allRatings: Array<Rating>) => {
     if (!customerId || !caseKey) {
       return allRatings;
