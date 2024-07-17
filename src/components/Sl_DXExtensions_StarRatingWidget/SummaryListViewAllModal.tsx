@@ -41,20 +41,21 @@ const SummaryListViewAllModal = ({
 }: SummaryListViewAllProps) => {
 
   const [search, setSearch] = useState('');
-  const [actionId, setActionId] = useState<string | undefined>();
+  const [selectedAction, setSelectedAction] = useState<Action | undefined>();
   const [popoverTarget, setPopoverTarget] = useElement(null);
   const [selectedRating, setSelectedRating] = useState<Rating>(currentRating);
 
   const onClickHandler = useCallback(
     (id: string, e: MouseEvent<HTMLElement>,
       menuButton?: HTMLElement,
-      rating?: Rating
+      rating?: Rating,
+      action?: Action
     ) => {
-      setActionId(id);
+      setSelectedAction(action || actions.filter(filterAction => filterAction.id === id)[0]);
       setPopoverTarget(menuButton || e.currentTarget);
       if (rating) setSelectedRating(rating);
     },
-    [setPopoverTarget]
+    [setPopoverTarget, actions]
   );
 
   const newItems = useMemo(() => items.map(item => {
@@ -67,7 +68,7 @@ const SummaryListViewAllModal = ({
           id: string,
           e: MouseEvent<HTMLElement>,
           menuButton?: HTMLElement) => onClickHandler(
-            id, e, menuButton, item?.rating)
+            id, e, menuButton, item?.rating, action)
       }
     });
 
@@ -102,7 +103,7 @@ const SummaryListViewAllModal = ({
         <StarRatingPopover
           popoverTarget={popoverTarget}
           setPopoverTarget={setPopoverTarget}
-          actionId={actionId}
+          action={selectedAction}
           currentRating={selectedRating}
           onUpdateRating={onUpdateRating}
         />

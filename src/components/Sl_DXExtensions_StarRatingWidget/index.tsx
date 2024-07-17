@@ -59,7 +59,7 @@ const SlDxExtensionsStarRatingsWidget = ({
 
   const [loading, setLoading] = useState(true);
   const [ratings, setRatings] = useState<Array<Rating>>([]);
-  const [actionId, setActionId] = useState<string | undefined>();
+  const [selectedAction, setSelectedAction] = useState<Action | undefined>();
   const [selectedRating, setSelectedRating] = useState<Rating>(
     {
       rating: 0,
@@ -118,14 +118,14 @@ const SlDxExtensionsStarRatingsWidget = ({
         ...summaryItem,
         actions: summaryItem.actions?.map((action: Action) => ({
           ...action,
-          onClick(id: string, e: MouseEvent, menuButton?: HTMLButtonElement) {
-            setActionId(id);
+          onClick(_: string, e: MouseEvent, menuButton?: HTMLButtonElement) {
+            setSelectedAction(action);
             setPopoverTarget(menuButton || e.currentTarget);
             setSelectedRating(summaryItem.rating);
           }
         }))
       };
-    }), [ratings, getPConnect, caseKey, setActionId, setPopoverTarget, setSelectedRating]);
+    }), [ratings, getPConnect, caseKey, setSelectedAction, setPopoverTarget, setSelectedRating]);
 
   // An effect is required here because we're synchronising the open modal with changes in the 
   // data manged by the parent component.
@@ -170,8 +170,8 @@ const SlDxExtensionsStarRatingsWidget = ({
       || ratings.length === 0
       ? [createAction('Add', getPConnect)].map((action: Action) => ({
         ...action,
-        onClick(id: string, e: MouseEvent) {
-          setActionId(id);
+        onClick(_: string, e: MouseEvent) {
+          setSelectedAction(action);
           setPopoverTarget(e.currentTarget);
         }
       })) : []
@@ -215,7 +215,7 @@ const SlDxExtensionsStarRatingsWidget = ({
           setPopoverTarget={setPopoverTarget}
           currentRating={selectedRating}
           onUpdateRating={onUpdateRating}
-          actionId={actionId}
+          action={selectedAction}
         />
       }
     </>

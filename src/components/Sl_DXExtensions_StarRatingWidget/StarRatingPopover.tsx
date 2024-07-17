@@ -6,6 +6,7 @@ import {
   Grid,
   Button,
   Text,
+  Action,
   // useElement
 } from "@pega/cosmos-react-core";
 
@@ -18,14 +19,14 @@ import { Rating } from "./ratingData";
 // Popover target is requried to ensure positioning of the popover is relative to
 // the popover target.  Popover width is hard-coded ('40ch') in our example.
 const StarRatingPopover = (
-  { popoverTarget, setPopoverTarget, onUpdateRating, currentRating, actionId }:
+  { popoverTarget, setPopoverTarget, onUpdateRating, currentRating, action }:
     {
       popoverTarget:
       Element | null,
       setPopoverTarget: RefCallback<Element | null>,
       onUpdateRating: (newRating: Rating) => void,
       currentRating: Rating,
-      actionId?: string,
+      action?: Action,
     }) => {
 
   const [ratingValue, setRatingValue] = useState<number>(currentRating
@@ -42,9 +43,7 @@ const StarRatingPopover = (
       arrow
       style={{ width: '40ch' }}
     >
-      <Text variant="h2">{actionId === 'rating:edit'
-        ? `Edit: ${pyId}`
-        : `Add: ${pyId}`} rating</Text>
+      <Text variant="h2">{`${action?.text} : ${pyId}`}</Text>
       <StarRating
         min='0'
         max='5'
