@@ -91,9 +91,7 @@ export const getRating = async (
       .getDataPageUtils()
       .getPageDataAsync(dataView, context, parameters);
 
-    if (response.status === 200) {
-      return mapRatingDataToRating([response.data], mapper)[0];
-    }
+    return mapRatingDataToRating([response], mapper)[0];
   } catch (error) {
     console.error(error);
   }
