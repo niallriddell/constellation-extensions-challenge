@@ -118,7 +118,9 @@ window.PCore.getSemanticUrlUtils =
 
 const mockPubSubUtils = (): Partial<typeof PubSubUtils> => {
   return {
-    publish: (...args) => { console.log(args) }
+    publish: (...args) => { console.log(args) },
+    subscribe: (...args) => { console.log(args) },
+    unsubscribe: (...args) => { console.log(args) }
   }
 }
 window.PCore.getPubSubUtils = mockPubSubUtils as () => typeof PubSubUtils;

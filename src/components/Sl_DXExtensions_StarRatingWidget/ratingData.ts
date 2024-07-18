@@ -89,7 +89,7 @@ export const getRating = async (
   try {
     const response: any = await PCore
       .getDataPageUtils()
-      .getPageDataAsync(dataView, context, parameters);
+      .getPageDataAsync(dataView, context, parameters, { invalidateCache: true });
 
     return mapRatingDataToRating([response], mapper)[0];
   } catch (error) {
