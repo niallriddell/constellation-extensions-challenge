@@ -25,6 +25,7 @@ import type { PConnFieldProps } from './PConnProps';
 
 import {
   createRating,
+  getRating,
   getRatings,
   updateRating,
   type Rating
@@ -43,7 +44,7 @@ export interface SlDxExtensionsStarRatingsWidgetProps
   extends PConnFieldProps {
   customerId?: string;
   ratingDataClass: string;
-  ratingLookupDatapage?: string[];
+  ratingLookupDatapage: string[];
   ratingListDatapage: string[];
   ratingSavableDatapage: string[];
 }
@@ -56,12 +57,12 @@ const SlDxExtensionsStarRatingsWidget = ({
   label,
   customerId,
   ratingDataClass,
-  // ratingLookupDatapage,
+  ratingLookupDatapage,
   ratingListDatapage,
   ratingSavableDatapage,
 }: SlDxExtensionsStarRatingsWidgetProps) => {
   // TODO: Implement data object lookup
-  // const lookup = ratingLookupDatapage[0];
+  const lookup = ratingLookupDatapage[0];
   const list = ratingListDatapage[0];
   const savable = ratingSavableDatapage[0];
 
@@ -150,6 +151,7 @@ const SlDxExtensionsStarRatingsWidget = ({
     setSelectedAction,
     setPopoverTarget,
     setSelectedRating]);
+
   // We don't anticipate a large number of ratings per customer, so for now 
   // we can use array processing to find the current case rating in the 
   // ratings array.
@@ -179,7 +181,8 @@ const SlDxExtensionsStarRatingsWidget = ({
   // TODO: We could show toast here or even mutate our ratings array instead of
   // doing a full requery to fetch all customer ratings when data changes. 
   const handleDataObjectEvent = (payload: any) => {
-    console.log(payload)
+    if (payload.guid && payload.guid !== 'NEW')
+      getRating(lookup, payload.guid).then(console.log)
   }
 
   useEffect(() => {
@@ -228,6 +231,7 @@ const SlDxExtensionsStarRatingsWidget = ({
         .DATA_OBJECT_UPDATED, 'createSubId');
     };
   });
+
   // An effect is required here because we're synchronising the open modal with 
   // changes in the data manged by the parent component.
   // When and when not to use an effect is well documented here: 
