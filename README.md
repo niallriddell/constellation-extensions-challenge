@@ -9,7 +9,7 @@ that track the different stages in the widget challenge.
 
 In the widget-challenge directory created when cloning the main branch.
 
-```
+```bash
 git stash
 git switch websockets
 ```
