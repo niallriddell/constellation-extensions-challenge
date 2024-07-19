@@ -40,7 +40,7 @@ mapper.set('stars', 'NumberOfStars');
 mapper.set('guid', 'pyGUID');
 mapper.set('updateDateTime', 'pxUpdateDateTime');
 
-// Utility funciton that auto-generates the select object. 
+// Utility function that auto-generates the select object. 
 // Currently adds all mapped properties.
 function toSelectObject<
   K extends keyof Rating,
