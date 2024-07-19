@@ -140,18 +140,17 @@ const mockPConnect = (): Partial<typeof PConnect> => ({
     getClassName: () => 'SL-TellUseMore-Work-Incident'
   } as CaseInfo)
 });
-let allArgs: any[] = [];
-const mockMessagingServiceManager = (): Partial<typeof MessagingServiceManager> => {
-  return {
-    subscribe(...args) {
-      allArgs = args;
-      return 'SubId'
-    },
-    // subscribe: () => 'subID',
-    unsubscribe: () => { }
+
+const mockMessagingServiceManager =
+  (): Partial<typeof MessagingServiceManager> => {
+    return {
+      subscribe: () => 'SubId',
+      unsubscribe: () => { }
+    }
   }
-}
-window.PCore.getMessagingServiceManager = mockMessagingServiceManager as () => typeof MessagingServiceManager;
+
+window.PCore.getMessagingServiceManager =
+  mockMessagingServiceManager as () => typeof MessagingServiceManager;
 
 export const StarRatingsWidgetWithCurrentCaseRating: Story =
   (args: SlDxExtensionsStarRatingsWidgetProps) => {

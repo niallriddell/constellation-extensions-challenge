@@ -201,8 +201,7 @@ const SlDxExtensionsStarRatingsWidget = ({
       ratingSubObject,
       debounce(() => {
         fetchRatings();
-      }
-        , 10),
+      }, 10),
       getPConnect().getContextName()
     );
 
