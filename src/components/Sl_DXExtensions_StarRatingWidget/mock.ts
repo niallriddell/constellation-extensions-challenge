@@ -1,5 +1,6 @@
 const ratingData = {
-  status: 200, data: [
+  status: 200,
+  data: [
     {
       CustomerRating: 3,
       NumberOfStars: 5,
@@ -71,7 +72,8 @@ const ratingData = {
       CustomerID: 'Q123',
       pyGUID: '687678687687686393',
       pxUpdateDateTime: '2020-06-29T11:06:24.329Z'
-    }]
-}
+    }
+  ]
+};
 
 export default ratingData;
