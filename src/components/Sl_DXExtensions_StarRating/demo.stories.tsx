@@ -16,13 +16,15 @@ export default meta;
 type Story = StoryObj<typeof StarRating>;
 
 const mockActionsApi: Partial<ActionsApi> = {
-  updateFieldValue: () => { },
-  triggerFieldChange: () => { }
+  updateFieldValue: () => {},
+  triggerFieldChange: () => {}
 };
 
 const mockPConnect = (): Partial<typeof PConnect> => ({
-  getValue: () => (undefined),
-  getStateProps: () => { return { value: '.rating' } },
+  getValue: () => undefined,
+  getStateProps: () => {
+    return { value: '.rating' };
+  },
   getActionsApi: () => mockActionsApi as ActionsApi
 });
 
@@ -35,10 +37,10 @@ export const onChangeExternal: Story = {
     readOnly: false,
     label: 'Aria label'
   },
-  render: (args) => {
+  render: args => {
     return (
       <div>
-        <StarRating {...args} onChange={(newValue: number) => args.value = newValue} />
+        <StarRating {...args} onChange={(newValue: number) => (args.value = newValue)} />
       </div>
     );
   }
@@ -54,7 +56,7 @@ export const onChangeInternal: Story = {
     label: 'Aria label',
     getPConnect: mockPConnect as () => typeof PConnect
   },
-  render: (args) => {
+  render: args => {
     return (
       <div>
         <StarRating {...args} />
