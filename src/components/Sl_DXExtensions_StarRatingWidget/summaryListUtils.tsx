@@ -17,16 +17,14 @@ export const createSummaryItem = (
   getPConnect: () => typeof PConnect,
   caseKey?: string
 ): StarRatingSummaryListItem => {
-
   const isCurrent = caseKey && rating.caseId === caseKey;
 
-  const actions: Action[] =
-    isCurrent ?
-      [
-        createAction('Edit', getPConnect),
+  const actions: Action[] = isCurrent
+    ? [
+        createAction('Edit', getPConnect)
         // createAction('Delete', getPConnect)
       ]
-      : [];
+    : [];
 
   return {
     id: rating.guid || 'NEW',
@@ -34,12 +32,12 @@ export const createSummaryItem = (
     rating,
     primary: (
       <>
-        <CosmosRating
-          value={rating.rating}
-          metaInfo={`${rating.rating} of ${rating.stars}`}
-        />
-        <Text>{rating.caseId}{isCurrent && ' : this is the current case'}</Text>
+        <CosmosRating value={rating.rating} metaInfo={`${rating.rating} of ${rating.stars}`} />
+        <Text>
+          {rating.caseId}
+          {isCurrent && ' : this is the current case'}
+        </Text>
       </>
     )
-  }
-}
+  };
+};
