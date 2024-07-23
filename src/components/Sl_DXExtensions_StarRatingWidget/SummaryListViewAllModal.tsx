@@ -54,22 +54,24 @@ const SummaryListViewAllModal = ({
     [setPopoverTarget, actions]
   );
 
+  const newSummaryListItems = useCallback(
+    (item: StarRatingSummaryListItem) =>
+      item.actions?.map(action => {
+        return {
+          ...action,
+          onClick: (id: string, e: MouseEvent<HTMLElement>, menuButton?: HTMLElement) =>
+            onClickHandler(id, e, menuButton, item?.rating, action)
+        };
+      }),
+    [onClickHandler]
+  );
+
   const newItems = useMemo(
     () =>
       items.map(item => {
-        const { actions: newActions } = item;
-
-        const updatedActions = newActions?.map(action => {
-          return {
-            ...action,
-            onClick: (id: string, e: MouseEvent<HTMLElement>, menuButton?: HTMLElement) =>
-              onClickHandler(id, e, menuButton, item?.rating, action)
-          };
-        });
-
-        return { ...item, actions: updatedActions };
+        return { ...item, actions: newSummaryListItems(item) };
       }),
-    [items, onClickHandler]
+    [items, newSummaryListItems]
   );
 
   const updatedActions = useMemo(

@@ -64,7 +64,7 @@ function mapRatingDataToRating(
   return ratingDataArray.map(ratingData => {
     const rating: Partial<Rating> = {};
     biMap.getKeyToValueMap().forEach((value, key) => {
-      rating[key as keyof Rating] = ratingData[value as keyof RatingData] as any;
+      rating[key] = ratingData[value] as any;
     });
     return rating as Rating;
   });

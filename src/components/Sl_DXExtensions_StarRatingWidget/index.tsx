@@ -18,7 +18,7 @@ import type { PConnFieldProps } from './PConnProps';
 import { createRating, getRating, getRatings, updateRating, type Rating } from './ratingData';
 import { searchByRating, searchByCustomer } from './searchFunctions';
 import { createAction } from './actions';
-import { createSummaryItem } from './summaryListUtils';
+import { createSummaryItem, StarRatingSummaryListItem } from './summaryListUtils';
 import SummaryListViewAllModal, { type SummaryListViewAllProps } from './SummaryListViewAllModal';
 import StarRatingPopover from './StarRatingPopover';
 
@@ -62,7 +62,7 @@ const SlDxExtensionsStarRatingsWidget = ({
   const [selectedAction, setSelectedAction] = useState<Action | undefined>();
   const [selectedRating, setSelectedRating] = useState<Rating>({
     rating: 0,
-    customerId: customerId || 'No Customer',
+    customerId: customerId ?? 'No Customer',
     stars: 5,
     caseClass,
     caseId: caseKey
@@ -89,7 +89,7 @@ const SlDxExtensionsStarRatingsWidget = ({
   // the savable data page associated with the data class.
   // Persist your data to the server first and update the UI to align.
   const onUpdateRating = (updatedRating: Rating) => {
-    updatedRating.guid = updatedRating?.guid || 'NEW';
+    updatedRating.guid = updatedRating?.guid ?? 'NEW';
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
@@ -100,6 +100,19 @@ const SlDxExtensionsStarRatingsWidget = ({
       }
     });
   };
+
+  const newSummaryItemActions = useCallback(
+    (summaryItem: StarRatingSummaryListItem) =>
+      summaryItem.actions?.map((action: Action) => ({
+        ...action,
+        onClick(_: string, e: MouseEvent, menuButton?: HTMLButtonElement) {
+          setSelectedAction(action);
+          setPopoverTarget(menuButton || e.currentTarget);
+          setSelectedRating(summaryItem.rating);
+        }
+      })),
+    [setPopoverTarget]
+  );
 
   // We iterate over the ratings to create the SummaryItems.
   // Memoization helps to avoid re-running expensive operations.
@@ -113,17 +126,10 @@ const SlDxExtensionsStarRatingsWidget = ({
         const summaryItem = createSummaryItem(item, getPConnect, caseKey);
         return {
           ...summaryItem,
-          actions: summaryItem.actions?.map((action: Action) => ({
-            ...action,
-            onClick(_: string, e: MouseEvent, menuButton?: HTMLButtonElement) {
-              setSelectedAction(action);
-              setPopoverTarget(menuButton || e.currentTarget);
-              setSelectedRating(summaryItem.rating);
-            }
-          }))
+          actions: newSummaryItemActions(summaryItem)
         };
       }),
-    [ratings, getPConnect, caseKey, setSelectedAction, setPopoverTarget, setSelectedRating]
+    [ratings, getPConnect, caseKey, newSummaryItemActions]
   );
 
   // We don't anticipate a large number of ratings per customer, so for now
@@ -168,7 +174,7 @@ const SlDxExtensionsStarRatingsWidget = ({
     const ratingSubObject = {
       matcher: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
       criteria: {
-        ID: customerId || ''
+        ID: customerId ?? ''
       }
     };
 

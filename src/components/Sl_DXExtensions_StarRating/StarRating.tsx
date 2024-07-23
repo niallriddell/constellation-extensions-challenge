@@ -60,7 +60,7 @@ const SlDXExtensionsStarRating: FunctionComponent<SlDXExtensionsStarRatingProps 
 
     const starRatingRef = useConsolidatedRef<HTMLDivElement>(ref);
 
-    const [inHover, setInHovering] = useState(false);
+    const [inHover, setInHover] = useState(false);
     const [currentHoverValue, setCurrentHoverValue] = useState<number>(value);
     const [currentValue, setCurrentValue] = useState<number>(value);
     const [metaInfoUpdated, setMetaInfoUpdated] = useState(metaInfo);
@@ -162,7 +162,7 @@ const SlDXExtensionsStarRating: FunctionComponent<SlDXExtensionsStarRatingProps 
 
       if (newValue === currentValue) {
         setValue(0);
-        setInHovering(false);
+        setInHover(false);
         return;
       }
       setValue(newValue);
@@ -171,7 +171,7 @@ const SlDXExtensionsStarRating: FunctionComponent<SlDXExtensionsStarRatingProps 
     const onMouseEnter = (e: MouseEvent) => {
       if (readOnly || disabled) return;
 
-      setInHovering(true);
+      setInHover(true);
       setCurrentHoverValue(getValueFromEventPosition(e));
     };
 
@@ -184,14 +184,14 @@ const SlDXExtensionsStarRating: FunctionComponent<SlDXExtensionsStarRatingProps 
     const onMouseLeave = () => {
       if (readOnly || disabled) return;
 
-      setInHovering(false);
+      setInHover(false);
       setCurrentHoverValue(currentValue);
     };
 
     const onTouchStart = (e: TouchEvent) => {
       if (readOnly || disabled) return;
 
-      setInHovering(true);
+      setInHover(true);
       setCurrentHoverValue(getValueFromEventPosition(e));
 
       // Prevent scrolling when touch is initiated
@@ -207,7 +207,7 @@ const SlDXExtensionsStarRating: FunctionComponent<SlDXExtensionsStarRatingProps 
     const onTouchEnd = () => {
       if (readOnly || disabled) return;
 
-      setInHovering(false);
+      setInHover(false);
     };
 
     return (

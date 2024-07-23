@@ -30,8 +30,11 @@ export const createSummaryItem = (
     }
   );
 
+  const key = rating.caseId.split(' ').length > 1 ? rating.caseId.split(' ')[1] : rating.caseId;
+
   const items: ReactNode[] = [
     <Link
+      key={`${key}-link`}
       href={linkURL}
       variant='link'
       previewable
@@ -43,7 +46,12 @@ export const createSummaryItem = (
     >
       {rating.caseId.split(' ')[1]}
     </Link>,
-    <DateTimeDisplay value={rating.updateDateTime} variant='datetime' format='short' />
+    <DateTimeDisplay
+      key={`${key}-datatimedisplay`}
+      value={rating.updateDateTime}
+      variant='datetime'
+      format='short'
+    />
   ];
 
   if (isCurrent)
@@ -59,7 +67,7 @@ export const createSummaryItem = (
     : [];
 
   return {
-    id: rating.guid || 'NEW',
+    id: rating.guid ?? 'NEW',
     actions,
     rating,
     primary: (
