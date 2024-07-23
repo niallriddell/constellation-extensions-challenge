@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import { defaultThemeProp } from '@pega/cosmos-react-core';
 
 const StyledStarWrapper = styled.div(({ theme }) => {
-
   return css`
     color: ${theme.components.rating.color}
     display: inline-flex;
