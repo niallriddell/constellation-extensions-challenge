@@ -9,20 +9,18 @@ export const createAction = (
   actionType: 'Add' | 'Edit' | 'Delete',
   getPConnect: () => typeof PConnect
 ): Action => {
-
   const actionConfig = {
-    'Add': {
+    Add: {
       text: 'Add',
       id: 'rating:addNew',
-      icon: 'plus',
-
+      icon: 'plus'
     },
-    'Edit': {
+    Edit: {
       text: 'Edit',
       id: 'rating:edit',
       icon: 'pencil'
     },
-    'Delete': {
+    Delete: {
       text: 'Remove',
       id: 'rating:delete',
       icon: 'trash'
@@ -34,5 +32,5 @@ export const createAction = (
     text: getPConnect().getLocalizedValue(text),
     id,
     icon
-  }
-}
+  };
+};
