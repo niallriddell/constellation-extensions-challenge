@@ -1,5 +1,5 @@
-import type { Filter, Query } from "@pega/pcore-pconnect-typedefs/datapage/types";
-import { BiMap } from "./bimap";
+import type { Filter, Query } from '@pega/pcore-pconnect-typedefs/datapage/types';
+import { BiMap } from './bimap';
 
 // All mapping between the component internal data model and the external data model
 // is done here.  This is not strictly necessary and the approach taken here can be
@@ -16,7 +16,7 @@ export type Rating = {
   stars: number;
   guid?: string;
   updateDateTime?: string;
-}
+};
 
 // External data model
 type RatingData = {
@@ -27,10 +27,10 @@ type RatingData = {
   NumberOfStars: number;
   pyGUID?: string;
   pxUpdateDateTime?: string;
-}
+};
 
 // Custom BiMap to allow two way lookup of keys
-export const mapper = new BiMap<keyof Rating, keyof RatingData>;
+export const mapper = new BiMap<keyof Rating, keyof RatingData>();
 
 mapper.set('caseClass', 'CaseClassName');
 mapper.set('caseId', 'CaseID');
@@ -40,34 +40,31 @@ mapper.set('stars', 'NumberOfStars');
 mapper.set('guid', 'pyGUID');
 mapper.set('updateDateTime', 'pxUpdateDateTime');
 
-// Utility funciton that auto-generates the select object. 
+// Utility funciton that auto-generates the select object.
 // Currently adds all mapped properties.
-function toSelectObject<
-  K extends keyof Rating,
-  V extends keyof RatingData>
-  (biMap: BiMap<K, V>): { select: { field: V }[] } {
-
+function toSelectObject<K extends keyof Rating, V extends keyof RatingData>(
+  biMap: BiMap<K, V>
+): { select: { field: V }[] } {
   const arr: { field: V }[] = [];
   const keyToValueMap = biMap.getKeyToValueMap();
-  keyToValueMap.forEach((value) => {
+  keyToValueMap.forEach(value => {
     arr.push({ field: value });
   });
   return { select: arr };
 }
 
-// Utility function that transforms external data to internal 
-// data.  For large data sets this is likely to be to inefficient 
+// Utility function that transforms external data to internal
+// data.  For large data sets this is likely to be to inefficient
 // as we iterate the ecternal data and create a new internal one with
 // the remapped keys.
-function mapRatingDataToRating(ratingDataArray: Array<RatingData>,
-  biMap: BiMap<keyof Rating, keyof RatingData>)
-  : Array<Rating> {
-
+function mapRatingDataToRating(
+  ratingDataArray: Array<RatingData>,
+  biMap: BiMap<keyof Rating, keyof RatingData>
+): Array<Rating> {
   return ratingDataArray.map(ratingData => {
     const rating: Partial<Rating> = {};
     biMap.getKeyToValueMap().forEach((value, key) => {
-      rating[key as keyof Rating] =
-        ratingData[value as keyof RatingData] as any;
+      rating[key as keyof Rating] = ratingData[value as keyof RatingData] as any;
     });
     return rating as Rating;
   });
@@ -75,25 +72,27 @@ function mapRatingDataToRating(ratingDataArray: Array<RatingData>,
 // Uses getPageDataAsync api to fetch a single Rating.
 // Returns a rating or undefined wrapped in a promise.
 // Better error handling and recovery should be implemented
-// for production solutions.  Here we just log thr error to 
+// for production solutions.  Here we just log thr error to
 // the console.
 export const getRating = async (
   dataView: string,
   guid: string,
-  context?: string): Promise<Rating | undefined> => {
-
+  context?: string
+): Promise<Rating | undefined> => {
   const guidProp: string | undefined = mapper.getValue('guid');
 
   if (!guidProp) return;
 
   const parameters = {
     [guidProp]: guid
-  }
+  };
 
   try {
-    const response: any = await PCore
-      .getDataPageUtils()
-      .getPageDataAsync(dataView, context, parameters);
+    const response: any = await PCore.getDataPageUtils().getPageDataAsync(
+      dataView,
+      context,
+      parameters
+    );
 
     if (response.status === 200) {
       return mapRatingDataToRating([response.data], mapper)[0];
@@ -101,7 +100,7 @@ export const getRating = async (
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 // Temporary solution to fix an issue with the typescript data shapes in
 // getDataAsync not correctly matching the real data returned.
@@ -117,20 +116,21 @@ export const getRatings = async (
   customerId?: string,
   context?: string
 ): Promise<Array<Rating> | undefined> => {
-
   const select = toSelectObject(mapper)?.select;
 
-  const sortBy = [{
-    field: mapper.getValue('updateDateTime'),
-    type: "DESC"
-  }];
+  const sortBy = [
+    {
+      field: mapper.getValue('updateDateTime'),
+      type: 'DESC'
+    }
+  ];
 
   const filter: Filter = {
-    logic: "F1",
+    logic: 'F1',
     filterConditions: {
       F1: {
         lhs: { field: mapper.getValue('customerId') as string },
-        comparator: "EQ",
+        comparator: 'EQ',
         rhs: { value: customerId }
       }
     }
@@ -143,25 +143,24 @@ export const getRatings = async (
   };
 
   try {
-    const response: RatingDataResponse = await PCore
-      .getDataPageUtils()
-      .getDataAsync(
-        dataView,
-        context,
-        undefined,
-        undefined,
-        query,
-        { invalidateCache: true }
-      );
+    const response: RatingDataResponse = await PCore.getDataPageUtils().getDataAsync(
+      dataView,
+      context,
+      undefined,
+      undefined,
+      query,
+      { invalidateCache: true }
+    );
 
     if (response.status === 200) {
       return mapRatingDataToRating(response.data, mapper);
     }
 
     return [];
-
-  } catch (error) { console.error(error) }
-}
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 // TODO: Add in the createDataObject rest api endpoint
 export const updateRating = async (
@@ -170,16 +169,15 @@ export const updateRating = async (
   context?: string,
   classId?: string
 ): Promise<Rating | undefined> => {
-
   const optionsObject = {
     body: {
       data: {
-        [mapper.getValue("rating") as string]: rating.rating,
+        [mapper.getValue('rating') as string]: rating.rating,
         [mapper.getValue('stars') as string]: rating.stars,
-        [mapper.getValue("caseId") as string]: rating.caseId,
-        [mapper.getValue("customerId") as string]: rating.customerId,
-        [mapper.getValue("caseClass") as string]: rating.caseClass,
-        [mapper.getValue("guid") as string]: rating.guid
+        [mapper.getValue('caseId') as string]: rating.caseId,
+        [mapper.getValue('customerId') as string]: rating.customerId,
+        [mapper.getValue('caseClass') as string]: rating.caseClass,
+        [mapper.getValue('guid') as string]: rating.guid
       }
     },
     queryPayload: {
@@ -187,7 +185,11 @@ export const updateRating = async (
     }
   };
 
-  const response = await PCore.getRestClient().invokeRestApi('updateDataObject', optionsObject, context);
+  const response = await PCore.getRestClient().invokeRestApi(
+    'updateDataObject',
+    optionsObject,
+    context
+  );
 
   if (response?.status === 200) {
     if (classId) {
@@ -198,9 +200,9 @@ export const updateRating = async (
         }
       );
     }
-    return mapRatingDataToRating([response.data.responseData], mapper)[0]
+    return mapRatingDataToRating([response.data.responseData], mapper)[0];
   }
-}
+};
 
 // TODO: Add in the createDataObject rest api endpoint
 export const createRating = async (
@@ -209,15 +211,14 @@ export const createRating = async (
   context?: string,
   classId?: string
 ): Promise<Rating | undefined> => {
-
   const optionsObject = {
     body: {
       data: {
-        [mapper.getValue("rating") as string]: rating.rating,
+        [mapper.getValue('rating') as string]: rating.rating,
         [mapper.getValue('stars') as string]: rating.stars,
-        [mapper.getValue("caseId") as string]: rating.caseId,
-        [mapper.getValue("customerId") as string]: rating.customerId,
-        [mapper.getValue("caseClass") as string]: rating.caseClass,
+        [mapper.getValue('caseId') as string]: rating.caseId,
+        [mapper.getValue('customerId') as string]: rating.customerId,
+        [mapper.getValue('caseClass') as string]: rating.caseClass
       }
     },
     queryPayload: {
@@ -225,7 +226,11 @@ export const createRating = async (
     }
   };
 
-  const response = await PCore.getRestClient().invokeRestApi('createDataObject', optionsObject, context);
+  const response = await PCore.getRestClient().invokeRestApi(
+    'createDataObject',
+    optionsObject,
+    context
+  );
 
   if (response?.status === 200) {
     if (classId) {
@@ -236,10 +241,10 @@ export const createRating = async (
         }
       );
     }
-    return mapRatingDataToRating([response.data.responseData], mapper)[0]
+    return mapRatingDataToRating([response.data.responseData], mapper)[0];
   }
   // rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
   // console.log("createRating:", dataView, rating, context);
   // // Tempoary guid purely for mock implementation.
   // return rating as Rating;
-}
+};

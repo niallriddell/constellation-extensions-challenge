@@ -4,10 +4,11 @@ import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
 import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
-import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client/index'
+import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client/index';
 
-import SlDxExtensionsStarRatingsWidget,
-{ type SlDxExtensionsStarRatingsWidgetProps } from './index';
+import SlDxExtensionsStarRatingsWidget, {
+  type SlDxExtensionsStarRatingsWidgetProps
+} from './index';
 
 import ratingData from './mock';
 
@@ -42,18 +43,21 @@ window.PCore.getLocaleUtils = () => {
   } as LocaleUtils;
 };
 
-type ResponseData = Promise<{
-  data: any[];
-} | {
-  data: {
-    [key: string]: any;
-  }[];
-  pageNumber: number | undefined;
-  pageSize: number | undefined;
-  queryStats: any;
-  status: number;
-  fetchDateTime?: string;
-}>
+type ResponseData = Promise<
+  | {
+      data: any[];
+    }
+  | {
+      data: {
+        [key: string]: any;
+      }[];
+      pageNumber: number | undefined;
+      pageSize: number | undefined;
+      queryStats: any;
+      status: number;
+      fetchDateTime?: string;
+    }
+>;
 
 const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
   return {
@@ -61,34 +65,33 @@ const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
       const filter = args[4]?.filter as Filter;
       const queryCustomerID = filter?.filterConditions.F1.rhs.value;
       let { data } = ratingData;
-      if (queryCustomerID && queryCustomerID.length) data = data
-        .filter(rating => rating.CustomerID === queryCustomerID);
+      if (queryCustomerID && queryCustomerID.length)
+        data = data.filter(rating => rating.CustomerID === queryCustomerID);
 
       return Promise.resolve({ data, status: 200 });
     },
     getPageDataAsync: () => Promise.resolve({ data: {}, status: 200 })
-  }
+  };
 };
 
 window.PCore.getDataPageUtils = mockDataPageUtils as () => typeof DataPageUtils;
 
 const mockRestClient = (): Partial<typeof RestClient> => {
   return {
-    invokeRestApi: (...args) => Promise.resolve({
-      status: 200,
-      data: {
-        responseData: {
-          ...args[1].body.data,
-          pyGUID: args[1].body.data.pyGUID
-            ?
-            args[1].body.data.pyGUID
-            :
-            Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString()
+    invokeRestApi: (...args) =>
+      Promise.resolve({
+        status: 200,
+        data: {
+          responseData: {
+            ...args[1].body.data,
+            pyGUID: args[1].body.data.pyGUID
+              ? args[1].body.data.pyGUID
+              : Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString()
+          }
         }
-      }
-    })
-  }
-}
+      })
+  };
+};
 
 window.PCore.getRestClient = mockRestClient as () => typeof RestClient;
 
@@ -102,24 +105,26 @@ const mockPConnect = (): Partial<typeof PConnect> => ({
   getLocalizedValue: (value: string) => {
     return value;
   },
-  getCaseInfo: () => ({
-    getKey: () => 'SL-TELLUSMORE-WORK Z-1234',
-    getClassName: () => 'SL-TellUseMore-Work-Incident'
-  } as CaseInfo)
+  getCaseInfo: () =>
+    ({
+      getKey: () => 'SL-TELLUSMORE-WORK Z-1234',
+      getClassName: () => 'SL-TellUseMore-Work-Incident'
+    }) as CaseInfo
 });
 
-export const StarRatingsWidgetWithCurrentCaseRating: Story =
-  (args: SlDxExtensionsStarRatingsWidgetProps) => {
-    const props = {
-      getPConnect: mockPConnect as () => typeof PConnect
-    }
-
-    return (
-      <>
-        <SlDxExtensionsStarRatingsWidget {...props} {...args} />
-      </>
-    );
+export const StarRatingsWidgetWithCurrentCaseRating: Story = (
+  args: SlDxExtensionsStarRatingsWidgetProps
+) => {
+  const props = {
+    getPConnect: mockPConnect as () => typeof PConnect
   };
+
+  return (
+    <>
+      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
+    </>
+  );
+};
 
 StarRatingsWidgetWithCurrentCaseRating.args = {
   label: 'Ratings',
@@ -127,21 +132,22 @@ StarRatingsWidgetWithCurrentCaseRating.args = {
   ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
   ratingLookupDatapage: ['D_CustomerRating'],
   ratingListDatapage: ['D_CustomerRatingList'],
-  ratingSavableDatapage: ['D_CustomerRatingSavable'],
+  ratingSavableDatapage: ['D_CustomerRatingSavable']
 };
 
-export const StarRatingsWidgetWithoutCurrentCaseRating: Story =
-  (args: SlDxExtensionsStarRatingsWidgetProps) => {
-    const props = {
-      getPConnect: mockPConnect as () => typeof PConnect
-    }
-
-    return (
-      <>
-        <SlDxExtensionsStarRatingsWidget {...props} {...args} />
-      </>
-    );
+export const StarRatingsWidgetWithoutCurrentCaseRating: Story = (
+  args: SlDxExtensionsStarRatingsWidgetProps
+) => {
+  const props = {
+    getPConnect: mockPConnect as () => typeof PConnect
   };
+
+  return (
+    <>
+      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
+    </>
+  );
+};
 
 StarRatingsWidgetWithoutCurrentCaseRating.args = {
   label: 'Ratings',
@@ -149,6 +155,5 @@ StarRatingsWidgetWithoutCurrentCaseRating.args = {
   ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
   ratingLookupDatapage: ['D_CustomerRating'],
   ratingListDatapage: ['D_CustomerRatingList'],
-  ratingSavableDatapage: ['D_CustomerRatingSavable'],
+  ratingSavableDatapage: ['D_CustomerRatingSavable']
 };
-
