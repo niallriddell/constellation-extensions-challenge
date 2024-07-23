@@ -1,123 +1,123 @@
 {
-   "name": "Sl_DXExtensions_StarRatingWidget",
-   "label": "Star Rating Widget",
-   "description": "Star Rating Widget",
-   "organization": "Sl",
-   "version": "1.0.0",
-   "library": "DXExtensions",
-   "allowedApplications": [],
-   "componentKey": "Sl_DXExtensions_StarRatingWidget",
-   "type": "Widget",
-   "subtype": "CASE",
-   "properties": [
-      {
-         "name": "label",
-         "label": "Widget heading",
-         "defaultValue": "Ratings",
-         "format": "TEXT"
-      },
-      {
-         "name": "customerId",
-         "label": "Customer unique id property on case",
-         "format": "PROPERTY"
-      },
-      {
-         "label": "Data pages for rating class",
-         "format": "GROUP",
-         "collapsible": true,
-         "defaultCollapsed": false,
-         "properties": [
-            {
-               "format": "SELECT",
-               "label": "Select the rating class",
-               "name": "ratingDataClass",
-               "placeholder": " ",
-               "defaultValue": " ",
-               "source": {
-                  "name": "D_pzDataTypesForApplicationNoWork",
-                  "displayProp": "pyLabel",
-                  "valueProp": "pyMetadataKey",
-                  "parameters": {
-                     "AppName": "@ENV APPLICATION_NAME"
-                  },
-                  "filter": "$this.pyMetadataKey NOT_STARTS_WITH 'Data-Admin'"
-               }
+  "name": "Sl_DXExtensions_StarRatingWidget",
+  "label": "Star Rating Widget",
+  "description": "Star Rating Widget",
+  "organization": "Sl",
+  "version": "1.0.0",
+  "library": "DXExtensions",
+  "allowedApplications": [],
+  "componentKey": "Sl_DXExtensions_StarRatingWidget",
+  "type": "Widget",
+  "subtype": "CASE",
+  "properties": [
+    {
+      "name": "label",
+      "label": "Widget heading",
+      "defaultValue": "Ratings",
+      "format": "TEXT"
+    },
+    {
+      "name": "customerId",
+      "label": "Customer unique id property on case",
+      "format": "PROPERTY"
+    },
+    {
+      "label": "Data pages for rating class",
+      "format": "GROUP",
+      "collapsible": true,
+      "defaultCollapsed": false,
+      "properties": [
+        {
+          "format": "SELECT",
+          "label": "Select the rating class",
+          "name": "ratingDataClass",
+          "placeholder": " ",
+          "defaultValue": " ",
+          "source": {
+            "name": "D_pzDataTypesForApplicationNoWork",
+            "displayProp": "pyLabel",
+            "valueProp": "pyMetadataKey",
+            "parameters": {
+              "AppName": "@ENV APPLICATION_NAME"
             },
-            {
-               "format": "CONTENTPICKER",
-               "label": "Lookup datapage for rating class",
-               "name": "ratingLookupDatapage",
-               "visibility": "$this.ratingDataClass !=' '",
-               "source": {
-                  "name": "D_GetDataPagesForClassList",
-                  "displayProp": "pyLookUpDataPage",
-                  "valueProp": "pyLookUpDataPage",
-                  "parameters": {
-                     "ContextClass": "$this.ratingDataClass",
-                     "ExcludeLookUp": false,
-                     "ExcludeList": true,
-                     "ExcludeSavable": true
-                  }
-               }
-            },
-            {
-               "format": "CONTENTPICKER",
-               "label": "List datapage for rating class",
-               "name": "ratingListDatapage",
-               "visibility": "$this.ratingDataClass !=' '",
-               "source": {
-                  "name": "D_GetDataPagesForClassList",
-                  "displayProp": "pyListDataPage",
-                  "valueProp": "pyListDataPage",
-                  "parameters": {
-                     "ContextClass": "$this.ratingDataClass",
-                     "ExcludeLookUp": true,
-                     "ExcludeList": false,
-                     "ExcludeSavable": true
-                  }
-               }
-            },
-            {
-               "format": "CONTENTPICKER",
-               "label": "Savable datapage for class",
-               "name": "ratingSavableDatapage",
-               "visibility": "$this.ratingDataClass !=' '",
-               "source": {
-                  "name": "D_GetDataPagesForClassList",
-                  "displayProp": "pySavableDataPage",
-                  "valueProp": "pySavableDataPage",
-                  "parameters": {
-                     "ContextClass": "$this.ratingDataClass",
-                     "ExcludeLookUp": true,
-                     "ExcludeList": true,
-                     "ExcludeSavable": false
-                  }
-               }
+            "filter": "$this.pyMetadataKey NOT_STARTS_WITH 'Data-Admin'"
+          }
+        },
+        {
+          "format": "CONTENTPICKER",
+          "label": "Lookup datapage for rating class",
+          "name": "ratingLookupDatapage",
+          "visibility": "$this.ratingDataClass !=' '",
+          "source": {
+            "name": "D_GetDataPagesForClassList",
+            "displayProp": "pyLookUpDataPage",
+            "valueProp": "pyLookUpDataPage",
+            "parameters": {
+              "ContextClass": "$this.ratingDataClass",
+              "ExcludeLookUp": false,
+              "ExcludeList": true,
+              "ExcludeSavable": true
             }
-         ]
-      },
-      {
-         "name": "iconName",
-         "label": "Icon Name",
-         "format": "TEXT",
-         "required": true,
-         "visibility": "true == false"
-      },
-      {
-         "label": "Conditions",
-         "format": "GROUP",
-         "properties": [
-            {
-               "name": "visibility",
-               "label": "Visibility",
-               "format": "VISIBILITY"
+          }
+        },
+        {
+          "format": "CONTENTPICKER",
+          "label": "List datapage for rating class",
+          "name": "ratingListDatapage",
+          "visibility": "$this.ratingDataClass !=' '",
+          "source": {
+            "name": "D_GetDataPagesForClassList",
+            "displayProp": "pyListDataPage",
+            "valueProp": "pyListDataPage",
+            "parameters": {
+              "ContextClass": "$this.ratingDataClass",
+              "ExcludeLookUp": true,
+              "ExcludeList": false,
+              "ExcludeSavable": true
             }
-         ]
-      }
-   ],
-   "defaultConfig": {
-      "label": "@L $this.label",
-      "ratingDataClass": " ",
-      "iconName": "star"
-   }
+          }
+        },
+        {
+          "format": "CONTENTPICKER",
+          "label": "Savable datapage for class",
+          "name": "ratingSavableDatapage",
+          "visibility": "$this.ratingDataClass !=' '",
+          "source": {
+            "name": "D_GetDataPagesForClassList",
+            "displayProp": "pySavableDataPage",
+            "valueProp": "pySavableDataPage",
+            "parameters": {
+              "ContextClass": "$this.ratingDataClass",
+              "ExcludeLookUp": true,
+              "ExcludeList": true,
+              "ExcludeSavable": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "iconName",
+      "label": "Icon Name",
+      "format": "TEXT",
+      "required": true,
+      "visibility": "true == false"
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY"
+        }
+      ]
+    }
+  ],
+  "defaultConfig": {
+    "label": "@L $this.label",
+    "ratingDataClass": " ",
+    "iconName": "star"
+  }
 }

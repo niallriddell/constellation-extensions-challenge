@@ -1,16 +1,11 @@
-import { useCallback, useMemo, useState, MouseEvent } from "react";
+import { useCallback, useMemo, useState, MouseEvent } from 'react';
 
-import type { Action } from "@pega/cosmos-react-core";
-import {
-  Modal,
-  ViewAll,
-  useElement,
-  withConfiguration
-} from "@pega/cosmos-react-core";
+import type { Action } from '@pega/cosmos-react-core';
+import { Modal, ViewAll, useElement, withConfiguration } from '@pega/cosmos-react-core';
 
-import type { Rating } from "./ratingData";
-import { SearchFunction } from "./searchFunctions";
-import { StarRatingSummaryListItem } from "./summaryListUtils";
+import type { Rating } from './ratingData';
+import { SearchFunction } from './searchFunctions';
+import { StarRatingSummaryListItem } from './summaryListUtils';
 import StarRatingPopover from './StarRatingPopover';
 
 export interface SummaryListViewAllProps {
@@ -24,10 +19,10 @@ export interface SummaryListViewAllProps {
 }
 
 // This is the ViewAll modal implementation.  It's primary purpose is to
-// display all of the items and also any associated actions.  Mutation logic 
+// display all of the items and also any associated actions.  Mutation logic
 // is handled in the parent component.
-// The search filter is also implemented here.  We have the ability to use 
-// different filter functions based on different contexts.  If we were to 
+// The search filter is also implemented here.  We have the ability to use
+// different filter functions based on different contexts.  If we were to
 // expand this to a PAGE & CASE widget we could filter by customer instead of
 // rating.
 const SummaryListViewAllModal = ({
@@ -39,57 +34,60 @@ const SummaryListViewAllModal = ({
   currentRating,
   onUpdateRating
 }: SummaryListViewAllProps) => {
-
   const [search, setSearch] = useState('');
   const [selectedAction, setSelectedAction] = useState<Action | undefined>();
   const [popoverTarget, setPopoverTarget] = useElement(null);
   const [selectedRating, setSelectedRating] = useState<Rating>(currentRating);
 
   const onClickHandler = useCallback(
-    (id: string, e: MouseEvent<HTMLElement>,
+    (
+      id: string,
+      e: MouseEvent<HTMLElement>,
       menuButton?: HTMLElement,
       rating?: Rating,
       action?: Action
     ) => {
-      setSelectedAction(action ||
-        actions.filter(filterAction => filterAction.id === id)[0]);
+      setSelectedAction(action || actions.filter(filterAction => filterAction.id === id)[0]);
       setPopoverTarget(menuButton || e.currentTarget);
       if (rating) setSelectedRating(rating);
     },
     [setPopoverTarget, actions]
   );
 
-  const newItems = useMemo(() => items.map(item => {
-    const { actions: newActions } = item;
+  const newItems = useMemo(
+    () =>
+      items.map(item => {
+        const { actions: newActions } = item;
 
-    const updatedActions = newActions?.map(action => {
-      return {
-        ...action,
-        onClick: (
-          id: string,
-          e: MouseEvent<HTMLElement>,
-          menuButton?: HTMLElement) => onClickHandler(
-            id, e, menuButton, item?.rating, action)
-      }
-    });
+        const updatedActions = newActions?.map(action => {
+          return {
+            ...action,
+            onClick: (id: string, e: MouseEvent<HTMLElement>, menuButton?: HTMLElement) =>
+              onClickHandler(id, e, menuButton, item?.rating, action)
+          };
+        });
 
-    return { ...item, actions: updatedActions };
-  }), [items, onClickHandler]);
+        return { ...item, actions: updatedActions };
+      }),
+    [items, onClickHandler]
+  );
 
   const updatedActions = useMemo(
-    () => actions.map((action: Action) => {
-      return {
-        ...action,
-        onClick: onClickHandler
-      }
-    }), [actions, onClickHandler]);
+    () =>
+      actions.map((action: Action) => {
+        return {
+          ...action,
+          onClick: onClickHandler
+        };
+      }),
+    [actions, onClickHandler]
+  );
 
   const itemsToRender = useMemo(() => {
     if (search.trim()) {
-      return newItems
-        .filter(item => searchFunction(item.rating, search.trim()));
+      return newItems.filter(item => searchFunction(item.rating, search.trim()));
     }
-    return newItems
+    return newItems;
   }, [newItems, search, searchFunction]);
 
   return (
@@ -100,7 +98,7 @@ const SummaryListViewAllModal = ({
         items={itemsToRender}
         searchInputProps={{ onSearchChange: setSearch }}
       />
-      {popoverTarget &&
+      {popoverTarget && (
         <StarRatingPopover
           popoverTarget={popoverTarget}
           setPopoverTarget={setPopoverTarget}
@@ -108,7 +106,7 @@ const SummaryListViewAllModal = ({
           currentRating={selectedRating}
           onUpdateRating={onUpdateRating}
         />
-      }
+      )}
     </Modal>
   );
 };

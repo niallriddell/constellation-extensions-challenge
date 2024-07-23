@@ -4,12 +4,13 @@ import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
 import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
-import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client/index'
-import type SemanticUrlUtils from '@pega/pcore-pconnect-typedefs/router/semanticurl-utils'
-import type PubSubUtils from '@pega/pcore-pconnect-typedefs/utils/pubsub-utils'
+import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client/index';
+import type SemanticUrlUtils from '@pega/pcore-pconnect-typedefs/router/semanticurl-utils';
+import type PubSubUtils from '@pega/pcore-pconnect-typedefs/utils/pubsub-utils';
 
-import SlDxExtensionsStarRatingsWidget,
-{ type SlDxExtensionsStarRatingsWidgetProps } from './index';
+import SlDxExtensionsStarRatingsWidget, {
+  type SlDxExtensionsStarRatingsWidgetProps
+} from './index';
 
 import ratingData from './mock';
 import type MessagingServiceManager from '@pega/pcore-pconnect-typedefs/messagingservice/manager';
@@ -51,18 +52,21 @@ window.PCore.getLocaleUtils = () => {
   } as LocaleUtils;
 };
 
-type ResponseData = Promise<{
-  data: any[];
-} | {
-  data: {
-    [key: string]: any;
-  }[];
-  pageNumber: number | undefined;
-  pageSize: number | undefined;
-  queryStats: any;
-  status: number;
-  fetchDateTime?: string;
-}>
+type ResponseData = Promise<
+  | {
+      data: any[];
+    }
+  | {
+      data: {
+        [key: string]: any;
+      }[];
+      pageNumber: number | undefined;
+      pageSize: number | undefined;
+      queryStats: any;
+      status: number;
+      fetchDateTime?: string;
+    }
+>;
 
 const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
   return {
@@ -70,35 +74,34 @@ const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
       const filter = args[4]?.filter as Filter;
       const queryCustomerID = filter?.filterConditions.F1.rhs.value;
       let { data } = ratingData;
-      if (queryCustomerID && queryCustomerID.length) data = data
-        .filter(rating => rating.CustomerID === queryCustomerID);
+      if (queryCustomerID && queryCustomerID.length)
+        data = data.filter(rating => rating.CustomerID === queryCustomerID);
 
       return Promise.resolve({ data, status: 200 });
     },
     getPageDataAsync: () => Promise.resolve({ data: {}, status: 200 })
-  }
+  };
 };
 
 window.PCore.getDataPageUtils = mockDataPageUtils as () => typeof DataPageUtils;
 
 const mockRestClient = (): Partial<typeof RestClient> => {
   return {
-    invokeRestApi: (...args) => Promise.resolve({
-      status: 200,
-      data: {
-        responseData: {
-          ...args[1].body.data,
-          pyGUID: args[1].body.data.pyGUID
-            ?
-            args[1].body.data.pyGUID
-            :
-            Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(),
-          pxUpdateDateTime: (new Date).toISOString()
+    invokeRestApi: (...args) =>
+      Promise.resolve({
+        status: 200,
+        data: {
+          responseData: {
+            ...args[1].body.data,
+            pyGUID: args[1].body.data.pyGUID
+              ? args[1].body.data.pyGUID
+              : Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(),
+            pxUpdateDateTime: new Date().toISOString()
+          }
         }
-      }
-    })
-  }
-}
+      })
+  };
+};
 
 window.PCore.getRestClient = mockRestClient as () => typeof RestClient;
 
@@ -108,21 +111,26 @@ const mockSemanticUrlUtils = (): Partial<typeof SemanticUrlUtils> => {
     getActions: () => ({
       ACTION_OPENWORKBYHANDLE: 'Test',
       ACTION_SHOWDATA: 'Test',
-      ACTION_SHOWVIEW: 'Test',
+      ACTION_SHOWVIEW: 'Test'
     })
-  }
-}
+  };
+};
 
-window.PCore.getSemanticUrlUtils =
-  mockSemanticUrlUtils as () => typeof SemanticUrlUtils;
+window.PCore.getSemanticUrlUtils = mockSemanticUrlUtils as () => typeof SemanticUrlUtils;
 
 const mockPubSubUtils = (): Partial<typeof PubSubUtils> => {
   return {
-    publish: (...args) => { console.log(args) },
-    subscribe: (...args) => { console.log(args) },
-    unsubscribe: (...args) => { console.log(args) }
-  }
-}
+    publish: (...args) => {
+      console.log(args);
+    },
+    subscribe: (...args) => {
+      console.log(args);
+    },
+    unsubscribe: (...args) => {
+      console.log(args);
+    }
+  };
+};
 window.PCore.getPubSubUtils = mockPubSubUtils as () => typeof PubSubUtils;
 
 const mockPConnect = (): Partial<typeof PConnect> => ({
@@ -135,35 +143,36 @@ const mockPConnect = (): Partial<typeof PConnect> => ({
   getLocalizedValue: (value: string) => {
     return value;
   },
-  getCaseInfo: () => ({
-    getKey: () => 'SL-TELLUSMORE-WORK Z-1234',
-    getClassName: () => 'SL-TellUseMore-Work-Incident'
-  } as CaseInfo)
+  getCaseInfo: () =>
+    ({
+      getKey: () => 'SL-TELLUSMORE-WORK Z-1234',
+      getClassName: () => 'SL-TellUseMore-Work-Incident'
+    }) as CaseInfo
 });
 
-const mockMessagingServiceManager =
-  (): Partial<typeof MessagingServiceManager> => {
-    return {
-      subscribe: () => 'SubId',
-      unsubscribe: () => { }
-    }
-  }
+const mockMessagingServiceManager = (): Partial<typeof MessagingServiceManager> => {
+  return {
+    subscribe: () => 'SubId',
+    unsubscribe: () => {}
+  };
+};
 
 window.PCore.getMessagingServiceManager =
   mockMessagingServiceManager as () => typeof MessagingServiceManager;
 
-export const StarRatingsWidgetWithCurrentCaseRating: Story =
-  (args: SlDxExtensionsStarRatingsWidgetProps) => {
-    const props = {
-      getPConnect: mockPConnect as () => typeof PConnect
-    }
-
-    return (
-      <>
-        <SlDxExtensionsStarRatingsWidget {...props} {...args} />
-      </>
-    );
+export const StarRatingsWidgetWithCurrentCaseRating: Story = (
+  args: SlDxExtensionsStarRatingsWidgetProps
+) => {
+  const props = {
+    getPConnect: mockPConnect as () => typeof PConnect
   };
+
+  return (
+    <>
+      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
+    </>
+  );
+};
 
 StarRatingsWidgetWithCurrentCaseRating.args = {
   label: 'Ratings',
@@ -171,21 +180,22 @@ StarRatingsWidgetWithCurrentCaseRating.args = {
   ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
   ratingLookupDatapage: ['D_CustomerRating'],
   ratingListDatapage: ['D_CustomerRatingList'],
-  ratingSavableDatapage: ['D_CustomerRatingSavable'],
+  ratingSavableDatapage: ['D_CustomerRatingSavable']
 };
 
-export const StarRatingsWidgetWithoutCurrentCaseRating: Story =
-  (args: SlDxExtensionsStarRatingsWidgetProps) => {
-    const props = {
-      getPConnect: mockPConnect as () => typeof PConnect
-    }
-
-    return (
-      <>
-        <SlDxExtensionsStarRatingsWidget {...props} {...args} />
-      </>
-    );
+export const StarRatingsWidgetWithoutCurrentCaseRating: Story = (
+  args: SlDxExtensionsStarRatingsWidgetProps
+) => {
+  const props = {
+    getPConnect: mockPConnect as () => typeof PConnect
   };
+
+  return (
+    <>
+      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
+    </>
+  );
+};
 
 StarRatingsWidgetWithoutCurrentCaseRating.args = {
   label: 'Ratings',
@@ -193,6 +203,5 @@ StarRatingsWidgetWithoutCurrentCaseRating.args = {
   ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
   ratingLookupDatapage: ['D_CustomerRating'],
   ratingListDatapage: ['D_CustomerRatingList'],
-  ratingSavableDatapage: ['D_CustomerRatingSavable'],
+  ratingSavableDatapage: ['D_CustomerRatingSavable']
 };
-
