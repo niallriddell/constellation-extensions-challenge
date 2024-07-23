@@ -22,15 +22,15 @@ export const createSummaryItem = (
   caseKey?: string
 ): StarRatingSummaryListItem => {
   const isCurrent = caseKey && rating.caseId === caseKey;
+  const key = rating.caseId.split(' ').length > 1 ? rating.caseId.split(' ')[1] : rating.caseId;
+
   const linkURL = PCore.getSemanticUrlUtils().getResolvedSemanticURL(
     PCore.getSemanticUrlUtils().getActions().ACTION_OPENWORKBYHANDLE,
     { caseClassName: rating.caseClass },
     {
-      workID: rating.caseId.split(' ').length > 1 ? rating.caseId.split(' ')[1] : rating.caseId
+      workID: key
     }
   );
-
-  const key = rating.caseId.split(' ').length > 1 ? rating.caseId.split(' ')[1] : rating.caseId;
 
   const items: ReactNode[] = [
     <Link
@@ -61,9 +61,9 @@ export const createSummaryItem = (
 
   const actions: Action[] = isCurrent
     ? [
-        createAction('Edit', getPConnect)
-        // createAction('Delete', getPConnect)
-      ]
+      createAction('Edit', getPConnect)
+      // createAction('Delete', getPConnect)
+    ]
     : [];
 
   return {
