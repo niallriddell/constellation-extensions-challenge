@@ -3,7 +3,9 @@ import type { publicConstants } from '@pega/pcore-pconnect-typedefs/constants';
 import type DataApiUtils from '@pega/pcore-pconnect-typedefs/data-view/DataApiUtils';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SlDxExtensionsStarRatingWidget, { type SlDxExtensionsStarRatingWidgetProps } from './index';
+import SlDxExtensionsStarRatingWidget, {
+  type SlDxExtensionsStarRatingWidgetProps
+} from './index';
 
 import historyData from './mock';
 import type ActionsApi from '@pega/pcore-pconnect-typedefs/actions/api';
