@@ -8,7 +8,6 @@ import type {
   DefaultRowData,
   TableProps
 } from '@pega/cosmos-react-core/lib/components/Table/Table';
-import { AxiosResponse } from 'axios';
 
 type HistoryDataItem = {
   pxTimeCreated: string;
@@ -84,7 +83,7 @@ function SlDxExtensionsStarRatingWidget(
 
     PCore.getDataApiUtils()
       .getData('D_pyWorkHistory', payload, context)
-      .then((response: AxiosResponse) =>
+      .then(response =>
         setHistory(handleResponse(response.data.data, mapHistoryDataItem))
       )
       .catch(() => setHistory([]))
