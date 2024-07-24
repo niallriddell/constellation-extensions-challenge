@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Table, Text, withConfiguration } from '@pega/cosmos-react-core';
 import type { PConnFieldProps } from './PConnProps';
 
-import StyledSlDxExtensionsStarRatingsWidgetWrapper from './styles';
+import StyledSlDxExtensionsStarRatingWidgetWrapper from './styles';
 import type { Payload } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type {
@@ -16,11 +16,11 @@ interface CustomRowData extends DefaultRowData {
   user: string;
 }
 // interface for props
-export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
+export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
   // If any, enter additional props that only exist on TextInput here
 }
 
-function SlDxExtensionsStarRatingsWidget(props: SlDxExtensionsStarRatingsWidgetProps) {
+function SlDxExtensionsStarRatingWidget(props: SlDxExtensionsStarRatingWidgetProps) {
   const { getPConnect, label } = props;
   const pConn = getPConnect();
   const [history, setHistory] = useState<TableProps<CustomRowData>['data']>();
@@ -61,7 +61,7 @@ function SlDxExtensionsStarRatingsWidget(props: SlDxExtensionsStarRatingsWidgetP
   }, [caseID, context]);
 
   return (
-    <StyledSlDxExtensionsStarRatingsWidgetWrapper>
+    <StyledSlDxExtensionsStarRatingWidgetWrapper>
       <Table
         title={pConn.getLocalizedValue(label, '', '')}
         columns={columns}
@@ -69,8 +69,8 @@ function SlDxExtensionsStarRatingsWidget(props: SlDxExtensionsStarRatingsWidgetP
         loading={isLoading}
         loadingMessage={pConn.getLocalizedValue('Loading case history', '', '')}
       />
-    </StyledSlDxExtensionsStarRatingsWidgetWrapper>
+    </StyledSlDxExtensionsStarRatingWidgetWrapper>
   );
 }
 
-export default withConfiguration(SlDxExtensionsStarRatingsWidget);
+export default withConfiguration(SlDxExtensionsStarRatingWidget);

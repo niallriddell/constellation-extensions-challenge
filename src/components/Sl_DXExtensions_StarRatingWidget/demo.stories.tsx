@@ -1,24 +1,21 @@
-import React from 'react';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type { publicConstants } from '@pega/pcore-pconnect-typedefs/constants';
 import type DataApiUtils from '@pega/pcore-pconnect-typedefs/data-view/DataApiUtils';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SlDxExtensionsStarRatingsWidget, {
-  type SlDxExtensionsStarRatingsWidgetProps
-} from './index';
+import SlDxExtensionsStarRatingWidget, { type SlDxExtensionsStarRatingWidgetProps } from './index';
 
 import historyData from './mock';
 import type ActionsApi from '@pega/pcore-pconnect-typedefs/actions/api';
 import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
-const meta: Meta<typeof SlDxExtensionsStarRatingsWidget> = {
-  title: 'SL/SlDxExtensionsStarRatingsWidget',
-  component: SlDxExtensionsStarRatingsWidget
+const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
+  title: 'SL/SlDxExtensionsStarRatingWidget',
+  component: SlDxExtensionsStarRatingWidget
 };
 
 export default meta;
-type Story = StoryObj<typeof SlDxExtensionsStarRatingsWidget>;
+type Story = StoryObj<typeof SlDxExtensionsStarRatingWidget>;
 
 const mockPCore: Partial<typeof PCore> = {};
 if (!window.PCore) {
@@ -52,8 +49,8 @@ const mockDataApiUtils = (): Partial<typeof DataApiUtils> => {
 };
 window.PCore.getDataApiUtils = mockDataApiUtils as () => typeof DataApiUtils;
 
-export const BaseSlDxExtensionsStarRatingsWidget: Story = (
-  args: SlDxExtensionsStarRatingsWidgetProps
+export const BaseSlDxExtensionsStarRatingWidget: Story = (
+  args: SlDxExtensionsStarRatingWidgetProps
 ) => {
   const mockActionsApi = (): Partial<ActionsApi> => ({
     updateFieldValue: () => ({
@@ -93,9 +90,9 @@ export const BaseSlDxExtensionsStarRatingsWidget: Story = (
     getPConnect: mockPConnect as () => typeof PConnect
   };
 
-  return <SlDxExtensionsStarRatingsWidget {...props} {...args} />;
+  return <SlDxExtensionsStarRatingWidget {...props} {...args} />;
 };
 
-BaseSlDxExtensionsStarRatingsWidget.args = {
+BaseSlDxExtensionsStarRatingWidget.args = {
   label: 'Case history'
 };

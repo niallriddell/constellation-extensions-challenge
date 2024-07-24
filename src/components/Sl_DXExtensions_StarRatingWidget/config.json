@@ -1,12 +1,12 @@
 {
-  "name": "Sl_DXExtensions_StarRatingsWidget",
-  "label": "Star Ratings Widget",
-  "description": "Star Ratings Widget",
+  "name": "Sl_DXExtensions_StarRatingWidget",
+  "label": "Star Rating Widget",
+  "description": "Star Rating Widget",
   "organization": "Sl",
   "version": "1.0.0",
   "library": "DXExtensions",
   "allowedApplications": [],
-  "componentKey": "Sl_DXExtensions_StarRatingsWidget",
+  "componentKey": "Sl_DXExtensions_StarRatingWidget",
   "type": "Widget",
   "subtype": "CASE",
   "properties": [
@@ -17,6 +17,6 @@
     }
   ],
   "defaultConfig": {
-     "label": "@L Star Ratings Widget"
+     "label": "@L Star Rating Widget"
   }
 }
