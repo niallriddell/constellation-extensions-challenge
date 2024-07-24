@@ -9,7 +9,6 @@
   "componentKey": "Sl_DXExtensions_StarRatingsWidget",
   "type": "Widget",
   "subtype": "CASE",
-  "icon": "OneColumnPage.svg",
   "properties": [
    {
       "name": "label",
