@@ -8,6 +8,7 @@ import type {
   DefaultRowData,
   TableProps
 } from '@pega/cosmos-react-core/lib/components/Table/Table';
+import { AxiosResponse } from 'axios';
 
 type HistoryDataItem = {
   pxTimeCreated: string;
@@ -83,7 +84,7 @@ function SlDxExtensionsStarRatingWidget(
 
     PCore.getDataApiUtils()
       .getData('D_pyWorkHistory', payload, context)
-      .then(response =>
+      .then((response: AxiosResponse) =>
         setHistory(handleResponse(response.data.data, mapHistoryDataItem))
       )
       .catch(() => setHistory([]))
@@ -91,13 +92,13 @@ function SlDxExtensionsStarRatingWidget(
   }, [caseID, context]);
 
   return (
-      <Table
-        title={pConn.getLocalizedValue(label, '', '')}
-        columns={columns}
-        data={history}
-        loading={isLoading}
-        loadingMessage={pConn.getLocalizedValue('Loading case history')}
-      />
+    <Table
+      title={pConn.getLocalizedValue(label, '', '')}
+      columns={columns}
+      data={history}
+      loading={isLoading}
+      loadingMessage={pConn.getLocalizedValue('Loading case history')}
+    />
   );
 }
 
