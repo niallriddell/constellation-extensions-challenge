@@ -7,8 +7,8 @@ import SlDxExtensionsStarRatingWidget, {
   type SlDxExtensionsStarRatingWidgetProps
 } from './index';
 
-//import mockData from './mock.ratingData';
-import mockData from './mock.historyData';
+import mockRatingData from './mock.ratingData';
+import mockHistoryData from './mock.historyData';
 import type ActionsApi from '@pega/pcore-pconnect-typedefs/actions/api';
 import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
@@ -42,7 +42,9 @@ window.PCore.getLocaleUtils = () => {
 
 const mockDataApiUtils = (): Partial<typeof DataApiUtils> => {
   return {
-    getData(): Promise<DataResponse> {
+    getData(...args): Promise<DataResponse> {
+      const mockData =
+        args[0] === 'D_pyWorkHistory' ? mockHistoryData : mockRatingData;
       return new Promise(resolve => {
         resolve(mockData as DataResponse);
       });
@@ -96,5 +98,6 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = (
 };
 
 BaseSlDxExtensionsStarRatingWidget.args = {
-  label: 'Case history'
+  label: 'Rating history',
+  listDataPage: 'D_RatingList'
 };
