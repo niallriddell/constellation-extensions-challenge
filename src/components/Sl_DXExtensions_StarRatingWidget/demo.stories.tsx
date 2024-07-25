@@ -41,10 +41,17 @@ window.PCore.getLocaleUtils = () => {
 
 const mockDataApiUtils = (): Partial<typeof DataApiUtils> => {
   return {
-    getData(): Promise<DataResponse> {
-      const mockData = mockRatingData;
+    getData(...args): Promise<DataResponse> {
+      const customerId = args[1]?.dataViewParameters?.CustomerID;
+      const newMockRatingData = customerId
+        ? JSON.parse(JSON.stringify(mockRatingData))
+        : mockRatingData;
+      if (newMockRatingData != mockRatingData)
+        newMockRatingData.data.data = mockRatingData.data.data.filter(
+          item => item.CustomerID === customerId
+        );
       return new Promise(resolve => {
-        resolve(mockData as DataResponse);
+        resolve(newMockRatingData as DataResponse);
       });
     }
   };
@@ -97,5 +104,6 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = (
 
 BaseSlDxExtensionsStarRatingWidget.args = {
   label: 'Rating history',
-  listDataPage: 'D_RatingList'
+  listDataPage: 'D_RatingList',
+  customerId: 'Q1234'
 };
