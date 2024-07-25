@@ -1,27 +1,21 @@
 import { useState, useEffect } from 'react';
 
-import { Table, withConfiguration } from '@pega/cosmos-react-core';
+import {
+  SummaryList,
+  withConfiguration,
+  SummaryListItem
+} from '@pega/cosmos-react-core';
 import type { Payload } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
-import type { TableProps } from '@pega/cosmos-react-core/lib/components/Table/Table';
 
 import type { PConnFieldProps } from './PConnProps';
 
 import handleResponse from './dataUtils';
 
-// import {
-//   type RatingDataItem as DataItem,
-//   createRatingTableSchema as createTableSchema,
-//   RatingTableRow as TableRow,
-//   mapRatingDataItem as mapDataItem
-// } from './ratingData';
-
 import {
-  type HistoryDataItem as DataItem,
-  createHistoryTableSchema as createTableSchema,
-  HistoryTableRow as TableRow,
-  mapHistoryDataItem as mapDataItem
-} from './historyData';
+  type RatingDataItem as DataItem,
+  mapRatingDataItem as mapDataItem
+} from './ratingData';
 
 // interface for props
 export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
@@ -34,13 +28,13 @@ function SlDxExtensionsStarRatingWidget(
 ) {
   const { getPConnect, label, listDataPage } = props;
   const pConn = getPConnect();
-  const [data, setData] = useState<TableProps<TableRow>['data']>();
+  const [data, setData] = useState<SummaryListItem[]>();
   const [isLoading, setIsLoading] = useState(true);
   const caseProp: string = PCore.getConstants().CASE_INFO.CASE_INFO_ID;
   const caseID: string = pConn.getValue(caseProp, '');
   const context = pConn.getContextName();
 
-  const columns = createTableSchema(getPConnect);
+  // const columns = createTableSchema(getPConnect);
 
   useEffect(() => {
     const parameters: Parameters = { CaseInstanceKey: caseID };
@@ -56,12 +50,11 @@ function SlDxExtensionsStarRatingWidget(
   }, [caseID, context, listDataPage]);
 
   return (
-    <Table
-      title={pConn.getLocalizedValue(label, '', '')}
-      columns={columns}
-      data={data}
+    <SummaryList
+      name={label}
+      count={isLoading ? 0 : data?.length}
       loading={isLoading}
-      loadingMessage={pConn.getLocalizedValue('Loading data ...')}
+      items={data ?? []}
     />
   );
 }
