@@ -9,19 +9,19 @@ import type { PConnFieldProps } from './PConnProps';
 
 import handleResponse from './dataUtils';
 
-import {
-  type RatingDataItem as DataItem,
-  createRatingTableSchema as createTableSchema,
-  RatingTableRow as TableRow,
-  mapRatingDataItem as mapDataItem
-} from './ratingData';
-
 // import {
-//   type HistoryDataItem as DataItem,
-//   createHistoryTableSchema as createTableSchema,
-//   HistoryTableRow as TableRow,
-//   mapHistoryDataItem as mapDataItem
-// } from './historyData';
+//   type RatingDataItem as DataItem,
+//   createRatingTableSchema as createTableSchema,
+//   RatingTableRow as TableRow,
+//   mapRatingDataItem as mapDataItem
+// } from './ratingData';
+
+import {
+  type HistoryDataItem as DataItem,
+  createHistoryTableSchema as createTableSchema,
+  HistoryTableRow as TableRow,
+  mapHistoryDataItem as mapDataItem
+} from './historyData';
 
 // interface for props
 export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
