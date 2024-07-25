@@ -7,12 +7,13 @@ import SlDxExtensionsStarRatingWidget, {
   type SlDxExtensionsStarRatingWidgetProps
 } from './index';
 
-import historyData from './mock.historyData';
+//import mockData from './mock.ratingData';
+import mockData from './mock.historyData';
 import type ActionsApi from '@pega/pcore-pconnect-typedefs/actions/api';
 import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
-  title: 'SL/SlDxExtensionsStarRatingWidget',
+  title: 'SL/Star Rating Widget',
   component: SlDxExtensionsStarRatingWidget
 };
 
@@ -41,10 +42,9 @@ window.PCore.getLocaleUtils = () => {
 
 const mockDataApiUtils = (): Partial<typeof DataApiUtils> => {
   return {
-    getData(dataViewName, payload, context, options): Promise<DataResponse> {
-      console.log(dataViewName, payload, context, options);
+    getData(): Promise<DataResponse> {
       return new Promise(resolve => {
-        resolve(historyData as DataResponse);
+        resolve(mockData as DataResponse);
       });
     }
   };
