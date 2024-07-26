@@ -54,22 +54,6 @@ window.PCore.getLocaleUtils = () => {
   } as LocaleUtils;
 };
 
-// type ResponseData = Promise<
-//   | {
-//       data: any[];
-//     }
-//   | {
-//       data: {
-//         [key: string]: any;
-//       }[];
-//       pageNumber: number | undefined;
-//       pageSize: number | undefined;
-//       queryStats: any;
-//       status: number;
-//       fetchDateTime?: string;
-//     }
-// >;
-
 const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
   return {
     getDataAsync: (...args) => {
