@@ -153,11 +153,7 @@ export const StarRatingsWidgetWithCurrentCaseRating: Story = (
     getPConnect: mockPConnect as () => typeof PConnect
   };
 
-  return (
-    <>
-      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
-    </>
-  );
+  return <SlDxExtensionsStarRatingsWidget {...props} {...args} />;
 };
 
 StarRatingsWidgetWithCurrentCaseRating.args = {
@@ -176,11 +172,7 @@ export const StarRatingsWidgetWithoutCurrentCaseRating: Story = (
     getPConnect: mockPConnect as () => typeof PConnect
   };
 
-  return (
-    <>
-      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
-    </>
-  );
+  return <SlDxExtensionsStarRatingsWidget {...props} {...args} />;
 };
 
 StarRatingsWidgetWithoutCurrentCaseRating.args = {
