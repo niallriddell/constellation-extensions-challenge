@@ -14,7 +14,6 @@ import SlDxExtensionsStarRatingsWidget, {
 
 import ratingData from './mock';
 import type MessagingServiceManager from '@pega/pcore-pconnect-typedefs/messagingservice/manager';
-import { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
 import { AxiosResponse } from 'axios';
 
