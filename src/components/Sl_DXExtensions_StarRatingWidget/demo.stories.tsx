@@ -14,6 +14,9 @@ import SlDxExtensionsStarRatingsWidget, {
 
 import ratingData from './mock';
 import type MessagingServiceManager from '@pega/pcore-pconnect-typedefs/messagingservice/manager';
+import { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+
+import { AxiosResponse } from 'axios';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingsWidget> = {
   title: 'SL/Star Rating Widget',
@@ -52,25 +55,25 @@ window.PCore.getLocaleUtils = () => {
   } as LocaleUtils;
 };
 
-type ResponseData = Promise<
-  | {
-      data: any[];
-    }
-  | {
-      data: {
-        [key: string]: any;
-      }[];
-      pageNumber: number | undefined;
-      pageSize: number | undefined;
-      queryStats: any;
-      status: number;
-      fetchDateTime?: string;
-    }
->;
+// type ResponseData = Promise<
+//   | {
+//       data: any[];
+//     }
+//   | {
+//       data: {
+//         [key: string]: any;
+//       }[];
+//       pageNumber: number | undefined;
+//       pageSize: number | undefined;
+//       queryStats: any;
+//       status: number;
+//       fetchDateTime?: string;
+//     }
+// >;
 
 const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
   return {
-    getDataAsync: (...args): ResponseData => {
+    getDataAsync: (...args) => {
       const filter = args[4]?.filter as Filter;
       const queryCustomerID = filter?.filterConditions.F1.rhs.value;
       let { data } = ratingData;
@@ -99,7 +102,7 @@ const mockRestClient = (): Partial<typeof RestClient> => {
             pxUpdateDateTime: new Date().toISOString()
           }
         }
-      })
+      } as AxiosResponse)
   };
 };
 
