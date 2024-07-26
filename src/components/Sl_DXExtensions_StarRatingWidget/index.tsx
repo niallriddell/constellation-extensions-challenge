@@ -45,7 +45,6 @@ function SlDxExtensionsStarRatingWidget(
     const parameters: Parameters = { CustomerID: customerId };
     const payload: Payload = { dataViewParameters: parameters };
 
-    setIsLoading(true);
     PCore.getDataApiUtils()
       .getData(listDataPage, payload, context)
       .then(response => {
