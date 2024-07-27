@@ -61,9 +61,9 @@ export const createSummaryItem = (
 
   const actions: Action[] = isCurrent
     ? [
-      createAction('Edit', getPConnect)
-      // createAction('Delete', getPConnect)
-    ]
+        createAction('Edit', getPConnect)
+        // createAction('Delete', getPConnect)
+      ]
     : [];
 
   return {

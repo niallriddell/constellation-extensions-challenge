@@ -1,4 +1,11 @@
-import { MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 
 import {
   Action,
@@ -15,11 +22,22 @@ import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.ic
 
 import type { PConnFieldProps } from './PConnProps';
 
-import { createRating, getRating, getRatings, updateRating, type Rating } from './ratingData';
+import {
+  createRating,
+  getRating,
+  getRatings,
+  updateRating,
+  type Rating
+} from './ratingData';
 import { searchByRating, searchByCustomer } from './searchFunctions';
 import { createAction } from './actions';
-import { createSummaryItem, StarRatingSummaryListItem } from './summaryListUtils';
-import SummaryListViewAllModal, { type SummaryListViewAllProps } from './SummaryListViewAllModal';
+import {
+  createSummaryItem,
+  StarRatingSummaryListItem
+} from './summaryListUtils';
+import SummaryListViewAllModal, {
+  type SummaryListViewAllProps
+} from './SummaryListViewAllModal';
 import StarRatingPopover from './StarRatingPopover';
 
 registerIcon(star);
@@ -95,7 +113,10 @@ const SlDxExtensionsStarRatingsWidget = ({
 
     upsert(savable, updatedRating, undefined, ratingDataClass).then(rating => {
       if (rating) {
-        setRatings([rating, ...(upsert === createRating ? ratings : ratings.slice(1))]);
+        setRatings([
+          rating,
+          ...(upsert === createRating ? ratings : ratings.slice(1))
+        ]);
         if (upsert === createRating) publishWidgetCountUpdated();
       }
     });
@@ -141,7 +162,9 @@ const SlDxExtensionsStarRatingsWidget = ({
         return allRatings;
       }
 
-      const caseRatingIndex = allRatings.findIndex(rating => rating.caseId === caseKey);
+      const caseRatingIndex = allRatings.findIndex(
+        rating => rating.caseId === caseKey
+      );
 
       if (caseRatingIndex >= 0) {
         return [allRatings.splice(caseRatingIndex, 1)[0], ...allRatings];
@@ -163,7 +186,8 @@ const SlDxExtensionsStarRatingsWidget = ({
   // TODO: We could show toast here or even mutate our ratings array instead of
   // doing a full requery to fetch all customer ratings when data changes.
   const handleDataObjectEvent = (payload: any) => {
-    if (payload.guid && payload.guid !== 'NEW') getRating(lookup, payload.guid).then(console.log);
+    if (payload.guid && payload.guid !== 'NEW')
+      getRating(lookup, payload.guid).then(console.log);
   };
 
   useEffect(() => {
@@ -222,7 +246,8 @@ const SlDxExtensionsStarRatingsWidget = ({
   // we check if the first element of the array is for the current case.
   // If not we display the 'Add' action.
   const summaryActions =
-    (customerId && ratings.length && ratings[0].caseId !== caseKey) || ratings.length === 0
+    (customerId && ratings.length && ratings[0].caseId !== caseKey) ||
+    ratings.length === 0
       ? [createAction('Add', getPConnect)].map((action: Action) => ({
           ...action,
           onClick(_: string, e: MouseEvent) {
