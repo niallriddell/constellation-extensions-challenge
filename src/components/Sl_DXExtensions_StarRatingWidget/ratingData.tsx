@@ -1,9 +1,4 @@
-import type {
-  TableProps,
-  DefaultRowData
-} from '@pega/cosmos-react-core/lib/components/Table/Table';
-// import { Rating, SummaryListItem } from '@pega/cosmos-react-core';
-import { Rating } from '@pega/cosmos-react-core';
+import { Rating, SummaryListItem } from '@pega/cosmos-react-core';
 
 export type RatingDataItem = {
   CaseClassName: string;
@@ -15,65 +10,15 @@ export type RatingDataItem = {
   pxUpdateDateTime?: string;
 };
 
-export interface RatingTableRow extends DefaultRowData {
-  caseId: string;
-  rating: number | JSX.Element;
-  updated: string;
-  customerId: string;
-}
-
-// export const mapRatingDataItem = (
-//   entry: RatingDataItem,
-//   index: number
-// ): SummaryListItem => ({
-//   primary: (
-//     <Rating
-//       value={entry.CustomerRating}
-//       metaInfo={`${entry.CustomerRating} of ${entry.NumberOfStars}`}
-//     />
-//   ),
-//   id: `ratingDataItem-${index}`
-// });
-
 export const mapRatingDataItem = (
   entry: RatingDataItem,
   index: number
-): RatingTableRow => ({
-  updated: entry.pxUpdateDateTime
-    ? new Date(entry.pxUpdateDateTime).toLocaleString()
-    : 'No data',
-  rating: (
+): SummaryListItem => ({
+  primary: (
     <Rating
       value={entry.CustomerRating}
       metaInfo={`${entry.CustomerRating} of ${entry.NumberOfStars}`}
     />
   ),
-  caseId: entry.CaseID,
-  customerId: entry.CustomerID,
-  id: index
+  id: `ratingDataItem-${index}`
 });
-
-export const createRatingTableSchema = (
-  getPConnect: () => typeof PConnect
-): TableProps<RatingTableRow>['columns'] => {
-  return [
-    {
-      renderer: 'updated',
-      label: getPConnect().getLocalizedValue('Updated', '', '')
-    },
-    {
-      renderer: 'rating',
-      label: getPConnect().getLocalizedValue('Customer Rating', '', ''),
-      noWrap: true
-    },
-    {
-      renderer: 'caseId',
-      label: getPConnect().getLocalizedValue('Case ID', '', '')
-    },
-    {
-      renderer: 'customerId',
-      label: getPConnect().getLocalizedValue('Customer ID', '', ''),
-      noWrap: true
-    }
-  ];
-};
