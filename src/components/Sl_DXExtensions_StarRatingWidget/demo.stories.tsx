@@ -10,6 +10,8 @@ import SlDxExtensionsStarRatingWidget, {
 import mockRatingData from './mock.ratingData';
 import type ActionsApi from '@pega/pcore-pconnect-typedefs/actions/api';
 import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
+import ratingData from './mock.ratingData';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
   title: 'SL/Star Rating Widget',
@@ -46,7 +48,7 @@ const mockDataApiUtils = (): Partial<typeof DataApiUtils> => {
       const newMockRatingData = customerId
         ? JSON.parse(JSON.stringify(mockRatingData))
         : mockRatingData;
-      if (newMockRatingData != mockRatingData)
+      if (newMockRatingData !== mockRatingData)
         newMockRatingData.data.data = mockRatingData.data.data.filter(
           item => item.CustomerID === customerId
         );
@@ -69,8 +71,12 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = (
       /* nothing */
     }
   });
+  const mockCaseInfo = (): Partial<CaseInfo> => ({
+    getKey: () => ratingData.data.data[0].CaseID
+  });
 
   const mockPConnect = (): Partial<typeof PConnect> => ({
+    getCaseInfo: mockCaseInfo as () => CaseInfo,
     getValue: value => {
       return value;
     },

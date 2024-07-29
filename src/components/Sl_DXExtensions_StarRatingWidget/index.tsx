@@ -32,14 +32,10 @@ function SlDxExtensionsStarRatingWidget(
   props: SlDxExtensionsStarRatingWidgetProps
 ) {
   const { getPConnect, label, listDataPage, customerId } = props;
-  const pConn = getPConnect();
   const [data, setData] = useState<SummaryListItem[]>();
   const [isLoading, setIsLoading] = useState(true);
-  const caseProp: string = PCore.getConstants().CASE_INFO.CASE_INFO_ID;
-  const caseID: string = pConn.getValue(caseProp, '');
-  const context = pConn.getContextName();
-
-  // const columns = createTableSchema(getPConnect);
+  const caseID: string = getPConnect().getCaseInfo().getKey();
+  const context = getPConnect().getContextName();
 
   useEffect(() => {
     const parameters: Parameters = { CustomerID: customerId };
@@ -47,9 +43,9 @@ function SlDxExtensionsStarRatingWidget(
 
     PCore.getDataApiUtils()
       .getData(listDataPage, payload, context)
-      .then(response => {
-        setData(handleResponse(response.data.data as DataItem[], mapDataItem));
-      })
+      .then(response =>
+        setData(handleResponse(response.data.data as DataItem[], mapDataItem))
+      )
       .catch(() => setData([]))
       .finally(() => setIsLoading(false));
   }, [customerId, context, listDataPage]);
