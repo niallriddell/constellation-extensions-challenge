@@ -34,7 +34,6 @@ function SlDxExtensionsStarRatingWidget(
   const { getPConnect, label, listDataPage, customerId } = props;
   const [data, setData] = useState<SummaryListItem[]>();
   const [isLoading, setIsLoading] = useState(true);
-  const caseID: string = getPConnect().getCaseInfo().getKey();
   const context = getPConnect().getContextName();
 
   useEffect(() => {
@@ -52,7 +51,7 @@ function SlDxExtensionsStarRatingWidget(
 
   return (
     <SummaryList
-      key={`summaryList-${caseID}`}
+      key={`summaryList-${customerId}`}
       icon='star'
       name={label}
       count={isLoading ? 0 : data?.length}
