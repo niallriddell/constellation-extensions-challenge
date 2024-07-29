@@ -2,6 +2,7 @@ import type {
   TableProps,
   DefaultRowData
 } from '@pega/cosmos-react-core/lib/components/Table/Table';
+// import { Rating, SummaryListItem } from '@pega/cosmos-react-core';
 import { Rating } from '@pega/cosmos-react-core';
 
 export type RatingDataItem = {
@@ -20,6 +21,19 @@ export interface RatingTableRow extends DefaultRowData {
   updated: string;
   customerId: string;
 }
+
+// export const mapRatingDataItem = (
+//   entry: RatingDataItem,
+//   index: number
+// ): SummaryListItem => ({
+//   primary: (
+//     <Rating
+//       value={entry.CustomerRating}
+//       metaInfo={`${entry.CustomerRating} of ${entry.NumberOfStars}`}
+//     />
+//   ),
+//   id: `ratingDataItem-${index}`
+// });
 
 export const mapRatingDataItem = (
   entry: RatingDataItem,
