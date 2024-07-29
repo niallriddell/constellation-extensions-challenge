@@ -1,4 +1,8 @@
-import type { Filter, Query } from '@pega/pcore-pconnect-typedefs/datapage/types';
+import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+import type {
+  Filter,
+  Query
+} from '@pega/pcore-pconnect-typedefs/datapage/types';
 import { BiMap } from './bimap';
 
 // All mapping between the component internal data model and the external data model
@@ -64,7 +68,9 @@ function mapRatingDataToRating(
   return ratingDataArray.map(ratingData => {
     const rating: Partial<Rating> = {};
     biMap.getKeyToValueMap().forEach((value, key) => {
-      rating[key as keyof Rating] = ratingData[value as keyof RatingData] as any;
+      rating[key as keyof Rating] = ratingData[
+        value as keyof RatingData
+      ] as any;
     });
     return rating as Rating;
   });
@@ -102,14 +108,6 @@ export const getRating = async (
   }
 };
 
-// Temporary solution to fix an issue with the typescript data shapes in
-// getDataAsync not correctly matching the real data returned.
-// TODO:- Update this when the typedefs are fixed.
-interface RatingDataResponse {
-  data: any[] | RatingData[];
-  status?: number;
-}
-
 // Helper function that returns an array of ratings for a customerId.
 export const getRatings = async (
   dataView: string,
@@ -143,17 +141,18 @@ export const getRatings = async (
   };
 
   try {
-    const response: RatingDataResponse = await PCore.getDataPageUtils().getDataAsync(
-      dataView,
-      context,
-      undefined,
-      undefined,
-      query,
-      { invalidateCache: true }
-    );
+    const response: DataAsyncResponse =
+      await PCore.getDataPageUtils().getDataAsync(
+        dataView,
+        context,
+        undefined,
+        undefined,
+        query,
+        { invalidateCache: true }
+      );
 
     if (response.status === 200) {
-      return mapRatingDataToRating(response.data, mapper);
+      return mapRatingDataToRating(response.data as RatingData[], mapper);
     }
 
     return [];

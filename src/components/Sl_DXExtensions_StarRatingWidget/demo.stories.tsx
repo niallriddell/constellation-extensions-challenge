@@ -10,6 +10,7 @@ import SlDxExtensionsStarRatingsWidget, {
 } from './index';
 
 import ratingData from './mock';
+import { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingsWidget> = {
   title: 'SL/Star Rating Widget',
@@ -42,33 +43,21 @@ window.PCore.getLocaleUtils = () => {
   } as LocaleUtils;
 };
 
-type ResponseData = Promise<
-  | {
-      data: any[];
-    }
-  | {
-      data: {
-        [key: string]: any;
-      }[];
-      pageNumber: number | undefined;
-      pageSize: number | undefined;
-      queryStats: any;
-      status: number;
-      fetchDateTime?: string;
-    }
->;
+const mockGetDataAsync = (
+  ...args: any[]
+): Promise<Partial<DataAsyncResponse>> => {
+  const filter = args[4]?.filter as Filter;
+  const queryCustomerID = filter?.filterConditions.F1.rhs.value;
+  let { data } = ratingData;
+  if (queryCustomerID && queryCustomerID.length)
+    data = data.filter(rating => rating.CustomerID === queryCustomerID);
+
+  return Promise.resolve({ data, status: 200 });
+};
 
 const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
   return {
-    getDataAsync: (...args): ResponseData => {
-      const filter = args[4]?.filter as Filter;
-      const queryCustomerID = filter?.filterConditions.F1.rhs.value;
-      let { data } = ratingData;
-      if (queryCustomerID && queryCustomerID.length)
-        data = data.filter(rating => rating.CustomerID === queryCustomerID);
-
-      return Promise.resolve({ data, status: 200 });
-    },
+    getDataAsync: mockGetDataAsync as () => Promise<DataAsyncResponse>,
     getPageDataAsync: () => Promise.resolve({ data: {}, status: 200 })
   };
 };
