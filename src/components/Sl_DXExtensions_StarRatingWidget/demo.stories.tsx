@@ -7,7 +7,7 @@ import SlDxExtensionsStarRatingWidget, {
   type SlDxExtensionsStarRatingWidgetProps
 } from './index';
 
-import mockRatingData from './mock.ratingData';
+import mockRatingData, { newRating } from './mock.ratingData';
 import type ActionsApi from '@pega/pcore-pconnect-typedefs/actions/api';
 import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
@@ -72,7 +72,9 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = (
     }
   });
   const mockCaseInfo = (): Partial<CaseInfo> => ({
-    getKey: () => ratingData.data.data[0].CaseID
+    getKey: () => newRating.CaseID,
+
+    getClassName: () => newRating.CaseClassName
   });
 
   const mockPConnect = (): Partial<typeof PConnect> => ({
@@ -111,5 +113,5 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = (
 BaseSlDxExtensionsStarRatingWidget.args = {
   label: 'Rating history',
   listDataPage: 'D_RatingList',
-  customerId: 'Q1234'
+  customerId: 'Q123'
 };

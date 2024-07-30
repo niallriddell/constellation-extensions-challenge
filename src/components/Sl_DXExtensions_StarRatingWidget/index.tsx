@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, MouseEvent, useCallback } from 'react';
 
 import {
   SummaryList,
   withConfiguration,
-  SummaryListItem,
-  registerIcon
+  registerIcon,
+  Action,
+  Popover,
+  useElement,
+  Button,
+  Grid,
+  Slider
 } from '@pega/cosmos-react-core';
 import type { Payload } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
@@ -12,12 +17,10 @@ import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.ic
 
 import type { PConnFieldProps } from './PConnProps';
 
-import handleResponse from './dataUtils';
-
-import {
-  type RatingDataItem as DataItem,
-  mapRatingDataItem as mapDataItem
-} from './ratingData';
+import { type RatingDataItem as DataItem } from './ratingData';
+import mapDataItem, { RatingSummaryListItem } from './ratingItems';
+import createAction from './actions';
+import createItems from './dataUtils';
 
 registerIcon(star);
 
@@ -32,10 +35,23 @@ function SlDxExtensionsStarRatingWidget(
   props: SlDxExtensionsStarRatingWidgetProps
 ) {
   const { getPConnect, label, listDataPage, customerId } = props;
-  const [data, setData] = useState<SummaryListItem[]>();
+  const [data, setData] = useState<DataItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const caseID: string = getPConnect().getCaseInfo().getKey();
+  const [showPopover, setShowPopover] = useState(true);
+  const [popoverTarget, setPopoverTarget] = useElement<Element>(null);
+  const [value, setValue] = useState<number>(0);
+  const popOverRef = useElement<HTMLDivElement>()[1];
+
+  const caseKey = getPConnect().getCaseInfo().getKey();
+  const caseClass = getPConnect().getCaseInfo().getClassName();
   const context = getPConnect().getContextName();
+  const [dataItem, setDataItem] = useState<DataItem>({
+    CustomerRating: 0,
+    NumberOfStars: 5,
+    CustomerID: customerId,
+    CaseID: caseKey,
+    CaseClassName: caseClass
+  });
 
   useEffect(() => {
     const parameters: Parameters = { CustomerID: customerId };
@@ -43,22 +59,168 @@ function SlDxExtensionsStarRatingWidget(
 
     PCore.getDataApiUtils()
       .getData(listDataPage, payload, context)
-      .then(response =>
-        setData(handleResponse(response.data.data as DataItem[], mapDataItem))
-      )
-      .catch(() => setData([]))
+      .then(response => {
+        const responseData = response.data.data as DataItem[];
+        setData(responseData);
+      })
+      .catch(() => {
+        setData([]);
+      })
       .finally(() => setIsLoading(false));
-  }, [customerId, context, listDataPage]);
+  }, [customerId, getPConnect, context, listDataPage]);
+
+  const toggleClickPopover = ({ type, key }: { type: string; key: string }) => {
+    if (type === 'keydown') {
+      if (key === 'Escape') setShowPopover(false);
+      return;
+    }
+    if (type === 'click' || type === 'focus') setShowPopover(true);
+  };
+
+  const clickMountingHandlers = {
+    onClick: toggleClickPopover,
+    onKeyDown: toggleClickPopover,
+    onFocus: toggleClickPopover,
+    onBlur: toggleClickPopover
+  };
+
+  const onActionClick = useCallback(
+    (
+      id: string,
+      e: MouseEvent<HTMLButtonElement | HTMLAnchorElement | HTMLInputElement>,
+      menuButton?: HTMLButtonElement,
+      item?: RatingSummaryListItem
+    ) => {
+      setShowPopover(true);
+      setPopoverTarget(menuButton ?? e.currentTarget);
+      setValue(item?.rating?.CustomerRating ?? 0);
+      if (item) setDataItem(item.rating);
+    },
+    [setPopoverTarget]
+  );
+
+  const items = createItems(data, getPConnect, mapDataItem).map(summaryItem => {
+    if (!summaryItem.actions) return summaryItem;
+
+    return {
+      ...summaryItem,
+      actions: summaryItem.actions.map((action: Action) => ({
+        ...action,
+        onClick: (
+          id: string,
+          e: MouseEvent<
+            HTMLButtonElement | HTMLAnchorElement | HTMLInputElement
+          >,
+          menuButton?: HTMLButtonElement
+        ) => onActionClick(id, e, menuButton, summaryItem)
+      }))
+    };
+  });
+
+  const isEmptyData = !data || data.length === 0;
+  const isCaseKeyAbsent =
+    data.filter(item => item.CaseID === caseKey).length === 0;
+
+  const summaryActions =
+    isEmptyData || isCaseKeyAbsent
+      ? [createAction('Add', getPConnect)].map((action: Action) => ({
+          ...action,
+          onClick: onActionClick
+        }))
+      : [];
+
+  const updateDataItem = (selectedDataItem: DataItem, changedValue: number) => {
+    if (selectedDataItem.pyGUID) {
+      setData(
+        data.map(dataItemToCheck =>
+          dataItemToCheck.pyGUID === selectedDataItem.pyGUID
+            ? {
+                ...dataItemToCheck,
+                CustomerRating: changedValue,
+                pxUpdateDateTime: new Date().toISOString()
+              }
+            : dataItemToCheck
+        )
+      );
+      return;
+    }
+
+    const newDataItem = {
+      ...selectedDataItem,
+      CustomerRating: changedValue,
+      pyGUID: 'NEW',
+      pxUpdateDateTime: new Date().toISOString()
+    };
+
+    data?.push(newDataItem);
+    setData(data);
+  };
 
   return (
-    <SummaryList
-      key={`summaryList-${caseID}`}
-      icon='star'
-      name={label}
-      count={isLoading ? 0 : data?.length}
-      loading={isLoading}
-      items={data ?? []}
-    />
+    <>
+      <SummaryList
+        key={`summaryList-${customerId}`}
+        actions={summaryActions}
+        icon='star'
+        name={label}
+        count={isLoading ? 0 : data?.length}
+        loading={isLoading}
+        items={items ?? []}
+        onBlur={() => setShowPopover(false)}
+        onClick={(e: MouseEvent) => {
+          if (popoverTarget && e.target !== popoverTarget) {
+            setShowPopover(false);
+          }
+        }}
+      />
+      {popoverTarget && (
+        <Popover
+          ref={popOverRef}
+          strategy='absolute'
+          placement='auto'
+          target={popoverTarget}
+          portal={false}
+          arrow
+          style={{ width: '20ch' }}
+          show={showPopover}
+          {...clickMountingHandlers}
+        >
+          <Slider
+            min={0}
+            max={5}
+            value={value}
+            onChange={(changeValue: number) => setValue(changeValue)}
+          />
+          <Grid
+            container={{
+              cols: 'repeat(2, 1fr)',
+              colGap: 1,
+              alignItems: 'end',
+              pad: 1
+            }}
+          >
+            <Button
+              onClick={() => {
+                setPopoverTarget(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type='submit'
+              variant='primary'
+              onClick={(e: MouseEvent) => {
+                e.preventDefault();
+                if (dataItem) updateDataItem(dataItem, value);
+                setPopoverTarget(null);
+              }}
+            >
+              Submit
+            </Button>
+          </Grid>
+        </Popover>
+      )}
+    </>
   );
 }
 
