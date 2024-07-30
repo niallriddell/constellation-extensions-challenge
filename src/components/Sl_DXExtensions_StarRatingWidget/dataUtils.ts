@@ -1,7 +1,7 @@
 // Generic handleResponse function
-const handleResponse = <T, U>(
+const createItems = <T, U>(
   data: T[],
   mapFunction: (entry: T, index: number) => U
 ): U[] => (data ? data.map(mapFunction) : []);
 
-export default handleResponse;
+export default createItems;

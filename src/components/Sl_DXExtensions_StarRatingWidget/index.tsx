@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import {
   // registerIcon,
   SummaryList,
-  SummaryListItem,
   withConfiguration
 } from '@pega/cosmos-react-core';
 
@@ -13,7 +12,7 @@ import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
 
 import type { PConnFieldProps } from './PConnProps';
 
-import handleResponse from './dataUtils';
+import createItems from './dataUtils';
 
 import {
   type RatingDataItem as DataItem,
@@ -33,7 +32,7 @@ function SlDxExtensionsStarRatingWidget(
   props: SlDxExtensionsStarRatingWidgetProps
 ) {
   const { getPConnect, label, listDataPage, customerId } = props;
-  const [data, setData] = useState<SummaryListItem[]>();
+  const [data, setData] = useState<DataItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const context = getPConnect().getContextName();
 
@@ -44,11 +43,13 @@ function SlDxExtensionsStarRatingWidget(
     PCore.getDataApiUtils()
       .getData(listDataPage, payload, context)
       .then(response => {
-        setData(handleResponse(response.data.data as DataItem[], mapDataItem));
+        setData(response.data.data as DataItem[]);
       })
       .catch(() => setData([]))
       .finally(() => setIsLoading(false));
   }, [customerId, context, listDataPage]);
+
+  const items = createItems(data, mapDataItem);
 
   return (
     <SummaryList
@@ -57,7 +58,7 @@ function SlDxExtensionsStarRatingWidget(
       name={label}
       count={isLoading ? 0 : data?.length}
       loading={isLoading}
-      items={data ?? []}
+      items={items ?? []}
     />
   );
 }
