@@ -22,6 +22,7 @@ export const mapRatingDataItem = (
   const caseKey = getPConnect().getCaseInfo().getKey();
   const isCurrent = caseKey && entry.CaseID === caseKey;
 
+  // eslint-disable-next-line no-console
   console.log(
     `Current case is ${caseKey}, ${entry.CaseID} ${
       isCurrent ? 'is' : 'is not'
