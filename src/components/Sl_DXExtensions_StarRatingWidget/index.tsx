@@ -37,6 +37,7 @@ function SlDxExtensionsStarRatingWidget(
   const { getPConnect, label, listDataPage, customerId } = props;
   const [data, setData] = useState<DataItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+<<<<<<< HEAD
   const [showPopover, setShowPopover] = useState(true);
   const [popoverTarget, setPopoverTarget] = useElement<Element>(null);
   const [value, setValue] = useState<number>(0);
@@ -44,6 +45,8 @@ function SlDxExtensionsStarRatingWidget(
 
   const caseKey = getPConnect().getCaseInfo().getKey();
   const caseClass = getPConnect().getCaseInfo().getClassName();
+=======
+>>>>>>> 587b79f706faca4314e5adb3fa497beec318f5f5
   const context = getPConnect().getContextName();
   const [dataItem, setDataItem] = useState<DataItem>({
     CustomerRating: 0,
@@ -157,6 +160,7 @@ function SlDxExtensionsStarRatingWidget(
   };
 
   return (
+<<<<<<< HEAD
     <>
       <SummaryList
         key={`summaryList-${customerId}`}
