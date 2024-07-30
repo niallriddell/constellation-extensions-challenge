@@ -133,7 +133,9 @@ function SlDxExtensionsStarRatingWidget(
         }))
       : [];
 
-  const updateDataItem = (selectedDataItem: DataItem, changedValue: number) => {
+  // TODO: Only in memory and not persisted for now so that Storybook story
+  // works
+  const upsertDataItem = (selectedDataItem: DataItem, changedValue: number) => {
     if (selectedDataItem.pyGUID) {
       setData(
         data.map(dataItemToCheck =>
@@ -189,7 +191,9 @@ function SlDxExtensionsStarRatingWidget(
           show={showPopover}
           {...clickMountingHandlers}
         >
-          <Text variant='h2'>{actionId}</Text>
+          <Text variant='h2'>
+            {actionId === 'rating:addNew' ? 'New' : 'Edit'}
+          </Text>
           <Slider
             min={0}
             max={5}
@@ -216,7 +220,7 @@ function SlDxExtensionsStarRatingWidget(
               variant='primary'
               onClick={(e: MouseEvent) => {
                 e.preventDefault();
-                if (dataItem) updateDataItem(dataItem, value);
+                if (dataItem) upsertDataItem(dataItem, value);
                 setPopoverTarget(null);
               }}
             >
