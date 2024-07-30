@@ -63,8 +63,7 @@ function SlDxExtensionsStarRatingWidget(
     PCore.getDataApiUtils()
       .getData(listDataPage, payload, context)
       .then(response => {
-        const responseData = response.data.data as DataItem[];
-        setData(responseData);
+        setData((response?.data?.data as DataItem[]) ?? []);
       })
       .catch(() => {
         setData([]);
