@@ -9,7 +9,8 @@ import {
   useElement,
   Button,
   Grid,
-  Slider
+  Slider,
+  Text
 } from '@pega/cosmos-react-core';
 import type { Payload } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
@@ -37,16 +38,15 @@ function SlDxExtensionsStarRatingWidget(
   const { getPConnect, label, listDataPage, customerId } = props;
   const [data, setData] = useState<DataItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-<<<<<<< HEAD
   const [showPopover, setShowPopover] = useState(true);
   const [popoverTarget, setPopoverTarget] = useElement<Element>(null);
   const [value, setValue] = useState<number>(0);
+  const [actionId, setActionId] = useState<string>();
+
   const popOverRef = useElement<HTMLDivElement>()[1];
 
   const caseKey = getPConnect().getCaseInfo().getKey();
   const caseClass = getPConnect().getCaseInfo().getClassName();
-=======
->>>>>>> 587b79f706faca4314e5adb3fa497beec318f5f5
   const context = getPConnect().getContextName();
   const [dataItem, setDataItem] = useState<DataItem>({
     CustomerRating: 0,
@@ -94,6 +94,7 @@ function SlDxExtensionsStarRatingWidget(
       menuButton?: HTMLButtonElement,
       item?: RatingSummaryListItem
     ) => {
+      setActionId(id);
       setShowPopover(true);
       setPopoverTarget(menuButton ?? e.currentTarget);
       setValue(item?.rating?.CustomerRating ?? 0);
@@ -160,7 +161,6 @@ function SlDxExtensionsStarRatingWidget(
   };
 
   return (
-<<<<<<< HEAD
     <>
       <SummaryList
         key={`summaryList-${customerId}`}
@@ -189,6 +189,7 @@ function SlDxExtensionsStarRatingWidget(
           show={showPopover}
           {...clickMountingHandlers}
         >
+          <Text variant='h2'>{actionId}</Text>
           <Slider
             min={0}
             max={5}
