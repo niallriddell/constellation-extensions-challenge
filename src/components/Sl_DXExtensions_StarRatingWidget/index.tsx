@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 
 import {
-  // registerIcon,
+  registerIcon,
   SummaryList,
   withConfiguration
 } from '@pega/cosmos-react-core';
 
 import type { Payload } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
-// import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
+import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
 
 import type { PConnFieldProps } from './PConnProps';
 
@@ -19,7 +19,7 @@ import {
   mapRatingDataItem as mapDataItem
 } from './ratingData';
 
-// registerIcon(star);
+registerIcon(star);
 
 // interface for props
 export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
@@ -43,7 +43,7 @@ function SlDxExtensionsStarRatingWidget(
     PCore.getDataApiUtils()
       .getData(listDataPage, payload, context)
       .then(response => {
-        setData(response.data.data as DataItem[]);
+        setData((response?.data?.data as DataItem[]) ?? []);
       })
       .catch(() => setData([]))
       .finally(() => setIsLoading(false));
@@ -54,7 +54,7 @@ function SlDxExtensionsStarRatingWidget(
   return (
     <SummaryList
       key={`summaryList-${customerId}`}
-      // icon='star'
+      icon='star'
       name={label}
       count={isLoading ? 0 : data?.length}
       loading={isLoading}
