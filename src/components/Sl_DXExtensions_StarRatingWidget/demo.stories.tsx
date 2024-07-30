@@ -7,7 +7,7 @@ import SlDxExtensionsStarRatingWidget, {
   type SlDxExtensionsStarRatingWidgetProps
 } from './index';
 
-import mockRatingData from './mock.ratingData';
+import mockRatingData, { newRating } from './mock.ratingData';
 import type ActionsApi from '@pega/pcore-pconnect-typedefs/actions/api';
 import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
@@ -42,10 +42,17 @@ window.PCore.getLocaleUtils = () => {
 
 const mockDataApiUtils = (): Partial<typeof DataApiUtils> => {
   return {
-    getData(): Promise<DataResponse> {
-      const mockData = mockRatingData;
+    getData(...args): Promise<DataResponse> {
+      const customerId = args[1]?.dataViewParameters?.CustomerID;
+      const newMockRatingData = customerId
+        ? JSON.parse(JSON.stringify(mockRatingData))
+        : mockRatingData;
+      if (newMockRatingData !== mockRatingData)
+        newMockRatingData.data.data = mockRatingData.data.data.filter(
+          item => item.CustomerID === customerId
+        );
       return new Promise(resolve => {
-        resolve(mockData as DataResponse);
+        resolve(newMockRatingData as DataResponse);
       });
     }
   };
@@ -63,9 +70,10 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = (
       /* nothing */
     }
   });
-
   const mockCaseInfo = (): Partial<CaseInfo> => ({
-    getKey: () => mockRatingData.data.data[0].CaseID
+    getKey: () => newRating.CaseID,
+
+    getClassName: () => newRating.CaseClassName
   });
 
   const mockPConnect = (): Partial<typeof PConnect> => ({
@@ -103,5 +111,6 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = (
 
 BaseSlDxExtensionsStarRatingWidget.args = {
   label: 'Rating history',
-  listDataPage: 'D_RatingList'
+  listDataPage: 'D_RatingList',
+  customerId: 'Q123'
 };

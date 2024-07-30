@@ -1,6 +1,15 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
+export const newRating = {
+  CustomerRating: 0,
+  NumberOfStars: 5,
+  CaseID: 'SL-TELLUSMORE-WORK Z-126',
+  CaseClassName: 'SL-TellUsMore-Work-Incident',
+  CustomerID: 'Q123',
+  pxUpdateDateTime: '2020-06-29T11:06:24.329Z'
+};
+
 const ratingData: Omit<DataResponse, 'config'> = {
   data: {
     fetchDateTime: '2023-01-18T12:04:56.517Z',

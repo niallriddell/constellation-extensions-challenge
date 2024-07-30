@@ -12,12 +12,11 @@ import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.ic
 
 import type { PConnFieldProps } from './PConnProps';
 
+import { type RatingDataItem as DataItem } from './ratingData';
+// import mapDataItem, { RatingSummaryListItem } from './ratingItems';
+import mapDataItem from './ratingItems';
+// import createAction from './actions';
 import createItems from './dataUtils';
-
-import {
-  type RatingDataItem as DataItem,
-  mapRatingDataItem as mapDataItem
-} from './ratingData';
 
 registerIcon(star);
 
@@ -49,7 +48,7 @@ function SlDxExtensionsStarRatingWidget(
       .finally(() => setIsLoading(false));
   }, [customerId, context, listDataPage]);
 
-  const items = createItems(data, mapDataItem);
+  const items = createItems(data, getPConnect, mapDataItem);
 
   return (
     <SummaryList
