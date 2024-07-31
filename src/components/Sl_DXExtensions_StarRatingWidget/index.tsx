@@ -94,8 +94,7 @@ function SlDxExtensionsStarRatingWidget(
         items={items ?? []}
       />
       {actionTarget && (
-        <Text
-          variant='h1'
+        <Text variant="h1"
           onClick={() => setActionTarget(null)}
         >{`Click me to dismiss: ${actionId} ${dataItem?.CaseID ?? ''}`}</Text>
       )}

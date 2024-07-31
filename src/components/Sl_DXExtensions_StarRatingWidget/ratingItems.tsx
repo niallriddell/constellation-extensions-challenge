@@ -14,7 +14,7 @@ import type { RatingDataItem } from './ratingData';
 const mapRatingDataItem = (
   dataItem: RatingDataItem,
   getPConnect: () => typeof PConnect,
-  onClickHandler: ActionWithDataItem<RatingDataItem>
+  onClickHandler: ActionWithDataItem<RatingDataItem> | Action['onClick']
 ): DataItemSummaryListItem<RatingDataItem> => {
   const caseKey = getPConnect().getCaseInfo().getKey();
   const isCurrent = caseKey && dataItem.CaseID === caseKey;
