@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
 
 import {
-  // Action,
+  Action,
   registerIcon,
   SummaryList,
-  // Text,
+  Text,
   // useElement,
   withConfiguration
 } from '@pega/cosmos-react-core';
@@ -17,9 +18,9 @@ import type { PConnFieldProps } from './PConnProps';
 
 import type { RatingDataItem as DataItem } from './ratingData';
 import mapDataItem from './ratingItems';
-// import type { ActionWithDataItem } from './actionUtils';
+import type { ActionWithDataItem } from './actionUtils';
 import createItems from './itemUtils';
-// import createAction from './actionUtils';
+import createAction from './actionUtils';
 
 registerIcon(star);
 
@@ -33,11 +34,11 @@ function SlDxExtensionsStarRatingWidget(
 ) {
   const { getPConnect, label, listDataPage, customerId } = props;
   const [data, setData] = useState<DataItem[]>([]);
+  const [actionId, setActionId] = useState<string>();
   // const [dataItem, setDataItem] = useState<DataItem>();
-  // const [actionId, setActionId] = useState<string>();
   // const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [isLoading, setIsLoading] = useState(true);
-  // const caseKey = getPConnect().getCaseInfo().getKey();
+  const caseKey = getPConnect().getCaseInfo().getKey();
   const context = getPConnect().getContextName();
 
   useEffect(() => {
@@ -53,39 +54,37 @@ function SlDxExtensionsStarRatingWidget(
       .finally(() => setIsLoading(false));
   }, [customerId, context, listDataPage]);
 
-  // const onActionItemClick: ActionWithDataItem<DataItem> = (
-  //   actionDataItem,
-  //   id,
-  //   e,
-  //   menuButton
-  // ) => {
-  //   // eslint-disable-next-line no-console
-  //   console.log(actionDataItem, id, e, menuButton);
-  //   // setActionId(id);
-  //   // setActionTarget(menuButton ?? e.currentTarget);
-  //   // setDataItem(actionDataItem);
-  // };
+  const onActionItemClick: ActionWithDataItem<DataItem> = (
+    actionDataItem,
+    id,
+    e,
+    menuButton
+  ) => {
+    // const { dataItem as actionDataItem, id, e, menuButton } = args;
 
-  // const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
-  const items = createItems(data, getPConnect, mapDataItem);
+    setActionId(id);
+    // setActionTarget(menuButton ?? e.currentTarget);
+    // setDataItem(actionDataItem);
+  };
 
-  // const onActionClick: Action['onClick'] = (id, e, menuButton) => {
-  //   // eslint-disable-next-line no-console
-  //   console.log(id, e, menuButton);
-  //   // setActionId(id);
-  //   // setActionTarget(menuButton ?? e.currentTarget);
-  // };
-  //
-  // const actions =
-  //   data.findIndex(di => di.CaseID === caseKey) < 0
-  //     ? [createAction('Add', getPConnect, onActionClick)]
-  //     : [];
+  const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
+
+  const onActionClick: Action['onClick'] = (id, e, menuButton) => {
+    // const { id, e, menuButton } = args;
+    setActionId(id);
+    // setActionTarget(menuButton ?? e.currentTarget);
+  };
+
+  const actions =
+    data.findIndex(di => di.CaseID === caseKey) < 0
+      ? [createAction('Add', getPConnect, onActionClick)]
+      : [];
 
   return (
     <>
       <SummaryList
         key={`summaryList-${customerId}`}
-        // actions={actions}
+        actions={actions}
         icon='star'
         name={label}
         count={isLoading ? 0 : data?.length}
@@ -93,11 +92,19 @@ function SlDxExtensionsStarRatingWidget(
         items={items ?? []}
       />
       {
+        actionId && (
+          <Text
+            variant='h1'
+            onClick={() => setActionId(undefined)}
+          >{`Click me to dismiss: ${actionId}`}</Text>
+        )
+
+        // {
         //   actionTarget && (
         //   <Text
         //     variant='h1'
         //     onClick={() => setActionTarget(null)}
-        //   >{`Click me to dismiss: ${actionId} ${dataItem?.CaseID ?? ''}`}</Text>
+        //   >{`Click me to dismiss: ${actionId}${dataItem ? ':'+dataItem.CaseID : '' }:`}</Text>
         // )
       }
     </>

@@ -24,8 +24,8 @@ const mapRatingDataItem = (
         createAction<RatingDataItem>(
           'Edit',
           getPConnect,
-          onClickHandler,
-          dataItem
+          dataItem,
+          onClickHandler
         )
       ]
     : [];

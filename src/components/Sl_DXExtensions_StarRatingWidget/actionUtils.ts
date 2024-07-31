@@ -6,7 +6,7 @@ import * as trash from '@pega/cosmos-react-core/lib/components/Icon/icons/trash.
 registerIcon(pencil, plus, trash);
 
 export type ActionWithDataItem<T> = (
-  dataItem?: T,
+  dataItem: T,
   ...onClickArgs: Parameters<NonNullable<Action['onClick']>>
 ) => void;
 
@@ -19,8 +19,8 @@ export function isActionWithDataItem<T>(
 const createAction = <T>(
   actionType: 'Add' | 'Edit' | 'Delete',
   getPConnect: () => typeof PConnect,
-  onClickHandler?: ActionWithDataItem<T> | Action['onClick'],
-  dataItem?: T
+  dataItem: T,
+  onClickHandler?: ActionWithDataItem<T> | Action['onClick']
 ): Action => {
   const actionConfig = {
     Add: {
