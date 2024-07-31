@@ -19,15 +19,13 @@ import type { RatingDataItem as DataItem } from './ratingData';
 import mapDataItem from './ratingItems';
 // import type { ActionWithDataItem } from './actionUtils';
 import createItems from './itemUtils';
-import createAction from './actionUtils';
+// import createAction from './actionUtils';
 
 registerIcon(star);
 
-// interface for props
 export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
   listDataPage: string;
   customerId: string;
-  // If any, enter additional props that only exist on TextInput here
 }
 
 function SlDxExtensionsStarRatingWidget(
@@ -39,7 +37,7 @@ function SlDxExtensionsStarRatingWidget(
   // const [actionId, setActionId] = useState<string>();
   // const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const caseKey = getPConnect().getCaseInfo().getKey();
+  // const caseKey = getPConnect().getCaseInfo().getKey();
   const context = getPConnect().getContextName();
 
   useEffect(() => {
@@ -68,41 +66,40 @@ function SlDxExtensionsStarRatingWidget(
   //   // setDataItem(actionDataItem);
   // };
 
+  // const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
+  const items = createItems(data, getPConnect, mapDataItem);
+
   // const onActionClick: Action['onClick'] = (id, e, menuButton) => {
   //   // eslint-disable-next-line no-console
   //   console.log(id, e, menuButton);
   //   // setActionId(id);
   //   // setActionTarget(menuButton ?? e.currentTarget);
   // };
-
-  // const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
-  const items = createItems(data, getPConnect, mapDataItem);
-
-  const actions =
-    data.findIndex(di => di.CaseID === caseKey) < 0
-      ? // ? [createAction('Add', getPConnect, onActionClick)]
-        [createAction('Add', getPConnect)]
-      : [];
+  //
+  // const actions =
+  //   data.findIndex(di => di.CaseID === caseKey) < 0
+  //     ? [createAction('Add', getPConnect, onActionClick)]
+  //     : [];
 
   return (
     <>
       <SummaryList
         key={`summaryList-${customerId}`}
-        actions={actions}
+        // actions={actions}
         icon='star'
         name={label}
         count={isLoading ? 0 : data?.length}
         loading={isLoading}
         items={items ?? []}
       />
-      {/* 
-        actionTarget && (
-        <Text
-          variant='h1'
-          onClick={() => setActionTarget(null)}
-        >{`Click me to dismiss: ${actionId} ${dataItem?.CaseID ?? ''}`}</Text>
-      )
-      */}
+      {
+        //   actionTarget && (
+        //   <Text
+        //     variant='h1'
+        //     onClick={() => setActionTarget(null)}
+        //   >{`Click me to dismiss: ${actionId} ${dataItem?.CaseID ?? ''}`}</Text>
+        // )
+      }
     </>
   );
 }
