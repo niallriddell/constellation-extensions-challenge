@@ -8,13 +8,13 @@ export interface DataItemSummaryListItem<T> extends SummaryListItem {
 const createItems = <T, U>(
   data: T[],
   getPConnect: () => typeof PConnect,
-  onClickHandler: ActionWithDataItem<T> | Action["onClick"],
   mapFunction: (
     dataItem: T,
     getPConnect: () => typeof PConnect,
-    onClickHandler: ActionWithDataItem<T> | Action["onClick"],
-    index: number
-  ) => U
+    onClickHandler?: ActionWithDataItem<T> | Action['onClick'],
+    index?: number
+  ) => U,
+  onClickHandler?: ActionWithDataItem<T> | Action['onClick']
 ): U[] =>
   data
     ? data.map((dataItem, index) =>

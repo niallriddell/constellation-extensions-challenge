@@ -10,16 +10,16 @@ export type ActionWithDataItem<T> = (
   ...onClickArgs: Parameters<NonNullable<Action['onClick']>>
 ) => void;
 
-function isActionWithDataItem<T>(
-  func: ActionWithDataItem<T> | Action['onClick']
-): func is ActionWithDataItem<T> {
-  return func !== undefined && func.length > 3;
-}
+// function isActionWithDataItem<T>(
+//   func: ActionWithDataItem<T> | Action['onClick']
+// ): func is ActionWithDataItem<T> {
+//   return func !== undefined && func.length > 3;
+// }
 
 const createAction = <T>(
   actionType: 'Add' | 'Edit' | 'Delete',
   getPConnect: () => typeof PConnect,
-  onClickHandler: ActionWithDataItem<T> | Action['onClick'],
+  // onClickHandler?: ActionWithDataItem<T> | Action['onClick'],
   dataItem?: T
 ): Action => {
   const actionConfig = {
@@ -41,18 +41,21 @@ const createAction = <T>(
   };
 
   const { text, id, icon } = actionConfig[actionType];
+
+  // eslint-disable-next-line no-console
+  console.log(dataItem);
   return {
     text: getPConnect().getLocalizedValue(text),
     id,
-    icon,
-    onClick: (...args) => {
-      if (onClickHandler === undefined) return undefined;
-      if (isActionWithDataItem(onClickHandler)) {
-        onClickHandler(dataItem, ...args);
-      } else {
-        onClickHandler(...args);
-      }
-    }
+    icon
+    // onClick: (...args) => {
+    //   if (onClickHandler === undefined) return undefined;
+    //   if (isActionWithDataItem(onClickHandler)) {
+    //     onClickHandler(dataItem, ...args);
+    //   } else {
+    //     onClickHandler(...args);
+    //   }
+    // }
   };
 };
 

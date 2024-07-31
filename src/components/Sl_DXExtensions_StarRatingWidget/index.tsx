@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
 import {
-  Action,
+  // Action,
   registerIcon,
   SummaryList,
-  Text,
-  useElement,
+  // Text,
+  // useElement,
   withConfiguration
 } from '@pega/cosmos-react-core';
 
@@ -17,7 +17,7 @@ import type { PConnFieldProps } from './PConnProps';
 
 import type { RatingDataItem as DataItem } from './ratingData';
 import mapDataItem from './ratingItems';
-import type { ActionWithDataItem } from './actionUtils';
+// import type { ActionWithDataItem } from './actionUtils';
 import createItems from './itemUtils';
 import createAction from './actionUtils';
 
@@ -35,9 +35,9 @@ function SlDxExtensionsStarRatingWidget(
 ) {
   const { getPConnect, label, listDataPage, customerId } = props;
   const [data, setData] = useState<DataItem[]>([]);
-  const [dataItem, setDataItem] = useState<DataItem>();
-  const [actionId, setActionId] = useState<string>();
-  const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
+  // const [dataItem, setDataItem] = useState<DataItem>();
+  // const [actionId, setActionId] = useState<string>();
+  // const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const caseKey = getPConnect().getCaseInfo().getKey();
   const context = getPConnect().getContextName();
@@ -55,31 +55,33 @@ function SlDxExtensionsStarRatingWidget(
       .finally(() => setIsLoading(false));
   }, [customerId, context, listDataPage]);
 
-  const onActionItemClick: ActionWithDataItem<DataItem> = (
-    actionDataItem,
-    id,
-    e,
-    menuButton
-  ) => {
-    // eslint-disable-next-line no-console
-    console.log(actionDataItem, id, e, menuButton);
-    setActionId(id);
-    setActionTarget(menuButton ?? e.currentTarget);
-    setDataItem(actionDataItem);
-  };
+  // const onActionItemClick: ActionWithDataItem<DataItem> = (
+  //   actionDataItem,
+  //   id,
+  //   e,
+  //   menuButton
+  // ) => {
+  //   // eslint-disable-next-line no-console
+  //   console.log(actionDataItem, id, e, menuButton);
+  //   // setActionId(id);
+  //   // setActionTarget(menuButton ?? e.currentTarget);
+  //   // setDataItem(actionDataItem);
+  // };
 
-  const onActionClick: Action['onClick'] = (id, e, menuButton) => {
-    // eslint-disable-next-line no-console
-    console.log(id, e, menuButton);
-    setActionId(id);
-    setActionTarget(menuButton ?? e.currentTarget);
-  };
+  // const onActionClick: Action['onClick'] = (id, e, menuButton) => {
+  //   // eslint-disable-next-line no-console
+  //   console.log(id, e, menuButton);
+  //   // setActionId(id);
+  //   // setActionTarget(menuButton ?? e.currentTarget);
+  // };
 
-  const items = createItems(data, getPConnect, onActionItemClick, mapDataItem);
+  // const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
+  const items = createItems(data, getPConnect, mapDataItem);
 
   const actions =
     data.findIndex(di => di.CaseID === caseKey) < 0
-      ? [createAction('Add', getPConnect, onActionClick)]
+      ? // ? [createAction('Add', getPConnect, onActionClick)]
+        [createAction('Add', getPConnect)]
       : [];
 
   return (
@@ -93,11 +95,14 @@ function SlDxExtensionsStarRatingWidget(
         loading={isLoading}
         items={items ?? []}
       />
-      {actionTarget && (
-        <Text variant="h1"
+      {/* 
+        actionTarget && (
+        <Text
+          variant='h1'
           onClick={() => setActionTarget(null)}
         >{`Click me to dismiss: ${actionId} ${dataItem?.CaseID ?? ''}`}</Text>
-      )}
+      )
+      */}
     </>
   );
 }
