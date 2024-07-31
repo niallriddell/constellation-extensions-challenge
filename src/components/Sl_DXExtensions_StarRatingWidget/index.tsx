@@ -96,7 +96,6 @@ function SlDxExtensionsStarRatingWidget(
           >{`Click me to dismiss: ${actionId}`}</Text>
         )
 
-        // {
         //   actionTarget && (
         //   <Text
         //     variant='h1'
