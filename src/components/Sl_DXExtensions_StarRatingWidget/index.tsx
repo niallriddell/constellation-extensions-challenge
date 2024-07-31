@@ -15,7 +15,7 @@ import type { PConnFieldProps } from './PConnProps';
 
 import type { RatingDataItem as DataItem } from './ratingData';
 import mapDataItem from './ratingItems';
-import type { ActionWithDataItem } from './actions';
+import type { ActionWithDataItem } from './actionUtils';
 import createItems from './itemUtils';
 
 registerIcon(star);

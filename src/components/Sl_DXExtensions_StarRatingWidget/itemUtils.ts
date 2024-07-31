@@ -1,4 +1,9 @@
-import type { ActionWithDataItem } from './actions';
+import type { SummaryListItem } from '@pega/cosmos-react-core';
+import type { ActionWithDataItem } from './actionUtils';
+
+export interface DataItemSummaryListItem<T> extends SummaryListItem {
+  dataItem: T;
+}
 
 const createItems = <T, U>(
   data: T[],

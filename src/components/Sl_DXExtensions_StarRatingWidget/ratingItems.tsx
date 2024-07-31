@@ -1,21 +1,17 @@
 import {
   Action,
   Rating,
-  SummaryListItem,
   createUID,
   MetaList,
   Text,
   DateTimeDisplay
 } from '@pega/cosmos-react-core';
 
-import createAction, { type ActionWithDataItem } from './actions';
-import { RatingDataItem } from './ratingData';
+import createAction, { type ActionWithDataItem } from './actionUtils';
+import type { DataItemSummaryListItem } from './itemUtils';
+import type { RatingDataItem } from './ratingData';
 
-export interface DataItemSummaryListItem<T> extends SummaryListItem {
-  dataItem: T;
-}
-
-export const mapRatingDataItem = (
+const mapRatingDataItem = (
   dataItem: RatingDataItem,
   getPConnect: () => typeof PConnect,
   onClickHandler: ActionWithDataItem<RatingDataItem>
@@ -23,12 +19,6 @@ export const mapRatingDataItem = (
   const caseKey = getPConnect().getCaseInfo().getKey();
   const isCurrent = caseKey && dataItem.CaseID === caseKey;
 
-  // eslint-disable-next-line no-console
-  console.log(
-    `Current case is ${caseKey}, ${dataItem.CaseID} ${
-      isCurrent ? 'is' : 'is not'
-    } the current case`
-  );
   const actions: Action[] = isCurrent
     ? [
         createAction<RatingDataItem>(
