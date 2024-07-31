@@ -35,7 +35,7 @@ function SlDxExtensionsStarRatingWidget(
   const { getPConnect, label, listDataPage, customerId } = props;
   const [data, setData] = useState<DataItem[]>([]);
   const [actionId, setActionId] = useState<string>();
-  // const [dataItem, setDataItem] = useState<DataItem>();
+  // const [dataItem, setDataItem] = useState<DataItem | null>();
   // const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const caseKey = getPConnect().getCaseInfo().getKey();
@@ -70,6 +70,7 @@ function SlDxExtensionsStarRatingWidget(
   const onActionClick: Action['onClick'] = (id, e, menuButton) => {
     setActionId(id);
     // setActionTarget(menuButton ?? e.currentTarget);
+    // setDataItem(null);
   };
 
   const actions =
@@ -102,7 +103,7 @@ function SlDxExtensionsStarRatingWidget(
         //     onClick={() => setActionTarget(null)}
         //   >{`Click me to dismiss: ${actionId}${
         //     dataItem ? `:${dataItem.CaseID}` : ''
-        //   }:`}</Text>
+        //   }`}</Text>
         // )
       }
     </>
