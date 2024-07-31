@@ -77,9 +77,6 @@ function SlDxExtensionsStarRatingWidget(
 
   const items = createItems(data, getPConnect, onActionItemClick, mapDataItem);
 
-  // eslint-disable-next-line no-console
-  console.log(actionId, actionTarget, dataItem);
-
   const actions =
     data.findIndex(di => di.CaseID === caseKey) < 0
       ? [createAction('Add', getPConnect, onActionClick)]
@@ -98,8 +95,9 @@ function SlDxExtensionsStarRatingWidget(
       />
       {actionTarget && (
         <Text
+          variant='h1'
           onClick={() => setActionTarget(null)}
-        >{`Click me to dismiss: ${actionId}`}</Text>
+        >{`Click me to dismiss: ${actionId} ${dataItem?.CaseID ?? ''}`}</Text>
       )}
     </>
   );
