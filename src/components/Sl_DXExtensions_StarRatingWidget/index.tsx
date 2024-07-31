@@ -60,8 +60,6 @@ function SlDxExtensionsStarRatingWidget(
     e,
     menuButton
   ) => {
-    // const { dataItem as actionDataItem, id, e, menuButton } = args;
-
     setActionId(id);
     // setActionTarget(menuButton ?? e.currentTarget);
     // setDataItem(actionDataItem);
@@ -70,7 +68,6 @@ function SlDxExtensionsStarRatingWidget(
   const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
 
   const onActionClick: Action['onClick'] = (id, e, menuButton) => {
-    // const { id, e, menuButton } = args;
     setActionId(id);
     // setActionTarget(menuButton ?? e.currentTarget);
   };
