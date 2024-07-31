@@ -1,4 +1,4 @@
-import type { SummaryListItem } from '@pega/cosmos-react-core';
+import type { Action, SummaryListItem } from '@pega/cosmos-react-core';
 import type { ActionWithDataItem } from './actionUtils';
 
 export interface DataItemSummaryListItem<T> extends SummaryListItem {
@@ -8,11 +8,11 @@ export interface DataItemSummaryListItem<T> extends SummaryListItem {
 const createItems = <T, U>(
   data: T[],
   getPConnect: () => typeof PConnect,
-  onClickHandler: ActionWithDataItem<T>,
+  onClickHandler: ActionWithDataItem<T> | Action["onClick"],
   mapFunction: (
     dataItem: T,
     getPConnect: () => typeof PConnect,
-    onClickHandler: ActionWithDataItem<T>,
+    onClickHandler: ActionWithDataItem<T> | Action["onClick"],
     index: number
   ) => U
 ): U[] =>

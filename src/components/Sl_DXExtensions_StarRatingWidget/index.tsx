@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 
 import {
+  Action,
   registerIcon,
   SummaryList,
+  Text,
   useElement,
   withConfiguration
 } from '@pega/cosmos-react-core';
@@ -17,6 +19,7 @@ import type { RatingDataItem as DataItem } from './ratingData';
 import mapDataItem from './ratingItems';
 import type { ActionWithDataItem } from './actionUtils';
 import createItems from './itemUtils';
+import createAction from './actionUtils';
 
 registerIcon(star);
 
@@ -36,6 +39,7 @@ function SlDxExtensionsStarRatingWidget(
   const [actionId, setActionId] = useState<string>();
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const caseKey = getPConnect().getCaseInfo().getKey();
   const context = getPConnect().getContextName();
 
   useEffect(() => {
@@ -51,7 +55,7 @@ function SlDxExtensionsStarRatingWidget(
       .finally(() => setIsLoading(false));
   }, [customerId, context, listDataPage]);
 
-  const onActionClick: ActionWithDataItem<DataItem> = (
+  const onActionItemClick: ActionWithDataItem<DataItem> = (
     actionDataItem,
     id,
     e,
@@ -64,20 +68,40 @@ function SlDxExtensionsStarRatingWidget(
     setDataItem(actionDataItem);
   };
 
-  const items = createItems(data, getPConnect, onActionClick, mapDataItem);
+  const onActionClick: Action['onClick'] = (id, e, menuButton) => {
+    // eslint-disable-next-line no-console
+    console.log(id, e, menuButton);
+    setActionId(id);
+    setActionTarget(menuButton ?? e.currentTarget);
+  };
+
+  const items = createItems(data, getPConnect, onActionItemClick, mapDataItem);
 
   // eslint-disable-next-line no-console
   console.log(actionId, actionTarget, dataItem);
 
+  const actions =
+    data.findIndex(di => di.CaseID === caseKey) < 0
+      ? [createAction('Add', getPConnect, onActionClick)]
+      : [];
+
   return (
-    <SummaryList
-      key={`summaryList-${customerId}`}
-      icon='star'
-      name={label}
-      count={isLoading ? 0 : data?.length}
-      loading={isLoading}
-      items={items ?? []}
-    />
+    <>
+      <SummaryList
+        key={`summaryList-${customerId}`}
+        actions={actions}
+        icon='star'
+        name={label}
+        count={isLoading ? 0 : data?.length}
+        loading={isLoading}
+        items={items ?? []}
+      />
+      {actionTarget && (
+        <Text
+          onClick={() => setActionTarget(null)}
+        >{`Click me to dismiss: ${actionId}`}</Text>
+      )}
+    </>
   );
 }
 
