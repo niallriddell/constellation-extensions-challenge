@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import {
   registerIcon,
   SummaryList,
+  useElement,
   withConfiguration
 } from '@pega/cosmos-react-core';
 
@@ -12,10 +13,9 @@ import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.ic
 
 import type { PConnFieldProps } from './PConnProps';
 
-import { type RatingDataItem as DataItem } from './ratingData';
-// import mapDataItem, { RatingSummaryListItem } from './ratingItems';
+import type { RatingDataItem as DataItem } from './ratingData';
 import mapDataItem from './ratingItems';
-// import createAction from './actions';
+import type { ActionWithDataItem } from './actions';
 import createItems from './dataUtils';
 
 registerIcon(star);
@@ -32,6 +32,9 @@ function SlDxExtensionsStarRatingWidget(
 ) {
   const { getPConnect, label, listDataPage, customerId } = props;
   const [data, setData] = useState<DataItem[]>([]);
+  const [dataItem, setDataItem] = useState<DataItem>();
+  const [actionId, setActionId] = useState<string>();
+  const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const context = getPConnect().getContextName();
 
@@ -48,7 +51,23 @@ function SlDxExtensionsStarRatingWidget(
       .finally(() => setIsLoading(false));
   }, [customerId, context, listDataPage]);
 
-  const items = createItems(data, getPConnect, mapDataItem);
+  const onActionClick: ActionWithDataItem<DataItem> = (
+    actionDataItem,
+    id,
+    e,
+    menuButton
+  ) => {
+    // eslint-disable-next-line no-console
+    console.log(actionDataItem, id, e, menuButton);
+    setActionId(id);
+    setActionTarget(menuButton ?? e.currentTarget);
+    setDataItem(actionDataItem);
+  };
+
+  const items = createItems(data, getPConnect, onActionClick, mapDataItem);
+
+  // eslint-disable-next-line no-console
+  console.log(actionId, actionTarget, dataItem);
 
   return (
     <SummaryList

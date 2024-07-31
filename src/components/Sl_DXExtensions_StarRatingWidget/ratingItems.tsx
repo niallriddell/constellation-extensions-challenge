@@ -1,5 +1,5 @@
 import {
-  // Action,
+  Action,
   Rating,
   SummaryListItem,
   createUID,
@@ -8,53 +8,61 @@ import {
   DateTimeDisplay
 } from '@pega/cosmos-react-core';
 
-// import createAction from './actions';
+import createAction, { type ActionWithDataItem } from './actions';
 import { RatingDataItem } from './ratingData';
 
-export interface RatingSummaryListItem extends SummaryListItem {
-  rating: RatingDataItem;
+export interface DataItemSummaryListItem<T> extends SummaryListItem {
+  dataItem: T;
 }
 
 export const mapRatingDataItem = (
-  entry: RatingDataItem,
-  getPConnect: () => typeof PConnect
-): RatingSummaryListItem => {
+  dataItem: RatingDataItem,
+  getPConnect: () => typeof PConnect,
+  onClickHandler: ActionWithDataItem<RatingDataItem>
+): DataItemSummaryListItem<RatingDataItem> => {
   const caseKey = getPConnect().getCaseInfo().getKey();
-  const isCurrent = caseKey && entry.CaseID === caseKey;
+  const isCurrent = caseKey && dataItem.CaseID === caseKey;
 
   // eslint-disable-next-line no-console
   console.log(
-    `Current case is ${caseKey}, ${entry.CaseID} ${
+    `Current case is ${caseKey}, ${dataItem.CaseID} ${
       isCurrent ? 'is' : 'is not'
     } the current case`
   );
-  // const actions: Action[] = isCurrent
-  //   ? [createAction('Edit', getPConnect)]
-  //   : [];
+  const actions: Action[] = isCurrent
+    ? [
+        createAction<RatingDataItem>(
+          'Edit',
+          getPConnect,
+          onClickHandler,
+          dataItem
+        )
+      ]
+    : [];
 
   return {
-    rating: entry,
-    id: entry.pyGUID ?? createUID(),
-    // actions,
+    dataItem,
+    id: dataItem.pyGUID ?? createUID(),
+    actions,
     primary: (
       <Rating
-        key={`${entry.pyGUID ?? createUID()}-rating`}
-        value={entry.CustomerRating}
-        metaInfo={`${entry.CustomerRating} of ${entry.NumberOfStars}`}
+        key={`${dataItem.pyGUID ?? createUID()}-rating`}
+        value={dataItem.CustomerRating}
+        metaInfo={`${dataItem.CustomerRating} of ${dataItem.NumberOfStars}`}
       />
     ),
     secondary: (
       <MetaList
-        key={`${entry.pyGUID ?? createUID()}-metalist`}
+        key={`${dataItem.pyGUID ?? createUID()}-metalist`}
         items={[
           <DateTimeDisplay
-            value={entry.pxUpdateDateTime}
+            value={dataItem.pxUpdateDateTime}
             variant='datetime'
             format='short'
           />,
-          <Text>{entry.CaseClassName}</Text>,
-          <Text>{entry.CaseID}</Text>,
-          <Text>{entry.CustomerID}</Text>
+          <Text>{dataItem.CaseClassName}</Text>,
+          <Text>{dataItem.CaseID}</Text>,
+          <Text>{dataItem.CustomerID}</Text>
         ]}
       />
     )

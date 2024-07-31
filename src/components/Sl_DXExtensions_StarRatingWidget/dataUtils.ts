@@ -1,15 +1,20 @@
-// Generic handleResponse function
+import type { ActionWithDataItem } from './actions';
+
 const createItems = <T, U>(
   data: T[],
   getPConnect: () => typeof PConnect,
+  onClickHandler: ActionWithDataItem<T>,
   mapFunction: (
-    entry: T,
+    dataItem: T,
     getPConnect: () => typeof PConnect,
+    onClickHandler: ActionWithDataItem<T>,
     index: number
   ) => U
 ): U[] =>
   data
-    ? data.map((entry, index) => mapFunction(entry, getPConnect, index))
+    ? data.map((dataItem, index) =>
+        mapFunction(dataItem, getPConnect, onClickHandler, index)
+      )
     : [];
 
 export default createItems;
