@@ -96,11 +96,13 @@ function SlDxExtensionsStarRatingWidget(
           >{`Click me to dismiss: ${actionId}`}</Text>
         )
 
-        //   actionTarget && (
+        // actionTarget && (
         //   <Text
         //     variant='h1'
         //     onClick={() => setActionTarget(null)}
-        //   >{`Click me to dismiss: ${actionId}${dataItem ? ':'+dataItem.CaseID : '' }:`}</Text>
+        //   >{`Click me to dismiss: ${actionId}${
+        //     dataItem ? `:${dataItem.CaseID}` : ''
+        //   }:`}</Text>
         // )
       }
     </>
