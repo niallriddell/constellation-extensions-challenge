@@ -123,20 +123,16 @@ const getDataItems = async <
     })
   };
 
-  try {
-    const response = await PCore.getDataPageUtils().getDataAsync(
-      dataView,
-      context,
-      undefined,
-      undefined,
-      query,
-      { invalidateCache: true }
-    );
-    mapDataToData(response.data as InputData[], mapper, transFormMap);
-    return response.data as OutputData[];
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await PCore.getDataPageUtils().getDataAsync(
+    dataView,
+    context,
+    undefined,
+    undefined,
+    query,
+    { invalidateCache: true }
+  );
+  mapDataToData(response.data as InputData[], mapper, transFormMap);
+  return response.data as OutputData[];
 };
 
 export { handleResponse, getDataItems };

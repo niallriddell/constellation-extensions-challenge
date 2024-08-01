@@ -3,7 +3,7 @@ import type {
   Filter,
   Query
 } from '@pega/pcore-pconnect-typedefs/datapage/types';
-import { BiMap } from './bimap';
+import { BiMap } from './../../utils/bimap';
 
 // All mapping between the component internal data model and the external data model
 // is done here.  This is not strictly necessary and the approach taken here can be
@@ -20,7 +20,7 @@ export interface Rating {
   stars: number;
   guid?: string;
   updateDateTime?: string;
-};
+}
 
 // External data model
 interface RatingData {
@@ -31,7 +31,7 @@ interface RatingData {
   NumberOfStars: number;
   pyGUID?: string;
   pxUpdateDateTime?: string;
-};
+}
 
 // Custom BiMap to allow two way lookup of keys
 export const mapper = new BiMap<keyof Rating, keyof RatingData>();

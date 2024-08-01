@@ -16,6 +16,7 @@ import SlDxExtensionsStarRatingWidget, {
 import mockRatingData, { newRating } from './mock.ratingData';
 import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import { AxiosResponse } from 'axios';
+import MessagingServiceManager from '@pega/pcore-pconnect-typedefs/messagingservice/manager';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
   title: 'SL/Star Rating Widget',
@@ -42,6 +43,12 @@ window.PCore.getConstants = () => {
   return {
     CASE_INFO: {
       CASE_INFO_ID: 'caseInfo.ID'
+    },
+    PUB_SUB_EVENTS: {
+      DATA_EVENTS: {
+        DATA_OBJECT_CREATED: 'created',
+        DATA_OBJECT_UPDATED: 'updated'
+      }
     }
   } as Readonly<any>;
 };
@@ -135,8 +142,9 @@ const mockPConnect = (): Partial<typeof PConnect> => ({
   },
   getCaseInfo: () =>
     ({
-      getKey: () => 'SL-TELLUSMORE-WORK Z-1234',
-      getClassName: () => 'SL-TellUseMore-Work-Incident'
+      getKey: () => newRating.CaseID,
+      getID: () => newRating.CaseID.split(' ')[1],
+      getClassName: () => newRating.CaseClassName
     }) as CaseInfo
 });
 
@@ -146,11 +154,11 @@ const mockMessagingServiceManager = (): Partial<
   return {
     subscribe: () => 'SubId',
     unsubscribe: () => {}
-      getKey: () => newRating.CaseID,
-      getID: () => newRating.CaseID.split(' ')[1],
-      getClassName: () => newRating.CaseClassName
-    }) as CaseInfo
-});
+  };
+};
+
+window.PCore.getMessagingServiceManager =
+  mockMessagingServiceManager as () => typeof MessagingServiceManager;
 
 export const StarRatingWidgetWithCurrentCaseRating: Story = (
   args: SlDxExtensionsStarRatingWidgetProps
@@ -158,26 +166,8 @@ export const StarRatingWidgetWithCurrentCaseRating: Story = (
   const props = {
     getPConnect: mockPConnect as () => typeof PConnect
   };
-};
 
-window.PCore.getMessagingServiceManager =
-  mockMessagingServiceManager as () => typeof MessagingServiceManager;
-
-export const StarRatingsWidgetWithCurrentCaseRating: Story = (
-  args: SlDxExtensionsStarRatingsWidgetProps
-) => {
-  const props = {
-    getPConnect: mockPConnect as () => typeof PConnect
-  };
-
-  return <SlDxExtensionsStarRatingsWidget {...props} {...args} />;
-};
-
-  return (
-    <>
-      <SlDxExtensionsStarRatingWidget {...props} {...args} />
-    </>
-  );
+  return <SlDxExtensionsStarRatingWidget {...props} {...args} />;
 };
 
 StarRatingWidgetWithCurrentCaseRating.args = {

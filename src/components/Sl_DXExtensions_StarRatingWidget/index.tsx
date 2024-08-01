@@ -1,24 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-
-import type { Action, ModalMethods } from '@pega/cosmos-react-core';
-import {
-  MouseEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   Action,
   debounce,
   ModalMethods,
-  SummaryList,
   withConfiguration,
   useModalManager,
   useElement,
-  registerIcon
+  registerIcon,
+  SummaryList
 } from '@pega/cosmos-react-core';
 
 import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
@@ -27,6 +17,7 @@ import type { PConnFieldProps } from './PConnProps';
 
 import {
   createRating,
+  getRating,
   getRatings,
   updateRating,
   type Rating as DataItem
@@ -56,7 +47,7 @@ export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
 // - [Optional] - Add support for data object deletion
 // - [Optional] - Add support for in array replacement of changed and
 //                new data objects via pubsub handler and using lookup data page
-const SlDxExtensionsStarRatingsWidget = ({
+const SlDxExtensionsStarRatingWidget = ({
   getPConnect,
   label,
   customerId,
@@ -158,10 +149,11 @@ const SlDxExtensionsStarRatingsWidget = ({
     });
   });
 
-  useEffect(() => {
-    // We don't anticipate a large number of ratings per customer, so for now we can
-    // use array processing to find the current case rating in the ratings array.
-    const processRatings = (allRatings: Array<DataItem>) => {
+  // We don't anticipate a large number of ratings per customer, so for now
+  // we can use array processing to find the current case rating in the
+  // ratings array.
+  const processRatings = useCallback(
+    (allRatings: Array<DataItem>) => {
       if (!customerId || !caseKey) {
         return allRatings;
       }
@@ -180,43 +172,27 @@ const SlDxExtensionsStarRatingsWidget = ({
   );
 
   const fetchRatings = useCallback(async () => {
-    const allRatings = await getRatingsForCustomer(
-      list,
-      customerId,
-      contextName
-    );
-    if (allRatings && allRatings.length > 0) {
-      setRatings(processRatings(allRatings));
+    try {
+      const allRatings = await getRatings(list, customerId, contextName);
+      if (allRatings && allRatings.length > 0) {
+        setData(processRatings(allRatings));
+      }
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
-    setLoading(false);
   }, [contextName, list, processRatings, customerId]);
 
   // TODO: We could show toast here or even mutate our ratings array instead of
   // doing a full requery to fetch all customer ratings when data changes.
   const handleDataObjectEvent = (payload: any) => {
     if (payload.guid && payload.guid !== 'NEW')
+      // eslint-disable-next-line no-console
       getRating(lookup, payload.guid).then(console.log);
   };
 
   useEffect(() => {
-    };
-
-    const fetchRatings = async () => {
-      try {
-        setIsError(false);
-        const allRatings = await getRatings(list, customerId, contextName);
-
-        if (allRatings && allRatings.length > 0) {
-          setData(processRatings(allRatings));
-        }
-      } catch (error) {
-        setIsError(true);
-        setData([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchRatings();
   }, [fetchRatings]);
 
@@ -258,14 +234,6 @@ const SlDxExtensionsStarRatingsWidget = ({
         'createSubId'
       );
     };
-  });
-
-  // An effect is required here because we're synchronising the open modal with
-  // changes in the data manged by the parent component.
-  // When and when not to use an effect is well documented here:
-  // https://react.dev/learn/you-might-not-need-an-effect
-  useEffect(() => {
-    modalRef.current?.update({ items: summaryItems });
   });
 
   const onActionClick: Action['onClick'] = (id, e, menuButton) => {
