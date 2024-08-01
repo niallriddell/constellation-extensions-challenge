@@ -40,8 +40,6 @@ window.PCore.getEnvironmentInfo = () => {
   } as typeof EnvironmentInfo;
 };
 
-window.PCore.getEnvironmentInfo();
-
 window.PCore.getLocaleUtils = () => {
   return {
     getLocaleValue: value => {
