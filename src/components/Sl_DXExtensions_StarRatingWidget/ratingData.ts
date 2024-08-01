@@ -1,3 +1,4 @@
+import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type {
   Filter,
   Query
@@ -92,28 +93,14 @@ export const getRating = async (
     [guidProp]: guid
   };
 
-  try {
-    const response: any = await PCore.getDataPageUtils().getPageDataAsync(
-      dataView,
-      context,
-      parameters
-    );
+  const response = await PCore.getDataPageUtils().getPageDataAsync(
+    dataView,
+    context,
+    parameters
+  );
 
-    if (response.status === 200) {
-      return mapRatingDataToRating([response.data], mapper)[0];
-    }
-  } catch (error) {
-    console.error(error);
-  }
+  return mapRatingDataToRating([response as RatingData], mapper)[0];
 };
-
-// Temporary solution to fix an issue with the typescript data shapes in
-// getDataAsync not correctly matching the real data returned.
-// TODO:- Update this when the typedefs are fixed.
-interface RatingDataResponse {
-  data: any[] | RatingData[];
-  status?: number;
-}
 
 // Helper function that returns an array of ratings for a customerId.
 export const getRatings = async (
@@ -147,25 +134,21 @@ export const getRatings = async (
     filter: customerId ? filter : undefined
   };
 
-  try {
-    const response: RatingDataResponse =
-      await PCore.getDataPageUtils().getDataAsync(
-        dataView,
-        context,
-        undefined,
-        undefined,
-        query,
-        { invalidateCache: true }
-      );
+  const response: DataAsyncResponse =
+    await PCore.getDataPageUtils().getDataAsync(
+      dataView,
+      context,
+      undefined,
+      undefined,
+      query,
+      { invalidateCache: true }
+    );
 
-    if (response.status === 200) {
-      return mapRatingDataToRating(response.data, mapper);
-    }
-
-    return [];
-  } catch (error) {
-    console.error(error);
+  if (response.status === 200) {
+    return mapRatingDataToRating(response.data as RatingData[], mapper);
   }
+
+  return [];
 };
 
 // TODO: Add in the createDataObject rest api endpoint
