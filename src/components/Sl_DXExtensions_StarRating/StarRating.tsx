@@ -27,7 +27,10 @@ interface SlDXExtensionsStarRatingProps extends StarRatingProps, PConnProps {
 // When this is referenced as a Field Integer extension component we need to handle the
 // updates using getPConnect.  When statically imported we use the change handling of the
 // calling component to manage state
-const handleChange = (newValue: number, getPConnect?: () => typeof PConnect) => {
+const handleChange = (
+  newValue: number,
+  getPConnect?: () => typeof PConnect
+) => {
   const propName: string = getPConnect && getPConnect().getStateProps()?.value;
 
   if (!propName || !getPConnect) return;
@@ -36,27 +39,28 @@ const handleChange = (newValue: number, getPConnect?: () => typeof PConnect) => 
   getPConnect().getActionsApi().triggerFieldChange(propName, newValue);
 };
 
-const SlDXExtensionsStarRating: FunctionComponent<SlDXExtensionsStarRatingProps & ForwardProps> =
-  forwardRef(function StarRating(
-    props: PropsWithoutRef<SlDXExtensionsStarRatingProps>,
-    ref: Ref<HTMLDivElement>
-  ) {
-    const uid = useUID();
-    const {
-      testId,
-      id = uid,
-      required,
-      label,
-      min = 0,
-      max = 100,
-      value = 0,
-      disabled = false,
-      readOnly = false,
-      onChange = handleChange,
-      metaInfo = `${value} of ${max}`,
-      autoFocus,
-      getPConnect = undefined
-    } = props;
+const SlDXExtensionsStarRating: FunctionComponent<
+  SlDXExtensionsStarRatingProps & ForwardProps
+> = forwardRef(function StarRating(
+  props: PropsWithoutRef<SlDXExtensionsStarRatingProps>,
+  ref: Ref<HTMLDivElement>
+) {
+  const uid = useUID();
+  const {
+    testId,
+    id = uid,
+    required,
+    label,
+    min = 0,
+    max = 100,
+    value = 0,
+    disabled = false,
+    readOnly = false,
+    onChange = handleChange,
+    metaInfo = `${value} of ${max}`,
+    autoFocus,
+    getPConnect = undefined
+  } = props;
 
     const starRatingRef = useConsolidatedRef<HTMLDivElement>(ref);
 
@@ -70,14 +74,14 @@ const SlDXExtensionsStarRating: FunctionComponent<SlDXExtensionsStarRatingProps 
         if (disabled || readOnly) return;
         const normalizedValue = Math.min(Math.max(newValue, min), max);
 
-        setCurrentHoverValue(normalizedValue);
-        setCurrentValue(normalizedValue);
-        setMetaInfoUpdated(`${normalizedValue} of ${max}`);
-        if (!ignoreChange) onChange(normalizedValue, getPConnect);
-        starRatingRef?.current?.focus();
-      },
-      [starRatingRef, disabled, readOnly, onChange, min, max, getPConnect]
-    );
+      setCurrentHoverValue(normalizedValue);
+      setCurrentValue(normalizedValue);
+      setMetaInfoUpdated(`${normalizedValue} of ${max}`);
+      if (!ignoreChange) onChange(normalizedValue, getPConnect);
+      starRatingRef?.current?.focus();
+    },
+    [starRatingRef, disabled, readOnly, onChange, min, max, getPConnect]
+  );
 
     const { start, end, rtl } = useDirection();
 
