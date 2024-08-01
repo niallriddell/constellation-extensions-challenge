@@ -4,7 +4,8 @@ import {
   MetaList,
   DateTimeDisplay,
   Action,
-  Link
+  Link,
+  Text
 } from '@pega/cosmos-react-core';
 import dayjs from 'dayjs';
 import tzone from 'dayjs/plugin/timezone';
@@ -57,6 +58,11 @@ export const mapRatingDataItem = (
     />
   ];
 
+  if (isCurrent)
+    items.push(
+      <Text>{`${getPConnect().getLocalizedValue('Current case')}`}</Text>
+    );
+
   const actions: Action[] = isCurrent
     ? [createAction<Rating>('Edit', getPConnect, onClickHandler, dataItem)]
     : [];
@@ -69,7 +75,9 @@ export const mapRatingDataItem = (
       <CosmosRating
         key={`${dataItem.guid ?? createUID()}-rating`}
         value={dataItem.rating}
-        metaInfo={`${dataItem.rating} of ${dataItem.stars}`}
+        metaInfo={`${dataItem.rating} ${getPConnect().getLocalizedValue(
+          'of'
+        )} ${dataItem.stars}`}
       />
     ),
     secondary: (

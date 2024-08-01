@@ -93,14 +93,6 @@ const SlDxExtensionsStarRatingWidget = ({
   // and Popover positioning support
   const { create: createModal } = useModalManager();
 
-  const publishWidgetCountUpdated = () => {
-    PCore.getPubSubUtils().publish('WidgetUpdated', {
-      widget: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
-      count: ratings.length + 1,
-      caseID: caseKey
-    });
-  };
-
   // All non-transient updates to rating data are performed via this function.
   // New rating objects don't yet have a GUID as this is created by Infinity, so we
   // assign a temporary one until we perform a successful create.  Updates use the
@@ -241,7 +233,7 @@ const SlDxExtensionsStarRatingWidget = ({
           setPopoverTarget={setActionTarget}
           currentRating={dataItem}
           onUpdateRating={onUpdateRating}
-          action={selectedAction}
+          actionId={actionId}
         />
       )}
     </>
