@@ -11,5 +11,5 @@ In the widget-challenge directory created when cloning the main branch.
 
 ```bash
 git stash
-git switch pubusb
+git switch localization
 ```

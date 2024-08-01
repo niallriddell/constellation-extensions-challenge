@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { Action, ModalMethods } from '@pega/cosmos-react-core';
 import {
@@ -17,11 +17,14 @@ import {
   createRating,
   getRatings,
   updateRating,
-  type Rating
+  type Rating as DataItem
 } from './ratingData';
+
 import { searchByRating, searchByCustomer } from './searchFunctions';
-import { createAction } from './actions';
-import { createSummaryItem } from './summaryListUtils';
+import mapDataItem from './ratingItems';
+import type { ActionWithDataItem } from './actionUtils';
+import createItems from './itemUtils';
+import createAction from './actionUtils';
 import SummaryListViewAllModal, {
   type SummaryListViewAllProps
 } from './SummaryListViewAllModal';
@@ -29,7 +32,8 @@ import StarRatingPopover from './StarRatingPopover';
 
 registerIcon(star);
 
-export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
+// TODO: Add any additional properties here that are configured in the config.json
+export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
   customerId?: string;
   ratingDataClass: string;
   ratingLookupDatapage: string[];
@@ -39,9 +43,9 @@ export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
 // TODO:
 // - [Optional] - Add websocket handler to update utilities panel count on server
 //                change
-// - Localization of all strings
 
-const SlDxExtensionsStarRatingsWidget = ({
+// TODO: Add any additional properties here that are configured in the config.json
+const SlDxExtensionsStarRatingWidget = ({
   getPConnect,
   label,
   customerId,
@@ -49,14 +53,20 @@ const SlDxExtensionsStarRatingsWidget = ({
   ratingLookupDatapage,
   ratingListDatapage,
   ratingSavableDatapage
-}: SlDxExtensionsStarRatingsWidgetProps) => {
+}: SlDxExtensionsStarRatingWidgetProps) => {
   const lookup = ratingLookupDatapage[0];
   const list = ratingListDatapage[0];
   const savable = ratingSavableDatapage[0];
 
-  if (!lookup) {
-  } // hack to stop linting errors for no unused.
-
+  // eslint-disable-next-line no-console
+  console.log(
+    ratingDataClass,
+    ratingLookupDatapage,
+    ratingListDatapage,
+    ratingSavableDatapage
+  );
+  // eslint-disable-next-line no-console
+  console.log(ratingDataClass, lookup, list, savable);
   // At this stage our widget is a CASE widget only and etherefore we know we're in the
   // current case context during runtime.
   // Utility widgets do not store their data in the case directly so can also
@@ -65,10 +75,12 @@ const SlDxExtensionsStarRatingsWidget = ({
   const caseKey = getPConnect().getCaseInfo().getKey();
   const caseClass = getPConnect().getCaseInfo().getClassName();
 
-  const [loading, setLoading] = useState(true);
-  const [ratings, setRatings] = useState<Array<Rating>>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [IsError, setIsError] = useState(false);
+  const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
+  const [data, setData] = useState<Array<DataItem>>([]);
   const [actionId, setActionId] = useState<string | undefined>();
-  const [selectedRating, setSelectedRating] = useState<Rating>({
+  const [dataItem, setDataItem] = useState<DataItem>({
     rating: 0,
     customerId: customerId || 'No Customer',
     stars: 5,
@@ -96,63 +108,49 @@ const SlDxExtensionsStarRatingsWidget = ({
   // existing GUID to lookup and update the data object via the savable data page
   // associated with the data class.
   // Persist your data to the server first and update the UI to align.
-  const onUpdateRating = (updatedRating: Rating) => {
+  const onUpdateRating = (updatedRating: DataItem) => {
     updatedRating.guid = updatedRating?.guid || 'NEW';
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
-    upsert(savable, updatedRating, undefined, ratingDataClass).then(rating => {
-      if (rating) {
-        setRatings([
-          rating,
-          ...(upsert === createRating ? ratings : ratings.slice(1))
-        ]);
-        if (upsert === createRating) publishWidgetCountUpdated();
-      }
-    });
+    upsert(savable, updatedRating).then(rating =>
+      rating
+        ? setData([rating, ...(upsert === createRating ? data : data.slice(1))])
+        : undefined
+    );
+  };
+
+  const onActionItemClick: ActionWithDataItem<DataItem> = (
+    actionDataItem,
+    id,
+    e,
+    menuButton
+  ) => {
+    setActionId(id);
+    setActionTarget(menuButton ?? e.currentTarget);
+    if (actionDataItem) setDataItem(actionDataItem);
   };
 
   // We iterate over the ratings to create the SummaryItems.  Memoization helps to
   // avoid re-running expensive operations.  In our case it saves one execution on rerender.
   // On a small dataset it may not be worth memoizing as there is a tradeoff.
   // We need to capture the selected rating so we know which rating to perform actions on.
-  const summaryItems = useMemo(
-    () =>
-      ratings.map(item => {
-        const summaryItem = createSummaryItem(item, getPConnect, caseKey);
-        return {
-          ...summaryItem,
-          actions: summaryItem.actions?.map((action: Action) => ({
-            ...action,
-            onClick(id: string, e: MouseEvent, menuButton?: HTMLButtonElement) {
-              setActionId(id);
-              setPopoverTarget(menuButton || e.currentTarget);
-              setSelectedRating(summaryItem.rating);
-            }
-          }))
-        };
-      }),
-    [
-      ratings,
-      getPConnect,
-      caseKey,
-      setActionId,
-      setPopoverTarget,
-      setSelectedRating
-    ]
-  );
+
+  const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
 
   // An effect is required here because we're synchronising the open modal with changes in the
   // data manged by the parent component.
   // When and when not to use an effect is well documented here: https://react.dev/learn/you-might-not-need-an-effect
   useEffect(() => {
-    modalRef.current?.update({ items: summaryItems });
+    modalRef.current?.update({
+      items: createItems(data, getPConnect, mapDataItem, onActionItemClick)
+    });
   });
 
   useEffect(() => {
     // We don't anticipate a large number of ratings per customer, so for now we can
     // use array processing to find the current case rating in the ratings array.
-    const processRatings = (allRatings: Array<Rating>) => {
+    const processRatings = (allRatings: Array<DataItem>) => {
       if (!customerId || !caseKey) {
         return allRatings;
       }
@@ -169,28 +167,39 @@ const SlDxExtensionsStarRatingsWidget = ({
     };
 
     const fetchRatings = async () => {
-      const allRatings = await getRatings(list, customerId, contextName);
-      if (allRatings && allRatings.length > 0) {
-        setRatings(processRatings(allRatings));
+      try {
+        setIsError(false);
+        const allRatings = await getRatings(list, customerId, contextName);
+
+        if (allRatings && allRatings.length > 0) {
+          setData(processRatings(allRatings));
+        }
+      } catch (error) {
+        setIsError(true);
+        setData([]);
+      } finally {
+        setIsLoading(false);
       }
-      setLoading(false);
     };
+
     fetchRatings();
   }, [list, customerId, contextName, caseKey]);
+
+  const onActionClick: Action['onClick'] = (id, e, menuButton) => {
+    setActionId(id);
+    setActionTarget(menuButton ?? e.currentTarget);
+  };
+
+  const isEmptyData = !data || data.length === 0;
+  const isCaseKeyAbsent =
+    data.filter(item => item.caseId === caseKey).length === 0;
 
   // As we always insert the current case rating at the top of the ratings array
   // we check if the first element of the array is for the current case.  If not we
   // display the 'Add' action.
-  const summaryActions =
-    (customerId && ratings.length && ratings[0].caseId !== caseKey) ||
-    ratings.length === 0
-      ? [createAction('Add', getPConnect)].map((action: Action) => ({
-          ...action,
-          onClick(id: string, e: MouseEvent) {
-            setActionId(id);
-            setPopoverTarget(e.currentTarget);
-          }
-        }))
+  const actions =
+    isEmptyData || isCaseKeyAbsent
+      ? [createAction('Add', getPConnect, onActionClick)]
       : [];
 
   const openViewAll = () => {
@@ -199,11 +208,11 @@ const SlDxExtensionsStarRatingsWidget = ({
       SummaryListViewAllModal,
       {
         name: label,
-        loading,
-        items: summaryItems,
-        actions: summaryActions,
+        loading: isLoading,
+        items,
+        actions,
         searchFunction: customerId ? searchByRating : searchByCustomer,
-        currentRating: selectedRating,
+        currentRating: dataItem,
         onUpdateRating
       },
       {
@@ -217,20 +226,21 @@ const SlDxExtensionsStarRatingsWidget = ({
   return (
     <>
       <SummaryList
+        error={IsError}
         icon='star'
-        items={summaryItems.slice(0, 3)}
-        loading={loading}
-        count={!loading ? ratings.length : undefined}
+        items={items.slice(0, 3)}
+        loading={isLoading}
+        count={!isLoading ? items.length : undefined}
         headingTag='h3'
         name={label}
-        actions={summaryActions}
+        actions={actions}
         onViewAll={openViewAll}
       />
-      {popoverTarget && (
+      {actionTarget && (
         <StarRatingPopover
-          popoverTarget={popoverTarget}
-          setPopoverTarget={setPopoverTarget}
-          currentRating={selectedRating}
+          popoverTarget={actionTarget}
+          setPopoverTarget={setActionTarget}
+          currentRating={dataItem}
           onUpdateRating={onUpdateRating}
           actionId={actionId}
         />
@@ -239,4 +249,4 @@ const SlDxExtensionsStarRatingsWidget = ({
   );
 };
 
-export default withConfiguration(SlDxExtensionsStarRatingsWidget);
+export default withConfiguration(SlDxExtensionsStarRatingWidget);

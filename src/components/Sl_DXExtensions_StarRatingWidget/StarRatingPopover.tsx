@@ -38,8 +38,7 @@ const StarRatingPopover = ({
     <Popover
       as={Grid}
       container={{ inline: true, rowGap: 2, pad: 2 }}
-      strategy='absolute'
-      placement='auto'
+      strategy='fixed'
       target={popoverTarget}
       portal={false}
       arrow

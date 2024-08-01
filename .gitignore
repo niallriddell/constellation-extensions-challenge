@@ -131,3 +131,8 @@ dist
 
 # lib
 lib
+
+# tasks.config.json
+tasks.config.json
+
+package-lock.json
