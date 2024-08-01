@@ -10,13 +10,13 @@ import {
 
 import type { Rating } from './ratingData';
 import { SearchFunction } from './searchFunctions';
-import { StarRatingSummaryListItem } from './summaryListUtils';
+import { DataItemSummaryListItem } from './itemUtils';
 import StarRatingPopover from './StarRatingPopover';
 
 export interface SummaryListViewAllProps {
   name: string;
   loading: boolean;
-  items: Array<StarRatingSummaryListItem>;
+  items: Array<DataItemSummaryListItem<Rating>>;
   actions: Array<Action>;
   searchFunction: SearchFunction<Rating>;
   currentRating: Rating;
@@ -70,7 +70,7 @@ const SummaryListViewAllModal = ({
               id: string,
               e: MouseEvent<HTMLElement>,
               menuButton?: HTMLElement
-            ) => onClickHandler(id, e, menuButton, item?.rating)
+            ) => onClickHandler(id, e, menuButton, item?.dataItem)
           };
         });
 
@@ -93,7 +93,7 @@ const SummaryListViewAllModal = ({
   const itemsToRender = useMemo(() => {
     if (search.trim()) {
       return newItems.filter(item =>
-        searchFunction(item.rating, search.trim())
+        searchFunction(item.dataItem, search.trim())
       );
     }
     return newItems;

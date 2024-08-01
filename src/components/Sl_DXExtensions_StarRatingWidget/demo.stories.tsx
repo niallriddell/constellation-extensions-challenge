@@ -4,28 +4,35 @@ import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
 import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
-import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client/index';
+import type EnvironmentInfo from '@pega/pcore-pconnect-typedefs/environment-info/index';
 
-import SlDxExtensionsStarRatingsWidget, {
-  type SlDxExtensionsStarRatingsWidgetProps
+import SlDxExtensionsStarRatingWidget, {
+  type SlDxExtensionsStarRatingWidgetProps
 } from './index';
 
-import ratingData from './mock';
+import mockRatingData, { newRating } from './mock.ratingData';
+import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
-const meta: Meta<typeof SlDxExtensionsStarRatingsWidget> = {
+const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
   title: 'SL/Star Rating Widget',
-  component: SlDxExtensionsStarRatingsWidget,
+  component: SlDxExtensionsStarRatingWidget,
   excludeStories: /.*Data$/
 };
 
 export default meta;
-type Story = StoryObj<typeof SlDxExtensionsStarRatingsWidget>;
+type Story = StoryObj<typeof SlDxExtensionsStarRatingWidget>;
 
 const mockPCore: Partial<typeof PCore> = {};
 
 if (!window.PCore) {
   window.PCore = mockPCore as typeof PCore;
 }
+
+window.PCore.getEnvironmentInfo = () => {
+  return {
+    getTimeZone: () => 'Europe/London'
+  } as typeof EnvironmentInfo;
+};
 
 window.PCore.getConstants = () => {
   return {
@@ -43,33 +50,21 @@ window.PCore.getLocaleUtils = () => {
   } as LocaleUtils;
 };
 
-type ResponseData = Promise<
-  | {
-      data: any[];
-    }
-  | {
-      data: {
-        [key: string]: any;
-      }[];
-      pageNumber: number | undefined;
-      pageSize: number | undefined;
-      queryStats: any;
-      status: number;
-      fetchDateTime?: string;
-    }
->;
+const mockGetDataAsync = (
+  ...args: any[]
+): Promise<Partial<DataAsyncResponse>> => {
+  const filter = args[4]?.filter as Filter;
+  const queryCustomerID = filter?.filterConditions.F1.rhs.value;
+  let { data } = mockRatingData;
+  if (queryCustomerID && queryCustomerID.length)
+    data = data.filter(rating => rating.CustomerID === queryCustomerID);
+
+  return Promise.resolve({ data, status: 200 });
+};
 
 const mockDataPageUtils = (): Partial<typeof DataPageUtils> => {
   return {
-    getDataAsync: (...args): ResponseData => {
-      const filter = args[4]?.filter as Filter;
-      const queryCustomerID = filter?.filterConditions.F1.rhs.value;
-      let { data } = ratingData;
-      if (queryCustomerID && queryCustomerID.length)
-        data = data.filter(rating => rating.CustomerID === queryCustomerID);
-
-      return Promise.resolve({ data, status: 200 });
-    },
+    getDataAsync: mockGetDataAsync as () => Promise<DataAsyncResponse>,
     getPageDataAsync: () => Promise.resolve({ data: {}, status: 200 })
   };
 };
@@ -107,13 +102,14 @@ const mockPConnect = (): Partial<typeof PConnect> => ({
   },
   getCaseInfo: () =>
     ({
-      getKey: () => 'SL-TELLUSMORE-WORK Z-1234',
-      getClassName: () => 'SL-TellUseMore-Work-Incident'
+      getKey: () => newRating.CaseID,
+      getID: () => newRating.CaseID.split(' ')[1],
+      getClassName: () => newRating.CaseClassName
     }) as CaseInfo
 });
 
-export const StarRatingsWidgetWithCurrentCaseRating: Story = (
-  args: SlDxExtensionsStarRatingsWidgetProps
+export const StarRatingWidgetWithCurrentCaseRating: Story = (
+  args: SlDxExtensionsStarRatingWidgetProps
 ) => {
   const props = {
     getPConnect: mockPConnect as () => typeof PConnect
@@ -121,12 +117,12 @@ export const StarRatingsWidgetWithCurrentCaseRating: Story = (
 
   return (
     <>
-      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
+      <SlDxExtensionsStarRatingWidget {...props} {...args} />
     </>
   );
 };
 
-StarRatingsWidgetWithCurrentCaseRating.args = {
+StarRatingWidgetWithCurrentCaseRating.args = {
   label: 'Ratings',
   customerId: 'Q1234',
   ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
@@ -135,8 +131,8 @@ StarRatingsWidgetWithCurrentCaseRating.args = {
   ratingSavableDatapage: ['D_CustomerRatingSavable']
 };
 
-export const StarRatingsWidgetWithoutCurrentCaseRating: Story = (
-  args: SlDxExtensionsStarRatingsWidgetProps
+export const StarRatingWidgetWithoutCurrentCaseRating: Story = (
+  args: SlDxExtensionsStarRatingWidgetProps
 ) => {
   const props = {
     getPConnect: mockPConnect as () => typeof PConnect
@@ -144,12 +140,12 @@ export const StarRatingsWidgetWithoutCurrentCaseRating: Story = (
 
   return (
     <>
-      <SlDxExtensionsStarRatingsWidget {...props} {...args} />
+      <SlDxExtensionsStarRatingWidget {...props} {...args} />
     </>
   );
 };
 
-StarRatingsWidgetWithoutCurrentCaseRating.args = {
+StarRatingWidgetWithoutCurrentCaseRating.args = {
   label: 'Ratings',
   customerId: 'Q123',
   ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
