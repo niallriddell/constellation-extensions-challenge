@@ -93,18 +93,14 @@ export const getRating = async (
     [guidProp]: guid
   };
 
-  try {
-    const response: any = await PCore.getDataPageUtils().getPageDataAsync(
-      dataView,
-      context,
-      parameters
-    );
+  const response: any = await PCore.getDataPageUtils().getPageDataAsync(
+    dataView,
+    context,
+    parameters
+  );
 
-    if (response.status === 200) {
-      return mapRatingDataToRating([response.data], mapper)[0];
-    }
-  } catch (error) {
-    console.error(error);
+  if (response.status === 200) {
+    return mapRatingDataToRating([response.data], mapper)[0];
   }
 };
 
@@ -140,25 +136,21 @@ export const getRatings = async (
     filter: customerId ? filter : undefined
   };
 
-  try {
-    const response: DataAsyncResponse =
-      await PCore.getDataPageUtils().getDataAsync(
-        dataView,
-        context,
-        undefined,
-        undefined,
-        query,
-        { invalidateCache: true }
-      );
+  const response: DataAsyncResponse =
+    await PCore.getDataPageUtils().getDataAsync(
+      dataView,
+      context,
+      undefined,
+      undefined,
+      query,
+      { invalidateCache: true }
+    );
 
-    if (response.status === 200) {
-      return mapRatingDataToRating(response.data as RatingData[], mapper);
-    }
-
-    return [];
-  } catch (error) {
-    console.error(error);
+  if (response.status === 200) {
+    return mapRatingDataToRating(response.data as RatingData[], mapper);
   }
+
+  return [];
 };
 
 // TODO: Add in the createDataObject rest api endpoint
@@ -167,6 +159,7 @@ export const updateRating = async (
   rating: Partial<Rating>,
   context?: string
 ): Promise<Rating | undefined> => {
+  // eslint-disable-next-line no-console
   console.log('updateRating:', dataView, context);
   return rating as Rating;
 };
@@ -178,6 +171,7 @@ export const createRating = async (
   context?: string
 ): Promise<Rating | undefined> => {
   rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
+  // eslint-disable-next-line no-console
   console.log('createRating:', dataView, rating, context);
   // Tempoary guid purely for mock implementation.
   return rating as Rating;

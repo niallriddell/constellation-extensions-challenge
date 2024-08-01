@@ -1,5 +1,15 @@
-const ratingData = {
-  status: 200,
+import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+
+export const newRating = {
+  CustomerRating: 0,
+  NumberOfStars: 5,
+  CaseID: 'SL-TELLUSMORE-WORK Z-12345',
+  CaseClassName: 'SL-TellUsMore-Work-Incident',
+  CustomerID: 'Q123',
+  pxUpdateDateTime: '2020-06-29T11:06:24.329Z'
+};
+
+const ratingData: Omit<DataAsyncResponse, 'config'> = {
   data: [
     {
       CustomerRating: 3,
@@ -73,7 +83,8 @@ const ratingData = {
       pyGUID: '687678687687686393',
       pxUpdateDateTime: '2020-06-29T11:06:24.329Z'
     }
-  ]
+  ],
+  status: 200
 };
 
 export default ratingData;
