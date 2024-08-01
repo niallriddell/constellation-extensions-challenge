@@ -1,11 +1,9 @@
-import type { Query } from '@pega/pcore-pconnect-typedefs/datapage/types';
-import { BiMap } from '../../utils/bimap';
-import {
-  getDataItems,
-  type SortBy,
-  type Filter,
-  TransformMap
-} from './../../utils/dataUtils';
+import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+import type {
+  Filter,
+  Query
+} from '@pega/pcore-pconnect-typedefs/datapage/types';
+import { BiMap } from './bimap';
 
 // All mapping between the component internal data model and the external data model
 // is done here.  This is not strictly necessary and the approach taken here can be
@@ -22,7 +20,7 @@ export interface Rating {
   stars: number;
   guid?: string;
   updateDateTime?: string;
-}
+};
 
 // External data model
 interface RatingData {
@@ -33,7 +31,7 @@ interface RatingData {
   NumberOfStars: number;
   pyGUID?: string;
   pxUpdateDateTime?: string;
-}
+};
 
 // Custom BiMap to allow two way lookup of keys
 export const mapper = new BiMap<keyof Rating, keyof RatingData>();
@@ -46,7 +44,7 @@ mapper.set('stars', 'NumberOfStars');
 mapper.set('guid', 'pyGUID');
 mapper.set('updateDateTime', 'pxUpdateDateTime');
 
-// Utility function that auto-generates the select object.
+// Utility funciton that auto-generates the select object.
 // Currently adds all mapped properties.
 function toSelectObject<K extends keyof Rating, V extends keyof RatingData>(
   biMap: BiMap<K, V>
@@ -70,7 +68,9 @@ function mapRatingDataToRating(
   return ratingDataArray.map(ratingData => {
     const rating: Partial<Rating> = {};
     biMap.getKeyToValueMap().forEach((value, key) => {
-      rating[key] = ratingData[value] as any;
+      rating[key as keyof Rating] = ratingData[
+        value as keyof RatingData
+      ] as any;
     });
     return rating as Rating;
   });
@@ -85,31 +85,22 @@ export const getRating = async (
   guid: string,
   context?: string
 ): Promise<Rating | undefined> => {
+  const guidProp: string | undefined = mapper.getValue('guid');
+
+  if (!guidProp) return;
+
   const parameters = {
-    [mapper.getValue('guid') as string]: guid
+    [guidProp]: guid
   };
 
-  try {
-    const response: any = await PCore.getDataPageUtils().getPageDataAsync(
-      dataView,
-      context,
-      parameters,
-      { invalidateCache: true }
-    );
+  const response = await PCore.getDataPageUtils().getPageDataAsync(
+    dataView,
+    context,
+    parameters
+  );
 
-    return mapRatingDataToRating([response], mapper)[0];
-  } catch (error) {
-    console.error(error);
-  }
+  return mapRatingDataToRating([response as RatingData], mapper)[0];
 };
-
-// Temporary solution to fix an issue with the typescript data shapes in
-// getDataAsync not correctly matching the real data returned.
-// TODO:- Update this when the typedefs are fixed.
-interface RatingDataResponse {
-  data: any[] | RatingData[];
-  status?: number;
-}
 
 // Helper function that returns an array of ratings for a customerId.
 export const getRatings = async (
@@ -126,7 +117,7 @@ export const getRatings = async (
     }
   ];
 
-  const filter = {
+  const filter: Filter = {
     logic: 'F1',
     filterConditions: {
       F1: {
@@ -143,25 +134,21 @@ export const getRatings = async (
     filter: customerId ? filter : undefined
   };
 
-  try {
-    const response: RatingDataResponse =
-      await PCore.getDataPageUtils().getDataAsync(
-        dataView,
-        context,
-        undefined,
-        undefined,
-        query,
-        { invalidateCache: true }
-      );
+  const response: DataAsyncResponse =
+    await PCore.getDataPageUtils().getDataAsync(
+      dataView,
+      context,
+      undefined,
+      undefined,
+      query,
+      { invalidateCache: true }
+    );
 
-    if (response.status === 200) {
-      return mapRatingDataToRating(response.data, mapper);
-    }
-
-    return [];
-  } catch (error) {
-    console.error(error);
+  if (response.status === 200) {
+    return mapRatingDataToRating(response.data as RatingData[], mapper);
   }
+
+  return [];
 };
 
 // TODO: Add in the createDataObject rest api endpoint
@@ -248,48 +235,3 @@ export const createRating = async (
     return mapRatingDataToRating([response.data.responseData], mapper)[0];
   }
 };
-
-export async function getRatingsForCustomer(
-  dataView: string,
-  customerId?: string,
-  context?: string
-): Promise<Rating[] | undefined> {
-  const transformMap: TransformMap<RatingData, Rating> = {
-    pxUpdateDateTime: (value: string | undefined) => {
-      // Parse the ISO date string into a Date object
-      if (value) {
-        const date = new Date(value);
-
-        // Add an hour to the Date object
-        date.setHours(date.getHours() + 2);
-
-        // Convert the Date object back to an ISO string
-        return date.toISOString();
-      }
-      return undefined;
-    }
-  };
-
-  const sortBy: SortBy<Rating> = [{ field: 'updateDateTime', type: 'DESC' }];
-  const filter: Filter<Rating> | undefined = customerId
-    ? {
-        logic: 'F1',
-        filterConditions: {
-          F1: {
-            lhs: { field: 'customerId' },
-            comparator: 'EQ',
-            rhs: { value: customerId }
-          }
-        }
-      }
-    : undefined;
-
-  return getDataItems<RatingData, Rating>(
-    dataView,
-    mapper,
-    sortBy,
-    filter,
-    context,
-    transformMap
-  );
-}

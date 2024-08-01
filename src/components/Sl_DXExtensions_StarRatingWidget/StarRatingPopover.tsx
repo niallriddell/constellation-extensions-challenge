@@ -1,13 +1,11 @@
-import { MouseEvent, RefCallback, useState } from 'react';
+import { RefCallback, useState } from 'react';
 
 import {
   withConfiguration,
   Popover,
   Grid,
   Button,
-  Text,
-  Action
-  // useElement
+  Text
 } from '@pega/cosmos-react-core';
 
 import StarRating from '../Sl_DXExtensions_StarRating';
@@ -23,18 +21,18 @@ const StarRatingPopover = ({
   setPopoverTarget,
   onUpdateRating,
   currentRating,
-  action
+  actionId
 }: {
   popoverTarget: Element | null;
   setPopoverTarget: RefCallback<Element | null>;
   onUpdateRating: (newRating: Rating) => void;
   currentRating: Rating;
-  action?: Action;
+  actionId?: string;
 }) => {
   const [ratingValue, setRatingValue] = useState<number>(
-    currentRating.rating ?? 0
+    (currentRating && currentRating.rating) || 0
   );
-  const pyId = currentRating.caseId.split(' ')[1];
+  const pyId = currentRating?.caseId.split(' ')[1];
 
   return (
     <Popover
@@ -46,7 +44,9 @@ const StarRatingPopover = ({
       arrow
       style={{ width: '40ch' }}
     >
-      <Text variant='h2'>{`${action?.text} : ${pyId}`}</Text>
+      <Text variant='h2'>
+        {actionId === 'rating:edit' ? `Edit: ${pyId}` : `Add: ${pyId}`} rating
+      </Text>
       <StarRating
         min='0'
         max='5'
