@@ -41,14 +41,18 @@ function SlDxExtensionsStarRatingWidget(
   const [isLoading, setIsLoading] = useState(true);
   const [showPopover, setShowPopover] = useState(true);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, setValue] = useState<number>(0);
   const [actionId, setActionId] = useState<string>();
 
   const popOverRef = useElement<HTMLDivElement>()[1];
 
   const caseKey = getPConnect().getCaseInfo().getKey();
+
+  const caseId = getPConnect().getCaseInfo().getID();
   const caseClass = getPConnect().getCaseInfo().getClassName();
   const context = getPConnect().getContextName();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [dataItem, setDataItem] = useState<DataItem>({
     CustomerRating: 0,
     NumberOfStars: 5,
@@ -96,7 +100,7 @@ function SlDxExtensionsStarRatingWidget(
     setActionId(id);
     setShowPopover(true);
     setActionTarget(menuButton ?? e.currentTarget);
-    setValue(actionDataItem?.CustomerRating ?? 0);
+    // setValue(actionDataItem?.CustomerRating ?? 0);
     if (actionDataItem) setDataItem(actionDataItem);
   };
 
@@ -116,34 +120,33 @@ function SlDxExtensionsStarRatingWidget(
       ? [createAction('Add', getPConnect, onActionClick)]
       : [];
 
-  // TODO: Only in memory and not persisted for now so that Storybook story
-  // works
-  const upsertDataItem = (selectedDataItem: DataItem, changedValue: number) => {
-    if (selectedDataItem.pyGUID) {
-      setData(
-        data.map(dataItemToCheck =>
-          dataItemToCheck.pyGUID === selectedDataItem.pyGUID
-            ? {
-                ...dataItemToCheck,
-                CustomerRating: changedValue,
-                pxUpdateDateTime: new Date().toISOString()
-              }
-            : dataItemToCheck
-        )
-      );
-      return;
-    }
-
-    const newDataItem = {
-      ...selectedDataItem,
-      CustomerRating: changedValue,
-      pyGUID: 'NEW',
-      pxUpdateDateTime: new Date().toISOString()
-    };
-
-    data?.push(newDataItem);
-    setData(data);
-  };
+  // // TODO: Only in memory and not persisted for now so that Storybook story
+  // // works
+  // const upsertDataItem = (selectedDataItem: DataItem, changedValue: number) => {
+  //   if (selectedDataItem.pyGUID) {
+  //     setData(
+  //       data.map(dataItemToCheck =>
+  //         dataItemToCheck.pyGUID === selectedDataItem.pyGUID
+  //           ? {
+  //               ...dataItemToCheck,
+  //               CustomerRating: changedValue,
+  //               pxUpdateDateTime: new Date().toISOString()
+  //             }
+  //           : dataItemToCheck
+  //       )
+  //     );
+  //     return;
+  //   }
+  //
+  //   const newDataItem = {
+  //     ...selectedDataItem,
+  //     CustomerRating: changedValue,
+  //     pyGUID: 'NEW',
+  //     pxUpdateDateTime: new Date().toISOString()
+  //   };
+  //
+  //   setData([...data, newDataItem]);
+  // };
 
   return (
     <>
@@ -177,13 +180,16 @@ function SlDxExtensionsStarRatingWidget(
           {...clickMountingHandlers}
         >
           <Text variant='h2'>
-            {actionId === 'rating:addNew' ? 'New' : 'Edit'}
+            {actionId === 'rating:addNew' ? 'New' : `Edit Rating: ${caseId}`}
           </Text>
           <Slider
             min={0}
             max={5}
             value={value}
-            onChange={(changeValue: number) => setValue(changeValue)}
+            onChange={
+              () => {}
+              // (changeValue: number) => setValue(changeValue)
+            }
           />
           <Grid
             container={{
@@ -205,7 +211,7 @@ function SlDxExtensionsStarRatingWidget(
               variant='primary'
               onClick={(e: MouseEvent) => {
                 e.preventDefault();
-                if (dataItem) upsertDataItem(dataItem, value);
+                // if (dataItem) upsertDataItem(dataItem, value);
                 setActionTarget(null);
               }}
             >

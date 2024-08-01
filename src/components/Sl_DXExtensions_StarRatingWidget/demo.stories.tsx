@@ -1,6 +1,8 @@
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type { publicConstants } from '@pega/pcore-pconnect-typedefs/constants';
 import type DataApiUtils from '@pega/pcore-pconnect-typedefs/data-view/DataApiUtils';
+import type EnvironmentInfo from '@pega/pcore-pconnect-typedefs/environment-info/index';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 import SlDxExtensionsStarRatingWidget, {
@@ -31,6 +33,14 @@ const mockConstants = (): Partial<typeof publicConstants> => {
   return { CASE_INFO: mockCaseInfo as (typeof publicConstants)['CASE_INFO'] };
 };
 window.PCore.getConstants = mockConstants as () => typeof publicConstants;
+
+window.PCore.getEnvironmentInfo = () => {
+  return {
+    getTimeZone: () => 'Europe/London'
+  } as typeof EnvironmentInfo;
+};
+
+window.PCore.getEnvironmentInfo();
 
 window.PCore.getLocaleUtils = () => {
   return {
@@ -72,7 +82,7 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = (
   });
   const mockCaseInfo = (): Partial<CaseInfo> => ({
     getKey: () => newRating.CaseID,
-
+    getID: () => newRating.CaseID.split(' ')[1],
     getClassName: () => newRating.CaseClassName
   });
 

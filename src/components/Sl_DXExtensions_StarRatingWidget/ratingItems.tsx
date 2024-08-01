@@ -6,10 +6,15 @@ import {
   DateTimeDisplay,
   Action
 } from '@pega/cosmos-react-core';
-
+import dayjs from 'dayjs';
+import tzone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import createAction, { type ActionWithDataItem } from './actionUtils';
 import type { DataItemSummaryListItem } from './itemUtils';
 import { RatingDataItem } from './ratingData';
+
+dayjs.extend(tzone);
+dayjs.extend(utc);
 
 export const mapRatingDataItem = (
   dataItem: RatingDataItem,
@@ -30,6 +35,9 @@ export const mapRatingDataItem = (
       ]
     : [];
 
+  const environmentInfo = PCore.getEnvironmentInfo();
+  const timezone = environmentInfo && environmentInfo.getTimeZone();
+
   return {
     dataItem,
     id: dataItem.pyGUID ?? createUID(),
@@ -46,7 +54,7 @@ export const mapRatingDataItem = (
         key={`${dataItem.pyGUID ?? createUID()}-metalist`}
         items={[
           <DateTimeDisplay
-            value={dataItem.pxUpdateDateTime}
+            value={dayjs(dataItem.pxUpdateDateTime).tz(timezone).format()}
             variant='datetime'
             format='short'
           />,
