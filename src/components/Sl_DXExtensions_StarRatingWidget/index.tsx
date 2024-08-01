@@ -62,6 +62,7 @@ const SlDxExtensionsStarRatingWidget = ({
   // be used on Resolved cases.
   const [data, setData] = useState<DataItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [IsError, setIsError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [actionId, setActionId] = useState<string>();
 
@@ -94,7 +95,7 @@ const SlDxExtensionsStarRatingWidget = ({
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
     // TODO: Add in the correct data page selected in authoring. The property that
-    // will contain the savable data page will be specified in the config.json.
+    // will contain the savable data page will be specified later in the config.json.
     upsert('D_Savable', updatedRating).then(rating =>
       rating
         ? setData([rating, ...(upsert === createRating ? data : data.slice(1))])
@@ -109,7 +110,6 @@ const SlDxExtensionsStarRatingWidget = ({
   ) => {
     setActionId(id);
     setActionTarget(menuButton ?? e.currentTarget);
-    // setValue(actionDataItem?.CustomerRating ?? 0);
     if (actionDataItem) setDataItem(actionDataItem);
   };
   // We iterate over the ratings to create the SummaryItems.  Memoization helps to
@@ -118,31 +118,6 @@ const SlDxExtensionsStarRatingWidget = ({
   // We need to capture the selected rating so we know which rating to perform actions on.
 
   const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
-  // const summaryItems = useMemo(
-  //   () =>
-  //     ratings.map(item => {
-  //       const summaryItem = createSummaryItem(item, getPConnect, caseKey);
-  //       return {
-  //         ...summaryItem,
-  //         actions: summaryItem.actions?.map((action: Action) => ({
-  //           ...action,
-  //           onClick(id: string, e: MouseEvent, menuButton?: HTMLButtonElement) {
-  //             setActionId(id);
-  //             setPopoverTarget(menuButton || e.currentTarget);
-  //             setSelectedRating(summaryItem.rating);
-  //           }
-  //         }))
-  //       };
-  //     }),
-  //   [
-  //     ratings,
-  //     getPConnect,
-  //     caseKey,
-  //     setActionId,
-  //     setPopoverTarget,
-  //     setSelectedRating
-  //   ]
-  // );
 
   // An effect is required here because we're synchronising the open modal with changes in the
   // data manged by the parent component.
@@ -173,16 +148,25 @@ const SlDxExtensionsStarRatingWidget = ({
     };
 
     const fetchRatings = async () => {
-      const allRatings = await getRatings(
-        listDataPage,
-        customerId,
-        contextName
-      );
-      if (allRatings && allRatings.length > 0) {
-        setData(processRatings(allRatings));
+      try {
+        setIsError(false);
+        const allRatings = await getRatings(
+          listDataPage,
+          customerId,
+          contextName
+        );
+
+        if (allRatings && allRatings.length > 0) {
+          setData(processRatings(allRatings));
+        }
+      } catch (error) {
+        setIsError(true);
+        setData([]);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
+
     fetchRatings();
   }, [listDataPage, customerId, contextName, caseKey]);
 
@@ -227,6 +211,7 @@ const SlDxExtensionsStarRatingWidget = ({
   return (
     <>
       <SummaryList
+        error={IsError}
         icon='star'
         items={items.slice(0, 3)}
         loading={isLoading}
