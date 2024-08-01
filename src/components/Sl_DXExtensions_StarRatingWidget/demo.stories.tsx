@@ -11,7 +11,6 @@ import mockRatingData, { newRating } from './mock.ratingData';
 import type ActionsApi from '@pega/pcore-pconnect-typedefs/actions/api';
 import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
-import ratingData from './mock.ratingData';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
   title: 'SL/Star Rating Widget',
