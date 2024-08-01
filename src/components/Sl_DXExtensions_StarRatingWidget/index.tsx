@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect, MouseEvent } from 'react';
 
 import {
@@ -41,7 +42,6 @@ function SlDxExtensionsStarRatingWidget(
   const [isLoading, setIsLoading] = useState(true);
   const [showPopover, setShowPopover] = useState(true);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, setValue] = useState<number>(0);
   const [actionId, setActionId] = useState<string>();
 
@@ -52,7 +52,6 @@ function SlDxExtensionsStarRatingWidget(
   const caseId = getPConnect().getCaseInfo().getID();
   const caseClass = getPConnect().getCaseInfo().getClassName();
   const context = getPConnect().getContextName();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [dataItem, setDataItem] = useState<DataItem>({
     CustomerRating: 0,
     NumberOfStars: 5,
