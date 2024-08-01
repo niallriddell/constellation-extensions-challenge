@@ -103,7 +103,7 @@ export const StarRatingWidgetWithCurrentCaseRating: Story = (
   );
 };
 
-StarRatingsWidgetWithCurrentCaseRating.args = {
+StarRatingWidgetWithCurrentCaseRating.args = {
   label: 'Ratings',
   customerId: 'Q1234',
   ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
@@ -112,8 +112,8 @@ StarRatingsWidgetWithCurrentCaseRating.args = {
   ratingSavableDatapage: ['D_CustomerRatingSavable']
 };
 
-export const StarRatingsWidgetWithoutCurrentCaseRating: Story = (
-  args: SlDxExtensionsStarRatingsWidgetProps
+export const StarRatingWidgetWithoutCurrentCaseRating: Story = (
+  args: SlDxExtensionsStarRatingWidgetProps
 ) => {
   const props = {
     getPConnect: mockPConnect as () => typeof PConnect
@@ -126,7 +126,7 @@ export const StarRatingsWidgetWithoutCurrentCaseRating: Story = (
   );
 };
 
-StarRatingsWidgetWithoutCurrentCaseRating.args = {
+StarRatingWidgetWithoutCurrentCaseRating.args = {
   label: 'Ratings',
   customerId: 'Q123',
   ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',

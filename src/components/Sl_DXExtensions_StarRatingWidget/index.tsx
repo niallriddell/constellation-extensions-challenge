@@ -33,7 +33,7 @@ import StarRatingPopover from './StarRatingPopover';
 registerIcon(star);
 
 // TODO: Add any additional properties here that are configured in the config.json
-export interface SlDxExtensionsStarRatingsWidgetProps extends PConnFieldProps {
+export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
   customerId?: string;
   ratingDataClass: string;
   ratingLookupDatapage: string[];
@@ -59,12 +59,19 @@ const SlDxExtensionsStarRatingWidget = ({
   ratingLookupDatapage,
   ratingListDatapage,
   ratingSavableDatapage
-}: SlDxExtensionsStarRatingsWidgetProps) => {
+}: SlDxExtensionsStarRatingWidgetProps) => {
   const lookup = ratingLookupDatapage[0];
   const list = ratingListDatapage[0];
   const savable = ratingSavableDatapage[0];
 
-  console.log(ratingDataClass, ratingLookupDatapage, ratingListDatapage, ratingSavableDatapage);
+  // eslint-disable-next-line no-console
+  console.log(
+    ratingDataClass,
+    ratingLookupDatapage,
+    ratingListDatapage,
+    ratingSavableDatapage
+  );
+  // eslint-disable-next-line no-console
   console.log(ratingDataClass, lookup, list, savable);
   // At this stage our widget is a CASE widget only and etherefore we know we're in the
   // current case context during runtime.
@@ -74,10 +81,12 @@ const SlDxExtensionsStarRatingWidget = ({
   const caseKey = getPConnect().getCaseInfo().getKey();
   const caseClass = getPConnect().getCaseInfo().getClassName();
 
-  const [loading, setLoading] = useState(true);
-  const [ratings, setRatings] = useState<Array<Rating>>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [IsError, setIsError] = useState(false);
+  const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
+  const [data, setData] = useState<Array<DataItem>>([]);
   const [actionId, setActionId] = useState<string | undefined>();
-  const [selectedRating, setSelectedRating] = useState<Rating>({
+  const [dataItem, setDataItem] = useState<DataItem>({
     rating: 0,
     customerId: customerId || 'No Customer',
     stars: 5,
@@ -157,11 +166,7 @@ const SlDxExtensionsStarRatingWidget = ({
     const fetchRatings = async () => {
       try {
         setIsError(false);
-        const allRatings = await getRatings(
-          listDataPage,
-          customerId,
-          contextName
-        );
+        const allRatings = await getRatings(list, customerId, contextName);
 
         if (allRatings && allRatings.length > 0) {
           setData(processRatings(allRatings));
@@ -175,7 +180,7 @@ const SlDxExtensionsStarRatingWidget = ({
     };
 
     fetchRatings();
-  }, [listDataPage, customerId, contextName, caseKey]);
+  }, [list, customerId, contextName, caseKey]);
 
   const onActionClick: Action['onClick'] = (id, e, menuButton) => {
     setActionId(id);
