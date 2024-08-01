@@ -31,7 +31,9 @@ const StarRatingPopover = ({
   currentRating: Rating;
   action?: Action;
 }) => {
-  const [ratingValue, setRatingValue] = useState<number>(currentRating.rating ?? 0);
+  const [ratingValue, setRatingValue] = useState<number>(
+    currentRating.rating ?? 0
+  );
   const pyId = currentRating.caseId.split(' ')[1];
 
   return (
@@ -45,7 +47,12 @@ const StarRatingPopover = ({
       style={{ width: '40ch' }}
     >
       <Text variant='h2'>{`${action?.text} : ${pyId}`}</Text>
-      <StarRating min='0' max='5' onChange={setRatingValue} value={ratingValue} />
+      <StarRating
+        min='0'
+        max='5'
+        onChange={setRatingValue}
+        value={ratingValue}
+      />
 
       <Grid
         container={{

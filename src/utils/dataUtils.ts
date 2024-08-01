@@ -1,9 +1,9 @@
-import type { Query } from "@pega/pcore-pconnect-typedefs/datapage/types";
-import { BiMap } from "./bimap";
+import type { Query } from '@pega/pcore-pconnect-typedefs/datapage/types';
+import { BiMap } from './bimap';
 
 export type TransformFunction<InputValue, OutputValue> = (
   value: InputValue,
-  inputData: any,
+  inputData: any
 ) => OutputValue;
 
 export type TransformMap<InputData, OutputData> = {
@@ -12,7 +12,7 @@ export type TransformMap<InputData, OutputData> = {
     OutputData[keyof OutputData]
   >;
 };
-export type SortBy<T> = Array<{ field: keyof T; type: "ASC" | "DESC" }>;
+export type SortBy<T> = Array<{ field: keyof T; type: 'ASC' | 'DESC' }>;
 
 export type Filter<OutputData> = {
   filterConditions: {
@@ -32,17 +32,17 @@ export type Filter<OutputData> = {
 };
 const mapDataToData = <
   InputData extends { [K in keyof InputData]?: any },
-  OutputData extends { [K in keyof OutputData]?: any },
+  OutputData extends { [K in keyof OutputData]?: any }
 >(
   inputData: InputData[],
   biMap: BiMap<keyof OutputData, keyof InputData>,
-  transformMap?: TransformMap<InputData, OutputData>,
+  transformMap?: TransformMap<InputData, OutputData>
 ): void => {
   const processObject = (obj: any): void => {
     if (Array.isArray(obj)) {
-      obj.forEach((item) => processObject(item));
-    } else if (obj !== null && typeof obj === "object") {
-      Object.keys(obj).forEach((key) => {
+      obj.forEach(item => processObject(item));
+    } else if (obj !== null && typeof obj === 'object') {
+      Object.keys(obj).forEach(key => {
         const inputKey = key as keyof InputData;
         const outputKey = biMap.getKey(inputKey);
         if (outputKey !== undefined) {
@@ -67,17 +67,17 @@ const mapDataToData = <
 // Generic handleResponse function
 const handleResponse = <T, U>(
   data: T[],
-  mapFunction: (entry: T, index: number) => U,
+  mapFunction: (entry: T, index: number) => U
 ): U[] => (data ? data.map(mapFunction) : []);
 
 // Utility function that auto-generates the select object.
 // Currently adds all mapped properties.
 const toSelectObject = <K, V>(
-  biMap: BiMap<K, V>,
+  biMap: BiMap<K, V>
 ): { select: { field: V }[] } => {
   const arr: { field: V }[] = [];
   const keyToValueMap = biMap.getKeyToValueMap();
-  keyToValueMap.forEach((value) => {
+  keyToValueMap.forEach(value => {
     arr.push({ field: value });
   });
   return { select: arr };
@@ -85,23 +85,23 @@ const toSelectObject = <K, V>(
 
 const getDataItems = async <
   InputData extends { [K in keyof InputData]?: any },
-  OutputData extends { [K in keyof OutputData]?: any },
+  OutputData extends { [K in keyof OutputData]?: any }
 >(
   dataView: string,
   mapper: BiMap<keyof OutputData, keyof InputData>,
-  sortBy?: Array<{ field: keyof OutputData; type: "ASC" | "DESC" }>,
+  sortBy?: Array<{ field: keyof OutputData; type: 'ASC' | 'DESC' }>,
   filter?: Filter<OutputData>,
   context?: string,
-  transFormMap?: TransformMap<InputData, OutputData>,
+  transFormMap?: TransformMap<InputData, OutputData>
 ): Promise<Array<OutputData> | undefined> => {
   const select = toSelectObject(mapper)?.select;
   const query: Query = {
     select,
     ...(sortBy && {
-      sortBy: sortBy.map((sort) => ({
+      sortBy: sortBy.map(sort => ({
         field: mapper.getValue(sort.field),
-        type: sort.type,
-      })),
+        type: sort.type
+      }))
     }),
     ...(filter && {
       filter: {
@@ -112,15 +112,15 @@ const getDataItems = async <
               ...condition,
               lhs: {
                 field: mapper.getValue(
-                  condition.lhs.field as keyof OutputData,
-                ) as string,
-              },
-            },
-          ]),
+                  condition.lhs.field as keyof OutputData
+                ) as string
+              }
+            }
+          ])
         ),
-        logic: filter.logic,
-      },
-    }),
+        logic: filter.logic
+      }
+    })
   };
 
   try {
@@ -130,7 +130,7 @@ const getDataItems = async <
       undefined,
       undefined,
       query,
-      { invalidateCache: true },
+      { invalidateCache: true }
     );
     mapDataToData(response.data as InputData[], mapper, transFormMap);
     return response.data as OutputData[];

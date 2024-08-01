@@ -4,8 +4,8 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
-} from "react";
+  useState
+} from 'react';
 
 import {
   Action,
@@ -15,12 +15,12 @@ import {
   withConfiguration,
   useModalManager,
   useElement,
-  registerIcon,
-} from "@pega/cosmos-react-core";
+  registerIcon
+} from '@pega/cosmos-react-core';
 
-import * as star from "@pega/cosmos-react-core/lib/components/Icon/icons/star.icon";
+import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
 
-import type { PConnFieldProps } from "./PConnProps";
+import type { PConnFieldProps } from './PConnProps';
 
 import {
   createRating,
@@ -60,7 +60,7 @@ const SlDxExtensionsStarRatingsWidget = ({
   ratingDataClass,
   ratingLookupDatapage,
   ratingListDatapage,
-  ratingSavableDatapage,
+  ratingSavableDatapage
 }: SlDxExtensionsStarRatingsWidgetProps) => {
   // TODO: Implement data object lookup
   const lookup = ratingLookupDatapage[0];
@@ -80,10 +80,10 @@ const SlDxExtensionsStarRatingsWidget = ({
   const [selectedAction, setSelectedAction] = useState<Action | undefined>();
   const [selectedRating, setSelectedRating] = useState<Rating>({
     rating: 0,
-    customerId: customerId ?? "No Customer",
+    customerId: customerId ?? 'No Customer',
     stars: 5,
     caseClass,
-    caseId: caseKey,
+    caseId: caseKey
   });
   const modalRef = useRef<ModalMethods<SummaryListViewAllProps>>();
 
@@ -93,10 +93,10 @@ const SlDxExtensionsStarRatingsWidget = ({
   const [popoverTarget, setPopoverTarget] = useElement<Element>(null);
 
   const publishWidgetCountUpdated = () => {
-    PCore.getPubSubUtils().publish("WidgetUpdated", {
-      widget: "SL_DXEXTENSIONS_STARRATINGWIDGET",
+    PCore.getPubSubUtils().publish('WidgetUpdated', {
+      widget: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
       count: ratings.length + 1,
-      caseID: caseKey,
+      caseID: caseKey
     });
   };
 
@@ -107,21 +107,19 @@ const SlDxExtensionsStarRatingsWidget = ({
   // the savable data page associated with the data class.
   // Persist your data to the server first and update the UI to align.
   const onUpdateRating = (updatedRating: Rating) => {
-    updatedRating.guid = updatedRating?.guid ?? "NEW";
+    updatedRating.guid = updatedRating?.guid ?? 'NEW';
 
-    const upsert = updatedRating.guid === "NEW" ? createRating : updateRating;
+    const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
-    upsert(savable, updatedRating, undefined, ratingDataClass).then(
-      (rating) => {
-        if (rating) {
-          setRatings([
-            rating,
-            ...(upsert === createRating ? ratings : ratings.slice(1)),
-          ]);
-          if (upsert === createRating) publishWidgetCountUpdated();
-        }
-      },
-    );
+    upsert(savable, updatedRating, undefined, ratingDataClass).then(rating => {
+      if (rating) {
+        setRatings([
+          rating,
+          ...(upsert === createRating ? ratings : ratings.slice(1))
+        ]);
+        if (upsert === createRating) publishWidgetCountUpdated();
+      }
+    });
   };
 
   const newSummaryItemActions = useCallback(
@@ -132,9 +130,9 @@ const SlDxExtensionsStarRatingsWidget = ({
           setSelectedAction(action);
           setPopoverTarget(menuButton || e.currentTarget);
           setSelectedRating(summaryItem.rating);
-        },
+        }
       })),
-    [setPopoverTarget],
+    [setPopoverTarget]
   );
 
   // We iterate over the ratings to create the SummaryItems.
@@ -145,14 +143,14 @@ const SlDxExtensionsStarRatingsWidget = ({
   // perform actions on.
   const summaryItems = useMemo(
     () =>
-      ratings.map((item) => {
+      ratings.map(item => {
         const summaryItem = createSummaryItem(item, getPConnect, caseKey);
         return {
           ...summaryItem,
-          actions: newSummaryItemActions(summaryItem),
+          actions: newSummaryItemActions(summaryItem)
         };
       }),
-    [ratings, getPConnect, caseKey, newSummaryItemActions],
+    [ratings, getPConnect, caseKey, newSummaryItemActions]
   );
 
   // We don't anticipate a large number of ratings per customer, so for now
@@ -174,14 +172,14 @@ const SlDxExtensionsStarRatingsWidget = ({
 
       return allRatings;
     },
-    [caseKey, customerId],
+    [caseKey, customerId]
   );
 
   const fetchRatings = useCallback(async () => {
     const allRatings = await getRatingsForCustomer(
       list,
       customerId,
-      contextName,
+      contextName
     );
     if (allRatings && allRatings.length > 0) {
       setRatings(processRatings(allRatings));
@@ -202,10 +200,10 @@ const SlDxExtensionsStarRatingsWidget = ({
 
   useEffect(() => {
     const ratingSubObject = {
-      matcher: "SL_DXEXTENSIONS_STARRATINGWIDGET",
+      matcher: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
       criteria: {
-        ID: customerId ?? "",
-      },
+        ID: customerId ?? ''
+      }
     };
 
     const ratingSubId = PCore.getMessagingServiceManager().subscribe(
@@ -213,29 +211,29 @@ const SlDxExtensionsStarRatingsWidget = ({
       debounce(() => {
         fetchRatings();
       }, 10),
-      getPConnect().getContextName(),
+      getPConnect().getContextName()
     );
 
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
       handleDataObjectEvent,
-      "updateSubId",
+      'updateSubId'
     );
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
       handleDataObjectEvent,
-      "createSubId",
+      'createSubId'
     );
 
     return () => {
       PCore.getMessagingServiceManager().unsubscribe(ratingSubId);
       PCore.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
-        "updateSubId",
+        'updateSubId'
       );
       PCore.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
-        "createSubId",
+        'createSubId'
       );
     };
   });
@@ -259,7 +257,7 @@ const SlDxExtensionsStarRatingsWidget = ({
           onClick(_: string, e: MouseEvent) {
             setSelectedAction(action);
             setPopoverTarget(e.currentTarget);
-          },
+          }
         }))
       : [];
 
@@ -274,24 +272,24 @@ const SlDxExtensionsStarRatingsWidget = ({
         actions: summaryActions,
         searchFunction: customerId ? searchByRating : searchByCustomer,
         currentRating: selectedRating,
-        onUpdateRating,
+        onUpdateRating
       },
       {
         onDismiss: () => {
           modalRef.current = undefined; // tidy up if modal is dismissed.
-        },
-      },
+        }
+      }
     );
   };
 
   return (
     <>
       <SummaryList
-        icon="star"
+        icon='star'
         items={summaryItems.slice(0, 3)}
         loading={loading}
         count={!loading ? ratings.length : undefined}
-        headingTag="h3"
+        headingTag='h3'
         name={label}
         actions={summaryActions}
         onViewAll={openViewAll}
