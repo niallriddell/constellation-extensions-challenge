@@ -54,7 +54,7 @@
     "@pega/cosmos-react-condition-builder": "^6.0.3",
     "@pega/cosmos-react-core": "^6.0.3",
     "@pega/cosmos-react-work": "^6.0.3",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.12",
     "lodash.get": "^4.4.2",
     "polished": "^4.2.2",
     "prop-types": "^15.8.1",

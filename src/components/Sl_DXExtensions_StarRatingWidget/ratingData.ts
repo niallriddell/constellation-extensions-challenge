@@ -1,4 +1,8 @@
-import type { Filter, Query } from '@pega/pcore-pconnect-typedefs/datapage/types';
+import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+import type {
+  Filter,
+  Query
+} from '@pega/pcore-pconnect-typedefs/datapage/types';
 import { BiMap } from './bimap';
 
 // All mapping between the component internal data model and the external data model
@@ -64,7 +68,9 @@ function mapRatingDataToRating(
   return ratingDataArray.map(ratingData => {
     const rating: Partial<Rating> = {};
     biMap.getKeyToValueMap().forEach((value, key) => {
-      rating[key as keyof Rating] = ratingData[value as keyof RatingData] as any;
+      rating[key as keyof Rating] = ratingData[
+        value as keyof RatingData
+      ] as any;
     });
     return rating as Rating;
   });
@@ -87,28 +93,16 @@ export const getRating = async (
     [guidProp]: guid
   };
 
-  try {
-    const response: any = await PCore.getDataPageUtils().getPageDataAsync(
-      dataView,
-      context,
-      parameters
-    );
+  const response: any = await PCore.getDataPageUtils().getPageDataAsync(
+    dataView,
+    context,
+    parameters
+  );
 
-    if (response.status === 200) {
-      return mapRatingDataToRating([response.data], mapper)[0];
-    }
-  } catch (error) {
-    console.error(error);
+  if (response.status === 200) {
+    return mapRatingDataToRating([response.data], mapper)[0];
   }
 };
-
-// Temporary solution to fix an issue with the typescript data shapes in
-// getDataAsync not correctly matching the real data returned.
-// TODO:- Update this when the typedefs are fixed.
-interface RatingDataResponse {
-  data: any[] | RatingData[];
-  status?: number;
-}
 
 // Helper function that returns an array of ratings for a customerId.
 export const getRatings = async (
@@ -142,8 +136,8 @@ export const getRatings = async (
     filter: customerId ? filter : undefined
   };
 
-  try {
-    const response: RatingDataResponse = await PCore.getDataPageUtils().getDataAsync(
+  const response: DataAsyncResponse =
+    await PCore.getDataPageUtils().getDataAsync(
       dataView,
       context,
       undefined,
@@ -152,14 +146,11 @@ export const getRatings = async (
       { invalidateCache: true }
     );
 
-    if (response.status === 200) {
-      return mapRatingDataToRating(response.data, mapper);
-    }
-
-    return [];
-  } catch (error) {
-    console.error(error);
+  if (response.status === 200) {
+    return mapRatingDataToRating(response.data as RatingData[], mapper);
   }
+
+  return [];
 };
 
 // TODO: Add in the createDataObject rest api endpoint
@@ -168,6 +159,7 @@ export const updateRating = async (
   rating: Partial<Rating>,
   context?: string
 ): Promise<Rating | undefined> => {
+  // eslint-disable-next-line no-console
   console.log('updateRating:', dataView, context);
   return rating as Rating;
 };
@@ -179,6 +171,7 @@ export const createRating = async (
   context?: string
 ): Promise<Rating | undefined> => {
   rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
+  // eslint-disable-next-line no-console
   console.log('createRating:', dataView, rating, context);
   // Tempoary guid purely for mock implementation.
   return rating as Rating;

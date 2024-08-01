@@ -5,9 +5,22 @@ import * as trash from '@pega/cosmos-react-core/lib/components/Icon/icons/trash.
 
 registerIcon(pencil, plus, trash);
 
-export const createAction = (
+export type ActionWithDataItem<T> = (
+  dataItem?: T,
+  ...onClickArgs: Parameters<NonNullable<Action['onClick']>>
+) => void;
+
+export function isActionWithDataItem<T>(
+  func: ActionWithDataItem<T> | Action['onClick']
+): func is ActionWithDataItem<T> {
+  return func !== undefined && func.length > 3;
+}
+
+const createAction = <T>(
   actionType: 'Add' | 'Edit' | 'Delete',
-  getPConnect: () => typeof PConnect
+  getPConnect: () => typeof PConnect,
+  onClickHandler?: ActionWithDataItem<T> | Action['onClick'],
+  dataItem?: T
 ): Action => {
   const actionConfig = {
     Add: {
@@ -31,6 +44,16 @@ export const createAction = (
   return {
     text: getPConnect().getLocalizedValue(text),
     id,
-    icon
+    icon,
+    onClick: (...args) => {
+      if (onClickHandler === undefined) return undefined;
+      if (isActionWithDataItem(onClickHandler)) {
+        onClickHandler(dataItem || undefined, ...args);
+      } else {
+        onClickHandler(...args);
+      }
+    }
   };
 };
+
+export default createAction;
