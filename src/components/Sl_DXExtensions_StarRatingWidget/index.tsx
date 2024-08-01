@@ -56,7 +56,7 @@ const SlDxExtensionsStarRatingWidget = ({
   ratingLookupDatapage,
   ratingListDatapage,
   ratingSavableDatapage
-}: SlDxExtensionsStarRatingsWidgetProps) => {
+}: SlDxExtensionsStarRatingWidgetProps) => {
   const lookup = ratingLookupDatapage[0];
   const list = ratingListDatapage[0];
   const savable = ratingSavableDatapage[0];
@@ -109,12 +109,20 @@ const SlDxExtensionsStarRatingWidget = ({
 
     upsert(savable, updatedRating).then(rating =>
       rating
-        ? setRatings([
-            rating,
-            ...(upsert === createRating ? ratings : ratings.slice(1))
-          ])
+        ? setData([rating, ...(upsert === createRating ? data : data.slice(1))])
         : undefined
     );
+  };
+
+  const onActionItemClick: ActionWithDataItem<DataItem> = (
+    actionDataItem,
+    id,
+    e,
+    menuButton
+  ) => {
+    setActionId(id);
+    setActionTarget(menuButton ?? e.currentTarget);
+    if (actionDataItem) setDataItem(actionDataItem);
   };
 
   // We iterate over the ratings to create the SummaryItems.  Memoization helps to

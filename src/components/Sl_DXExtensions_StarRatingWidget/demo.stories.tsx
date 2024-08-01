@@ -5,6 +5,7 @@ import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type EnvironmentInfo from '@pega/pcore-pconnect-typedefs/environment-info/index';
+import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client';
 
 import SlDxExtensionsStarRatingWidget, {
   type SlDxExtensionsStarRatingWidgetProps
@@ -12,6 +13,7 @@ import SlDxExtensionsStarRatingWidget, {
 
 import mockRatingData, { newRating } from './mock.ratingData';
 import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+import { AxiosResponse } from 'axios';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
   title: 'SL/Star Rating Widget',
@@ -84,7 +86,7 @@ const mockRestClient = (): Partial<typeof RestClient> => {
               : Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString()
           }
         }
-      })
+      }) as Promise<AxiosResponse<any>>
   };
 };
 
