@@ -1,6 +1,12 @@
 import { RefCallback, useState } from 'react';
 
-import { withConfiguration, Popover, Grid, Button, Text } from '@pega/cosmos-react-core';
+import {
+  withConfiguration,
+  Popover,
+  Grid,
+  Button,
+  Text
+} from '@pega/cosmos-react-core';
 
 import StarRating from '../Sl_DXExtensions_StarRating';
 import { Rating } from './ratingData';
@@ -42,7 +48,12 @@ const StarRatingPopover = ({
       <Text variant='h2'>
         {actionId === 'rating:edit' ? `Edit: ${pyId}` : `Add: ${pyId}`} rating
       </Text>
-      <StarRating min='0' max='5' onChange={setRatingValue} value={ratingValue} />
+      <StarRating
+        min='0'
+        max='5'
+        onChange={setRatingValue}
+        value={ratingValue}
+      />
 
       <Grid
         container={{

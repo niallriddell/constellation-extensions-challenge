@@ -1,4 +1,8 @@
-import type { RatingProps, TestIdProp, FormControlProps } from '@pega/cosmos-react-core';
+import type {
+  RatingProps,
+  TestIdProp,
+  FormControlProps
+} from '@pega/cosmos-react-core';
 
 export interface StarRatingProps extends RatingProps, TestIdProp {
   /**

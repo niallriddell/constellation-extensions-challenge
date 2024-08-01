@@ -26,7 +26,10 @@ export const createSummaryItem = (
     PCore.getSemanticUrlUtils().getActions().ACTION_OPENWORKBYHANDLE,
     { caseClassName: rating.caseClass },
     {
-      workID: rating.caseId.split(' ').length > 1 ? rating.caseId.split(' ')[1] : rating.caseId
+      workID:
+        rating.caseId.split(' ').length > 1
+          ? rating.caseId.split(' ')[1]
+          : rating.caseId
     }
   );
 
@@ -43,7 +46,11 @@ export const createSummaryItem = (
     >
       {rating.caseId.split(' ')[1]}
     </Link>,
-    <DateTimeDisplay value={rating.updateDateTime} variant='datetime' format='short' />
+    <DateTimeDisplay
+      value={rating.updateDateTime}
+      variant='datetime'
+      format='short'
+    />
   ];
 
   if (isCurrent) items.push(<Text variant='h4'>Current case</Text>);
@@ -62,7 +69,10 @@ export const createSummaryItem = (
     actions,
     rating,
     primary: (
-      <CosmosRating value={rating.rating} metaInfo={`${rating.rating} of ${rating.stars}`} />
+      <CosmosRating
+        value={rating.rating}
+        metaInfo={`${rating.rating} of ${rating.stars}`}
+      />
     ),
     secondary
   };
