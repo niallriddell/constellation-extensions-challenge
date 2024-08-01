@@ -92,12 +92,11 @@ const SlDxExtensionsStarRatingWidget = ({
   // Constellation design system hooks for creating modal dialogs
   // and Popover positioning support
   const { create: createModal } = useModalManager();
-  const [popoverTarget, setPopoverTarget] = useElement<Element>(null);
 
   const publishWidgetCountUpdated = () => {
     PCore.getPubSubUtils().publish('WidgetUpdated', {
       widget: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
-      count: ratings.length + 1,
+      count: data.length + 1,
       caseID: caseKey
     });
   };
@@ -113,11 +112,12 @@ const SlDxExtensionsStarRatingWidget = ({
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
-    upsert(savable, updatedRating).then(rating =>
-      rating
-        ? setData([rating, ...(upsert === createRating ? data : data.slice(1))])
-        : undefined
-    );
+    upsert(savable, updatedRating).then(rating => {
+      if (rating) {
+        setData([rating, ...(upsert === createRating ? data : data.slice(1))]);
+        if (upsert === createRating) publishWidgetCountUpdated();
+      }
+    });
   };
 
   const onActionItemClick: ActionWithDataItem<DataItem> = (
