@@ -93,15 +93,13 @@ export const getRating = async (
     [guidProp]: guid
   };
 
-  const response: any = await PCore.getDataPageUtils().getPageDataAsync(
+  const response = await PCore.getDataPageUtils().getPageDataAsync(
     dataView,
     context,
     parameters
   );
 
-  if (response.status === 200) {
-    return mapRatingDataToRating([response.data], mapper)[0];
-  }
+  return mapRatingDataToRating([response as RatingData], mapper)[0];
 };
 
 // Helper function that returns an array of ratings for a customerId.
