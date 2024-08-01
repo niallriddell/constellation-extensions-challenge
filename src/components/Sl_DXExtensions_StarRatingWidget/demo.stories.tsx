@@ -6,7 +6,7 @@ import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type EnvironmentInfo from '@pega/pcore-pconnect-typedefs/environment-info/index';
 import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client';
-
+import type SemanticUrlUtils from '@pega/pcore-pconnect-typedefs/router/semanticurl-utils';
 import SlDxExtensionsStarRatingWidget, {
   type SlDxExtensionsStarRatingWidgetProps
 } from './index';
@@ -103,7 +103,8 @@ const mockSemanticUrlUtils = (): Partial<typeof SemanticUrlUtils> => {
   };
 };
 
-window.PCore.getSemanticUrlUtils = mockSemanticUrlUtils as () => typeof SemanticUrlUtils;
+window.PCore.getSemanticUrlUtils =
+  mockSemanticUrlUtils as () => typeof SemanticUrlUtils;
 
 const mockPConnect = (): Partial<typeof PConnect> => ({
   getValue: (value: string) => {
