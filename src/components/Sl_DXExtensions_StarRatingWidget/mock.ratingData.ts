@@ -1,5 +1,21 @@
+<<<<<<<< HEAD:src/components/Sl_DXExtensions_StarRatingWidget/mock.ts
 const ratingData = {
   status: 200,
+========
+/* eslint-disable sonarjs/no-duplicate-string */
+import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+
+export const newRating = {
+  CustomerRating: 0,
+  NumberOfStars: 5,
+  CaseID: 'SL-TELLUSMORE-WORK Z-12345',
+  CaseClassName: 'SL-TellUsMore-Work-Incident',
+  CustomerID: 'Q1234',
+  pxUpdateDateTime: '2020-06-29T11:06:24.329Z'
+};
+
+const ratingData: Omit<DataAsyncResponse, 'config'> = {
+>>>>>>>> dataoperations_upsert:src/components/Sl_DXExtensions_StarRatingWidget/mock.ratingData.ts
   data: [
     {
       CustomerRating: 3,
@@ -73,7 +89,12 @@ const ratingData = {
       pyGUID: '687678687687686393',
       pxUpdateDateTime: '2020-06-29T11:06:24.329Z'
     }
+<<<<<<<< HEAD:src/components/Sl_DXExtensions_StarRatingWidget/mock.ts
   ]
+========
+  ],
+  status: 200
+>>>>>>>> dataoperations_upsert:src/components/Sl_DXExtensions_StarRatingWidget/mock.ratingData.ts
 };
 
 export default ratingData;
