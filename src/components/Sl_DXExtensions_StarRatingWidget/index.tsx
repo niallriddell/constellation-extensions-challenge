@@ -164,13 +164,15 @@ function SlDxExtensionsStarRatingWidget(
       />
       {actionTarget && (
         <Popover
+          as={Grid}
+          container={{ inline: true, rowGap: 1, pad: 1 }}
           ref={popOverRef}
           strategy='absolute'
           placement='auto'
           target={actionTarget}
           portal={false}
           arrow
-          style={{ width: '20ch' }}
+          style={{ width: '25ch' }}
           show={showPopover}
           {...clickMountingHandlers}
         >
