@@ -47,7 +47,12 @@ const StarRatingPopover = ({
       style={{ width: '40ch' }}
     >
       <Text variant='h2'>{`${action?.text} : ${pyId}`}</Text>
-      <StarRating min='0' max='5' onChange={setRatingValue} value={ratingValue} />
+      <StarRating
+        min='0'
+        max='5'
+        onChange={setRatingValue}
+        value={ratingValue}
+      />
 
       <Grid
         container={{

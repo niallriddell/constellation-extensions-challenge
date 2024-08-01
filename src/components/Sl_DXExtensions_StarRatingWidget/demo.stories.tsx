@@ -115,7 +115,8 @@ const mockSemanticUrlUtils = (): Partial<typeof SemanticUrlUtils> => {
   };
 };
 
-window.PCore.getSemanticUrlUtils = mockSemanticUrlUtils as () => typeof SemanticUrlUtils;
+window.PCore.getSemanticUrlUtils =
+  mockSemanticUrlUtils as () => typeof SemanticUrlUtils;
 
 const mockPubSubUtils = (): Partial<typeof PubSubUtils> => {
   return {

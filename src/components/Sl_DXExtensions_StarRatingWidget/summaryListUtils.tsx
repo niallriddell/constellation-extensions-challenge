@@ -26,7 +26,10 @@ export const createSummaryItem = (
     PCore.getSemanticUrlUtils().getActions().ACTION_OPENWORKBYHANDLE,
     { caseClassName: rating.caseClass },
     {
-      workID: rating.caseId.split(' ').length > 1 ? rating.caseId.split(' ')[1] : rating.caseId
+      workID:
+        rating.caseId.split(' ').length > 1
+          ? rating.caseId.split(' ')[1]
+          : rating.caseId
     }
   );
 
@@ -43,11 +46,19 @@ export const createSummaryItem = (
     >
       {rating.caseId.split(' ')[1]}
     </Link>,
-    <DateTimeDisplay value={rating.updateDateTime} variant='datetime' format='short' />
+    <DateTimeDisplay
+      value={rating.updateDateTime}
+      variant='datetime'
+      format='short'
+    />
   ];
 
   if (isCurrent)
-    items.push(<Text variant='h4'>{getPConnect().getLocalizedValue('Current case')}</Text>);
+    items.push(
+      <Text variant='h4'>
+        {getPConnect().getLocalizedValue('Current case')}
+      </Text>
+    );
 
   const secondary = <MetaList wrapItems={false} items={items} />;
 
@@ -65,7 +76,9 @@ export const createSummaryItem = (
     primary: (
       <CosmosRating
         value={rating.rating}
-        metaInfo={`${rating.rating} ${getPConnect().getLocalizedValue('of')} ${rating.stars}`}
+        metaInfo={`${rating.rating} ${getPConnect().getLocalizedValue('of')} ${
+          rating.stars
+        }`}
       />
     ),
     secondary

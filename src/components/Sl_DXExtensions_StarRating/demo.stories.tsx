@@ -40,7 +40,10 @@ export const onChangeExternal: Story = {
   render: args => {
     return (
       <div>
-        <StarRating {...args} onChange={(newValue: number) => (args.value = newValue)} />
+        <StarRating
+          {...args}
+          onChange={(newValue: number) => (args.value = newValue)}
+        />
       </div>
     );
   }

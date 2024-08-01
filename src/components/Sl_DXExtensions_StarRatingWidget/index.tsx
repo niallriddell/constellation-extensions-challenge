@@ -13,11 +13,18 @@ import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.ic
 
 import type { PConnFieldProps } from './PConnProps';
 
-import { createRating, getRatings, updateRating, type Rating } from './ratingData';
+import {
+  createRating,
+  getRatings,
+  updateRating,
+  type Rating
+} from './ratingData';
 import { searchByRating, searchByCustomer } from './searchFunctions';
 import { createAction } from './actions';
 import { createSummaryItem } from './summaryListUtils';
-import SummaryListViewAllModal, { type SummaryListViewAllProps } from './SummaryListViewAllModal';
+import SummaryListViewAllModal, {
+  type SummaryListViewAllProps
+} from './SummaryListViewAllModal';
 import StarRatingPopover from './StarRatingPopover';
 
 registerIcon(star);
@@ -94,7 +101,10 @@ const SlDxExtensionsStarRatingsWidget = ({
 
     upsert(savable, updatedRating, undefined, ratingDataClass).then(rating => {
       if (rating) {
-        setRatings([rating, ...(upsert === createRating ? ratings : ratings.slice(1))]);
+        setRatings([
+          rating,
+          ...(upsert === createRating ? ratings : ratings.slice(1))
+        ]);
         if (upsert === createRating) publishWidgetCountUpdated();
       }
     });
@@ -120,7 +130,14 @@ const SlDxExtensionsStarRatingsWidget = ({
           }))
         };
       }),
-    [ratings, getPConnect, caseKey, setSelectedAction, setPopoverTarget, setSelectedRating]
+    [
+      ratings,
+      getPConnect,
+      caseKey,
+      setSelectedAction,
+      setPopoverTarget,
+      setSelectedRating
+    ]
   );
 
   // An effect is required here because we're synchronising the open modal with changes in the
@@ -138,7 +155,9 @@ const SlDxExtensionsStarRatingsWidget = ({
         return allRatings;
       }
 
-      const caseRatingIndex = allRatings.findIndex(rating => rating.caseId === caseKey);
+      const caseRatingIndex = allRatings.findIndex(
+        rating => rating.caseId === caseKey
+      );
 
       if (caseRatingIndex >= 0) {
         return [allRatings.splice(caseRatingIndex, 1)[0], ...allRatings];
@@ -161,7 +180,8 @@ const SlDxExtensionsStarRatingsWidget = ({
   // we check if the first element of the array is for the current case.  If not we
   // display the 'Add' action.
   const summaryActions =
-    (customerId && ratings.length && ratings[0].caseId !== caseKey) || ratings.length === 0
+    (customerId && ratings.length && ratings[0].caseId !== caseKey) ||
+    ratings.length === 0
       ? [createAction('Add', getPConnect)].map((action: Action) => ({
           ...action,
           onClick(_: string, e: MouseEvent) {
