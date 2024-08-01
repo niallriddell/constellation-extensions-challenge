@@ -32,7 +32,10 @@ export const createSummaryItem = (
     rating,
     primary: (
       <>
-        <CosmosRating value={rating.rating} metaInfo={`${rating.rating} of ${rating.stars}`} />
+        <CosmosRating
+          value={rating.rating}
+          metaInfo={`${rating.rating} of ${rating.stars}`}
+        />
         <Text>
           {rating.caseId}
           {isCurrent && ' : this is the current case'}

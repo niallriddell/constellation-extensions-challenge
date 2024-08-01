@@ -1,7 +1,12 @@
 import { useCallback, useMemo, useState, MouseEvent } from 'react';
 
 import type { Action } from '@pega/cosmos-react-core';
-import { Modal, ViewAll, useElement, withConfiguration } from '@pega/cosmos-react-core';
+import {
+  Modal,
+  ViewAll,
+  useElement,
+  withConfiguration
+} from '@pega/cosmos-react-core';
 
 import type { Rating } from './ratingData';
 import { SearchFunction } from './searchFunctions';
@@ -40,7 +45,12 @@ const SummaryListViewAllModal = ({
   const [selectedRating, setSelectedRating] = useState<Rating>(currentRating);
 
   const onClickHandler = useCallback(
-    (id: string, e: MouseEvent<HTMLElement>, menuButton?: HTMLElement, rating?: Rating) => {
+    (
+      id: string,
+      e: MouseEvent<HTMLElement>,
+      menuButton?: HTMLElement,
+      rating?: Rating
+    ) => {
       setActionId(id);
       setPopoverTarget(menuButton || e.currentTarget);
       if (rating) setSelectedRating(rating);
@@ -56,8 +66,11 @@ const SummaryListViewAllModal = ({
         const updatedActions = newActions?.map(action => {
           return {
             ...action,
-            onClick: (id: string, e: MouseEvent<HTMLElement>, menuButton?: HTMLElement) =>
-              onClickHandler(id, e, menuButton, item?.rating)
+            onClick: (
+              id: string,
+              e: MouseEvent<HTMLElement>,
+              menuButton?: HTMLElement
+            ) => onClickHandler(id, e, menuButton, item?.rating)
           };
         });
 
@@ -79,7 +92,9 @@ const SummaryListViewAllModal = ({
 
   const itemsToRender = useMemo(() => {
     if (search.trim()) {
-      return newItems.filter(item => searchFunction(item.rating, search.trim()));
+      return newItems.filter(item =>
+        searchFunction(item.rating, search.trim())
+      );
     }
     return newItems;
   }, [newItems, search, searchFunction]);
