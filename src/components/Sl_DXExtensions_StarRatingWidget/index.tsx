@@ -1,4 +1,4 @@
-import { useState, useEffect, MouseEvent, useCallback } from 'react';
+import { useState, useEffect, MouseEvent } from 'react';
 
 import {
   SummaryList,
@@ -18,10 +18,11 @@ import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.ic
 
 import type { PConnFieldProps } from './PConnProps';
 
-import { type RatingDataItem as DataItem } from './ratingData';
-import mapDataItem, { RatingSummaryListItem } from './ratingItems';
-import createAction from './actions';
-import createItems from './dataUtils';
+import type { RatingDataItem as DataItem } from './ratingData';
+import mapDataItem from './ratingItems';
+import type { ActionWithDataItem } from './actionUtils';
+import createItems from './itemUtils';
+import createAction from './actionUtils';
 
 registerIcon(star);
 
@@ -39,7 +40,7 @@ function SlDxExtensionsStarRatingWidget(
   const [data, setData] = useState<DataItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showPopover, setShowPopover] = useState(true);
-  const [popoverTarget, setPopoverTarget] = useElement<Element>(null);
+  const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [value, setValue] = useState<number>(0);
   const [actionId, setActionId] = useState<string>();
 
@@ -86,50 +87,33 @@ function SlDxExtensionsStarRatingWidget(
     onBlur: toggleClickPopover
   };
 
-  const onActionClick = useCallback(
-    (
-      id: string,
-      e: MouseEvent<HTMLButtonElement | HTMLAnchorElement | HTMLInputElement>,
-      menuButton?: HTMLButtonElement,
-      item?: RatingSummaryListItem
-    ) => {
-      setActionId(id);
-      setShowPopover(true);
-      setPopoverTarget(menuButton ?? e.currentTarget);
-      setValue(item?.rating?.CustomerRating ?? 0);
-      if (item) setDataItem(item.rating);
-    },
-    [setPopoverTarget]
-  );
+  const onActionItemClick: ActionWithDataItem<DataItem> = (
+    actionDataItem,
+    id,
+    e,
+    menuButton
+  ) => {
+    setActionId(id);
+    setShowPopover(true);
+    setActionTarget(menuButton ?? e.currentTarget);
+    setValue(actionDataItem?.CustomerRating ?? 0);
+    if (actionDataItem) setDataItem(actionDataItem);
+  };
 
-  const items = createItems(data, getPConnect, mapDataItem).map(summaryItem => {
-    if (!summaryItem.actions) return summaryItem;
-
-    return {
-      ...summaryItem,
-      actions: summaryItem.actions.map((action: Action) => ({
-        ...action,
-        onClick: (
-          id: string,
-          e: MouseEvent<
-            HTMLButtonElement | HTMLAnchorElement | HTMLInputElement
-          >,
-          menuButton?: HTMLButtonElement
-        ) => onActionClick(id, e, menuButton, summaryItem)
-      }))
-    };
-  });
+  const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
 
   const isEmptyData = !data || data.length === 0;
   const isCaseKeyAbsent =
     data.filter(item => item.CaseID === caseKey).length === 0;
 
-  const summaryActions =
+  const onActionClick: Action['onClick'] = (id, e, menuButton) => {
+    setActionId(id);
+    setShowPopover(true);
+    setActionTarget(menuButton ?? e.currentTarget);
+  };
+  const actions =
     isEmptyData || isCaseKeyAbsent
-      ? [createAction('Add', getPConnect)].map((action: Action) => ({
-          ...action,
-          onClick: onActionClick
-        }))
+      ? [createAction('Add', getPConnect, onActionClick)]
       : [];
 
   // TODO: Only in memory and not persisted for now so that Storybook story
@@ -165,7 +149,7 @@ function SlDxExtensionsStarRatingWidget(
     <>
       <SummaryList
         key={`summaryList-${customerId}`}
-        actions={summaryActions}
+        actions={actions}
         icon='star'
         name={label}
         count={isLoading ? 0 : data?.length}
@@ -173,17 +157,17 @@ function SlDxExtensionsStarRatingWidget(
         items={items ?? []}
         onBlur={() => setShowPopover(false)}
         onClick={(e: MouseEvent) => {
-          if (popoverTarget && e.target !== popoverTarget) {
+          if (actionTarget && e.target !== actionTarget) {
             setShowPopover(false);
           }
         }}
       />
-      {popoverTarget && (
+      {actionTarget && (
         <Popover
           ref={popOverRef}
           strategy='absolute'
           placement='auto'
-          target={popoverTarget}
+          target={actionTarget}
           portal={false}
           arrow
           style={{ width: '20ch' }}
@@ -209,7 +193,7 @@ function SlDxExtensionsStarRatingWidget(
           >
             <Button
               onClick={() => {
-                setPopoverTarget(null);
+                setActionTarget(null);
               }}
             >
               Cancel
@@ -220,7 +204,7 @@ function SlDxExtensionsStarRatingWidget(
               onClick={(e: MouseEvent) => {
                 e.preventDefault();
                 if (dataItem) upsertDataItem(dataItem, value);
-                setPopoverTarget(null);
+                setActionTarget(null);
               }}
             >
               Submit

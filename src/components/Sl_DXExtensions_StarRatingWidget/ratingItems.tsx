@@ -1,6 +1,5 @@
 import {
   Rating,
-  SummaryListItem,
   createUID,
   MetaList,
   Text,
@@ -8,47 +7,52 @@ import {
   Action
 } from '@pega/cosmos-react-core';
 
-import createAction from './actions';
+import createAction, { type ActionWithDataItem } from './actionUtils';
+import type { DataItemSummaryListItem } from './itemUtils';
 import { RatingDataItem } from './ratingData';
 
-export interface RatingSummaryListItem extends SummaryListItem {
-  rating: RatingDataItem;
-}
-
 export const mapRatingDataItem = (
-  entry: RatingDataItem,
-  getPConnect: () => typeof PConnect
-): RatingSummaryListItem => {
+  dataItem: RatingDataItem,
+  getPConnect: () => typeof PConnect,
+  onClickHandler: ActionWithDataItem<RatingDataItem> | Action['onClick']
+): DataItemSummaryListItem<RatingDataItem> => {
   const caseKey = getPConnect().getCaseInfo().getKey();
-  const isCurrent = caseKey && entry.CaseID === caseKey;
+  const isCurrent = caseKey && dataItem.CaseID === caseKey;
 
   const actions: Action[] = isCurrent
-    ? [createAction('Edit', getPConnect)]
+    ? [
+        createAction<RatingDataItem>(
+          'Edit',
+          getPConnect,
+          onClickHandler,
+          dataItem
+        )
+      ]
     : [];
 
   return {
-    rating: entry,
-    id: entry.pyGUID ?? createUID(),
+    dataItem,
+    id: dataItem.pyGUID ?? createUID(),
     actions,
     primary: (
       <Rating
-        key={`${entry.pyGUID ?? createUID()}-rating`}
-        value={entry.CustomerRating}
-        metaInfo={`${entry.CustomerRating} of ${entry.NumberOfStars}`}
+        key={`${dataItem.pyGUID ?? createUID()}-rating`}
+        value={dataItem.CustomerRating}
+        metaInfo={`${dataItem.CustomerRating} of ${dataItem.NumberOfStars}`}
       />
     ),
     secondary: (
       <MetaList
-        key={`${entry.pyGUID ?? createUID()}-metalist`}
+        key={`${dataItem.pyGUID ?? createUID()}-metalist`}
         items={[
           <DateTimeDisplay
-            value={entry.pxUpdateDateTime}
+            value={dataItem.pxUpdateDateTime}
             variant='datetime'
             format='short'
           />,
-          <Text>{entry.CaseClassName}</Text>,
-          <Text>{entry.CaseID}</Text>,
-          <Text>{entry.CustomerID}</Text>
+          <Text>{dataItem.CaseClassName}</Text>,
+          <Text>{dataItem.CaseID}</Text>,
+          <Text>{dataItem.CustomerID}</Text>
         ]}
       />
     )
