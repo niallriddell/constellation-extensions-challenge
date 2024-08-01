@@ -25,21 +25,20 @@ import type { PConnFieldProps } from "./PConnProps";
 import {
   createRating,
   getRating,
-  // getRatings,
-  getRatingsForCustomer,
+  getRatings,
   updateRating,
-  type Rating,
-} from "./ratingData";
-import { searchByRating, searchByCustomer } from "./searchFunctions";
-import { createAction } from "./actions";
+  type Rating
+} from './ratingData';
+import { searchByRating, searchByCustomer } from './searchFunctions';
+import { createAction } from './actions';
 import {
   createSummaryItem,
-  StarRatingSummaryListItem,
-} from "./summaryListUtils";
+  StarRatingSummaryListItem
+} from './summaryListUtils';
 import SummaryListViewAllModal, {
-  type SummaryListViewAllProps,
-} from "./SummaryListViewAllModal";
-import StarRatingPopover from "./StarRatingPopover";
+  type SummaryListViewAllProps
+} from './SummaryListViewAllModal';
+import StarRatingPopover from './StarRatingPopover';
 
 registerIcon(star);
 
@@ -166,7 +165,7 @@ const SlDxExtensionsStarRatingsWidget = ({
       }
 
       const caseRatingIndex = allRatings.findIndex(
-        (rating) => rating.caseId === caseKey,
+        rating => rating.caseId === caseKey
       );
 
       if (caseRatingIndex >= 0) {
@@ -193,7 +192,7 @@ const SlDxExtensionsStarRatingsWidget = ({
   // TODO: We could show toast here or even mutate our ratings array instead of
   // doing a full requery to fetch all customer ratings when data changes.
   const handleDataObjectEvent = (payload: any) => {
-    if (payload.guid && payload.guid !== "NEW")
+    if (payload.guid && payload.guid !== 'NEW')
       getRating(lookup, payload.guid).then(console.log);
   };
 
@@ -255,7 +254,7 @@ const SlDxExtensionsStarRatingsWidget = ({
   const summaryActions =
     (customerId && ratings.length && ratings[0].caseId !== caseKey) ||
     ratings.length === 0
-      ? [createAction("Add", getPConnect)].map((action: Action) => ({
+      ? [createAction('Add', getPConnect)].map((action: Action) => ({
           ...action,
           onClick(_: string, e: MouseEvent) {
             setSelectedAction(action);
