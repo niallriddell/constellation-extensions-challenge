@@ -8,7 +8,7 @@
   "allowedApplications": [],
   "componentKey": "Sl_DXExtensions_StarRatingWidget",
   "type": "Widget",
-  "subtype": ["PAGE", "CASE"],
+  "subtype": "CASE",
   "properties": [
     {
       "name": "label",
@@ -19,8 +19,7 @@
     {
       "name": "customerId",
       "label": "Customer unique id property on case",
-      "format": "PROPERTY",
-      "visibility": "@VIEWAUTHORINGCONTEXT != 'page'"
+      "format": "PROPERTY"
     },
     {
       "label": "Data pages for rating class",
