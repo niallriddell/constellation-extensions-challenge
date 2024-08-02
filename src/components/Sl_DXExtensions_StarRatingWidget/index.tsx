@@ -1,17 +1,10 @@
-import {
-  useEffect,
-  // useRef,
-  useState
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import type {
-  Action
-  // ModalMethods
-} from '@pega/cosmos-react-core';
+import type { Action, ModalMethods } from '@pega/cosmos-react-core';
 import {
   SummaryList,
   withConfiguration,
-  // useModalManager,
+  useModalManager,
   useElement,
   registerIcon
 } from '@pega/cosmos-react-core';
@@ -27,14 +20,14 @@ import {
   type Rating as DataItem
 } from './ratingData';
 
-// import { searchByRating, searchByCustomer } from './searchFunctions';
+import { searchByRating, searchByCustomer } from './searchFunctions';
 import mapDataItem from './ratingItems';
 import type { ActionWithDataItem } from './actionUtils';
 import createItems from './itemUtils';
 import createAction from './actionUtils';
-// import SummaryListViewAllModal, {
-//   type SummaryListViewAllProps
-// } from './SummaryListViewAllModal';
+import SummaryListViewAllModal, {
+  type SummaryListViewAllProps
+} from './SummaryListViewAllModal';
 import StarRatingPopover from './StarRatingPopover';
 
 registerIcon(star);
@@ -84,11 +77,11 @@ const SlDxExtensionsStarRatingWidget = ({
     caseId: caseKey,
     caseClass
   });
-  // const modalRef = useRef<ModalMethods<SummaryListViewAllProps>>();
+  const modalRef = useRef<ModalMethods<SummaryListViewAllProps>>();
 
   // Constellation design system hooks for creating modal dialogs
   // and Popover positioning support
-  // const { create: createModal } = useModalManager();
+  const { create: createModal } = useModalManager();
 
   // All non-transient updates to rating data are performed via this function.
   // New rating objects don't yet have a GUID as this is created by Infinity, so we
@@ -129,11 +122,11 @@ const SlDxExtensionsStarRatingWidget = ({
   // An effect is required here because we're synchronising the open modal with changes in the
   // data manged by the parent component.
   // When and when not to use an effect is well documented here: https://react.dev/learn/you-might-not-need-an-effect
-  // useEffect(() => {
-  //   modalRef.current?.update({
-  //     items: createItems(data, getPConnect, mapDataItem, onActionItemClick)
-  //   });
-  // });
+  useEffect(() => {
+    modalRef.current?.update({
+      items: createItems(data, getPConnect, mapDataItem, onActionItemClick)
+    });
+  });
 
   useEffect(() => {
     // We don't anticipate a large number of ratings per customer, so for now we can
@@ -194,45 +187,39 @@ const SlDxExtensionsStarRatingWidget = ({
       ? [createAction('Add', getPConnect, onActionClick)]
       : [];
 
-  // const openViewAll = () => {
-  //   // We use a ref here so that we can refresh the modal with any data updates.
-  //   modalRef.current = createModal<SummaryListViewAllProps>(
-  //     SummaryListViewAllModal,
-  //     {
-  //       name: label,
-  //       loading: isLoading,
-  //       items,
-  //       actions,
-  //       searchFunction: customerId ? searchByRating : searchByCustomer,
-  //       currentRating: dataItem,
-  //       onUpdateRating
-  //     },
-  //     {
-  //       onDismiss: () => {
-  //         modalRef.current = undefined; // tidy up if modal is dismissed.
-  //       }
-  //     }
-  //   );
-  // };
+  const openViewAll = () => {
+    // We use a ref here so that we can refresh the modal with any data updates.
+    modalRef.current = createModal<SummaryListViewAllProps>(
+      SummaryListViewAllModal,
+      {
+        name: label,
+        loading: isLoading,
+        items,
+        actions,
+        searchFunction: customerId ? searchByRating : searchByCustomer,
+        currentRating: dataItem,
+        onUpdateRating
+      },
+      {
+        onDismiss: () => {
+          modalRef.current = undefined; // tidy up if modal is dismissed.
+        }
+      }
+    );
+  };
 
   return (
     <>
       <SummaryList
         error={IsError}
         icon='star'
-        items={
-          items
-          // items.slice(0, 3)
-        }
+        items={items.slice(0, 3)}
         loading={isLoading}
         count={!isLoading ? items.length : undefined}
         headingTag='h3'
         name={label}
         actions={actions}
-        onViewAll={
-          () => {}
-          // openViewAll
-        }
+        onViewAll={openViewAll}
       />
       {actionTarget && (
         <StarRatingPopover
