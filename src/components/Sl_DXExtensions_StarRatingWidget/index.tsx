@@ -50,16 +50,15 @@ export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
 // - Localization of all strings
 
 // TODO: Add any additional properties here that are configured in the config.json
-const SlDxExtensionsStarRatingWidget = ({
-  getPConnect,
-  label,
-  customerId,
-  listDataPage
-}: SlDxExtensionsStarRatingWidgetProps) => {
+const SlDxExtensionsStarRatingWidget = (
+  props: SlDxExtensionsStarRatingWidgetProps
+) => {
   // At this stage our widget is a CASE widget only and therefore we know we're in the
   // current case context during runtime.
   // Utility widgets do not store their data in the case directly so can also
   // be used on Resolved cases.
+  const { label, getPConnect, customerId, listDataPage } = props;
+
   const [data, setData] = useState<DataItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [IsError, setIsError] = useState(false);

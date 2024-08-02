@@ -3,7 +3,7 @@ import type {
   Filter,
   Query
 } from '@pega/pcore-pconnect-typedefs/datapage/types';
-import { BiMap } from './bimap';
+import BiMap from './bimap';
 
 // All mapping between the component internal data model and the external data model
 // is done here.  This is not strictly necessary and the approach taken here can be
