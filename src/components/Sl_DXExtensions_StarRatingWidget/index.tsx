@@ -221,8 +221,8 @@ const SlDxExtensionsStarRatingWidget = ({
         error={IsError}
         icon='star'
         items={
-          items
-          // items.slice(0, 3)
+          // items
+          items.slice(0, 3)
         }
         loading={isLoading}
         count={!isLoading ? items.length : undefined}
