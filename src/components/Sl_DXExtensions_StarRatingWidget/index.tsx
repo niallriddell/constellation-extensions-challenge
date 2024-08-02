@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect, MouseEvent } from 'react';
 
 import {
@@ -24,6 +23,8 @@ import mapDataItem from './ratingItems';
 import type { ActionWithDataItem } from './actionUtils';
 import createItems from './itemUtils';
 import createAction from './actionUtils';
+
+// import StarRating from '../Sl_DXExtensions_StarRating';
 
 registerIcon(star);
 
@@ -99,7 +100,7 @@ function SlDxExtensionsStarRatingWidget(
     setActionId(id);
     setShowPopover(true);
     setActionTarget(menuButton ?? e.currentTarget);
-    // setValue(actionDataItem?.CustomerRating ?? 0);
+    setValue(actionDataItem?.CustomerRating ?? 0);
     if (actionDataItem) setDataItem(actionDataItem);
   };
 
@@ -119,33 +120,33 @@ function SlDxExtensionsStarRatingWidget(
       ? [createAction('Add', getPConnect, onActionClick)]
       : [];
 
-  // // TODO: Only in memory and not persisted for now so that Storybook story
-  // // works
-  // const upsertDataItem = (selectedDataItem: DataItem, changedValue: number) => {
-  //   if (selectedDataItem.pyGUID) {
-  //     setData(
-  //       data.map(dataItemToCheck =>
-  //         dataItemToCheck.pyGUID === selectedDataItem.pyGUID
-  //           ? {
-  //               ...dataItemToCheck,
-  //               CustomerRating: changedValue,
-  //               pxUpdateDateTime: new Date().toISOString()
-  //             }
-  //           : dataItemToCheck
-  //       )
-  //     );
-  //     return;
-  //   }
-  //
-  //   const newDataItem = {
-  //     ...selectedDataItem,
-  //     CustomerRating: changedValue,
-  //     pyGUID: 'NEW',
-  //     pxUpdateDateTime: new Date().toISOString()
-  //   };
-  //
-  //   setData([...data, newDataItem]);
-  // };
+  // TODO: Only in memory and not persisted for now so that Storybook story
+  // works
+  const upsertDataItem = (selectedDataItem: DataItem, changedValue: number) => {
+    if (selectedDataItem.pyGUID) {
+      setData(
+        data.map(dataItemToCheck =>
+          dataItemToCheck.pyGUID === selectedDataItem.pyGUID
+            ? {
+                ...dataItemToCheck,
+                CustomerRating: changedValue,
+                pxUpdateDateTime: new Date().toISOString()
+              }
+            : dataItemToCheck
+        )
+      );
+      return;
+    }
+
+    const newDataItem = {
+      ...selectedDataItem,
+      CustomerRating: changedValue,
+      pyGUID: 'NEW',
+      pxUpdateDateTime: new Date().toISOString()
+    };
+
+    setData([...data, newDataItem]);
+  };
 
   return (
     <>
@@ -174,22 +175,14 @@ function SlDxExtensionsStarRatingWidget(
           target={actionTarget}
           portal={false}
           arrow
-          style={{ width: '25ch' }}
+          style={{ width: '30ch' }}
           show={showPopover}
           {...clickMountingHandlers}
         >
           <Text variant='h2'>
             {actionId === 'rating:addNew' ? 'New' : `Edit Rating: ${caseId}`}
           </Text>
-          <Slider
-            min={0}
-            max={5}
-            value={value}
-            onChange={
-              () => {}
-              // (changeValue: number) => setValue(changeValue)
-            }
-          />
+          <Slider min={0} max={5} value={value} onChange={setValue} />
           <Grid
             container={{
               cols: 'repeat(2, 1fr)',
@@ -210,7 +203,7 @@ function SlDxExtensionsStarRatingWidget(
               variant='primary'
               onClick={(e: MouseEvent) => {
                 e.preventDefault();
-                // if (dataItem) upsertDataItem(dataItem, value);
+                if (dataItem) upsertDataItem(dataItem, value);
                 setActionTarget(null);
               }}
             >
