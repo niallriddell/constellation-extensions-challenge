@@ -5,8 +5,8 @@ import {
 } from 'react';
 
 import type {
+  // ModalMethods,
   Action
-  // ModalMethods
 } from '@pega/cosmos-react-core';
 import {
   SummaryList,
