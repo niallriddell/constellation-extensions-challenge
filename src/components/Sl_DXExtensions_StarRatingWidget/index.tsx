@@ -78,7 +78,7 @@ const SlDxExtensionsStarRatingWidget = ({
   const caseClass = getPConnect().getCaseInfo().getClassName();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [IsError, setIsError] = useState(false);
+  const [inError, setinError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [data, setData] = useState<Array<DataItem>>([]);
   const [actionId, setActionId] = useState<string | undefined>();
@@ -178,7 +178,7 @@ const SlDxExtensionsStarRatingWidget = ({
         setData(processRatings(allRatings));
       }
     } catch (error) {
-      setIsError(true);
+      setinError(true);
     } finally {
       setIsLoading(false);
     }
@@ -277,7 +277,7 @@ const SlDxExtensionsStarRatingWidget = ({
   return (
     <>
       <SummaryList
-        error={IsError}
+        error={inError}
         icon='star'
         items={items.slice(0, 3)}
         loading={isLoading}
