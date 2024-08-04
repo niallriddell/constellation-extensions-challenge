@@ -79,7 +79,7 @@ const SlDxExtensionsStarRatingWidget = ({
   const caseClass = getPConnect().getCaseInfo().getClassName();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [IsError, setIsError] = useState(false);
+  const [inError, setinError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [data, setData] = useState<Array<DataItem>>([]);
   const [actionId, setActionId] = useState<string | undefined>();
@@ -162,14 +162,14 @@ const SlDxExtensionsStarRatingWidget = ({
 
     const fetchRatings = async () => {
       try {
-        setIsError(false);
+        setinError(false);
         const allRatings = await getRatings(list, customerId, contextName);
 
         if (allRatings && allRatings.length > 0) {
           setData(processRatings(allRatings));
         }
       } catch (error) {
-        setIsError(true);
+        setinError(true);
         setData([]);
       } finally {
         setIsLoading(false);
@@ -220,7 +220,7 @@ const SlDxExtensionsStarRatingWidget = ({
   return (
     <>
       <SummaryList
-        error={IsError}
+        error={inError}
         icon='star'
         items={items.slice(0, 3)}
         loading={isLoading}
