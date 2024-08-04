@@ -114,7 +114,7 @@ const SummaryListViewAllModal = ({
         <StarRatingPopover
           popoverTarget={popoverTarget}
           setPopoverTarget={setPopoverTarget}
-          action={selectedAction}
+          actionId={selectedAction?.id}
           currentRating={selectedRating}
           onUpdateRating={onUpdateRating}
         />
