@@ -61,7 +61,7 @@ const SlDxExtensionsStarRatingWidget = (
 
   const [data, setData] = useState<DataItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [IsError, setIsError] = useState(false);
+  const [inError, setInError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [actionId, setActionId] = useState<string>();
 
@@ -148,7 +148,7 @@ const SlDxExtensionsStarRatingWidget = (
 
     const fetchRatings = async () => {
       try {
-        setIsError(false);
+        setInError(false);
         const allRatings = await getRatings(
           listDataPage,
           customerId,
@@ -159,7 +159,7 @@ const SlDxExtensionsStarRatingWidget = (
           setData(processRatings(allRatings));
         }
       } catch (error) {
-        setIsError(true);
+        setInError(true);
         setData([]);
       } finally {
         setIsLoading(false);
@@ -210,7 +210,7 @@ const SlDxExtensionsStarRatingWidget = (
   return (
     <>
       <SummaryList
-        error={IsError}
+        error={inError}
         icon='star'
         items={items.slice(0, 3)}
         loading={isLoading}
