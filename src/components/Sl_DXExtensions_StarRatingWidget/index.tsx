@@ -68,14 +68,6 @@ const SlDxExtensionsStarRatingWidget = ({
   // const savable = ratingSavableDatapage[0];
 
   // // eslint-disable-next-line no-console
-  // console.log(
-  //   ratingDataClass,
-  //   ratingLookupDatapage,
-  //   ratingListDatapage,
-  //   ratingSavableDatapage
-  // );
-
-  // // eslint-disable-next-line no-console
   // console.log(ratingDataClass, lookup, list, savable);
 
   // At this stage our widget is a CASE widget only and etherefore we know we're in the
