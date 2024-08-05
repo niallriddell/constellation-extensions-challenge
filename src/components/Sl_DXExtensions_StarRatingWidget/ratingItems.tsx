@@ -29,7 +29,7 @@ export const mapRatingDataItem = (
     : [];
 
   const environmentInfo = PCore.getEnvironmentInfo();
-  const timezone = environmentInfo && environmentInfo.getTimeZone();
+  const timezone = environmentInfo?.getTimeZone();
 
   return {
     dataItem,
