@@ -35,11 +35,12 @@ registerIcon(star);
 // TODO: Add any additional properties here that are configured in the config.json
 export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
   customerId?: string;
-  ratingDataClass: string;
-  ratingLookupDatapage: string[];
-  ratingListDatapage: string[];
-  ratingSavableDatapage: string[];
+  // ratingDataClass: string;
+  // ratingLookupDatapage: string[];
+  // ratingListDatapage: string[];
+  // ratingSavableDatapage: string[];
 }
+
 // TODO:
 // - Add create and update data object logic to ratingData.ts
 // - Improve formatting of text below rating
@@ -51,27 +52,31 @@ export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
 
 // TODO: Add any additional properties here that are configured in the config.json
 const SlDxExtensionsStarRatingWidget = ({
+  // ratingDataClass,
+  // ratingLookupDatapage,
+  // ratingListDatapage,
+  // ratingSavableDatapage,
   getPConnect,
   label,
-  customerId,
-  ratingDataClass,
-  ratingLookupDatapage,
-  ratingListDatapage,
-  ratingSavableDatapage
+  customerId
 }: SlDxExtensionsStarRatingWidgetProps) => {
-  const lookup = ratingLookupDatapage[0];
-  const list = ratingListDatapage[0];
-  const savable = ratingSavableDatapage[0];
+  const list = 'D_List';
 
-  // eslint-disable-next-line no-console
-  console.log(
-    ratingDataClass,
-    ratingLookupDatapage,
-    ratingListDatapage,
-    ratingSavableDatapage
-  );
-  // eslint-disable-next-line no-console
-  console.log(ratingDataClass, lookup, list, savable);
+  // const lookup = ratingLookupDatapage[0];
+  // const list = ratingListDatapage[0];
+  // const savable = ratingSavableDatapage[0];
+
+  // // eslint-disable-next-line no-console
+  // console.log(
+  //   ratingDataClass,
+  //   ratingLookupDatapage,
+  //   ratingListDatapage,
+  //   ratingSavableDatapage
+  // );
+
+  // // eslint-disable-next-line no-console
+  // console.log(ratingDataClass, lookup, list, savable);
+
   // At this stage our widget is a CASE widget only and etherefore we know we're in the
   // current case context during runtime.
   // Utility widgets do not store their data in the case directly so can also
@@ -81,13 +86,13 @@ const SlDxExtensionsStarRatingWidget = ({
   const caseClass = getPConnect().getCaseInfo().getClassName();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [inError, setinError] = useState(false);
+  const [inError, setInError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [data, setData] = useState<Array<DataItem>>([]);
   const [actionId, setActionId] = useState<string | undefined>();
   const [dataItem, setDataItem] = useState<DataItem>({
     rating: 0,
-    customerId: customerId || 'No Customer',
+    customerId: customerId ?? 'No Customer',
     stars: 5,
     caseClass,
     caseId: caseKey
@@ -105,7 +110,7 @@ const SlDxExtensionsStarRatingWidget = ({
   // associated with the data class.
   // Persist your data to the server first and update the UI to align.
   const onUpdateRating = (updatedRating: DataItem) => {
-    updatedRating.guid = updatedRating?.guid || 'NEW';
+    updatedRating.guid = updatedRating?.guid ?? 'NEW';
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
@@ -164,14 +169,14 @@ const SlDxExtensionsStarRatingWidget = ({
 
     const fetchRatings = async () => {
       try {
-        setinError(false);
+        setInError(false);
         const allRatings = await getRatings(list, customerId, contextName);
 
         if (allRatings && allRatings.length > 0) {
           setData(processRatings(allRatings));
         }
       } catch (error) {
-        setinError(true);
+        setInError(true);
         setData([]);
       } finally {
         setIsLoading(false);
