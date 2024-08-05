@@ -161,6 +161,8 @@ const SlDxExtensionsStarRatingWidget = (
       } catch (error) {
         setInError(true);
         setData([]);
+        // eslint-disable-next-line no-console
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
