@@ -71,6 +71,11 @@ const SlDxExtensionsStarRatingWidget = (
   const caseKey = getPConnect().getCaseInfo().getKey();
   const caseClass = getPConnect().getCaseInfo().getClassName();
 
+  const localizedVal = getPConnect().getLocalizedValue;
+  const localeRuleKey = `${getPConnect()
+    .getCaseInfo()
+    .getClassName()}!PAGE!PYDETAILS`;
+
   const [isLoading, setIsLoading] = useState(true);
   const [inError, setInError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
@@ -194,7 +199,7 @@ const SlDxExtensionsStarRatingWidget = (
     modalRef.current = createModal<SummaryListViewAllProps>(
       SummaryListViewAllModal,
       {
-        name: label,
+        name: localizedVal(label, undefined, localeRuleKey),
         loading: isLoading,
         items,
         actions,
@@ -219,7 +224,7 @@ const SlDxExtensionsStarRatingWidget = (
         loading={isLoading}
         count={!isLoading ? items.length : undefined}
         headingTag='h3'
-        name={label}
+        name={localizedVal(label, undefined, localeRuleKey)}
         actions={actions}
         onViewAll={openViewAll}
       />
