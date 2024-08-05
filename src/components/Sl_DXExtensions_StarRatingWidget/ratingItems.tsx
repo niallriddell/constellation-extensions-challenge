@@ -52,8 +52,7 @@ export const mapRatingDataItem = (
             format='short'
           />,
           <Text>{dataItem.caseClass}</Text>,
-          <Text>{dataItem.caseId}</Text>,
-          <Text>{dataItem.customerId}</Text>
+          <Text>{dataItem.caseId}</Text>
         ]}
       />
     )
