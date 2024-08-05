@@ -25,6 +25,7 @@ export const mapRatingDataItem = (
 ): DataItemSummaryListItem<Rating> => {
   const caseKey = getPConnect().getCaseInfo().getKey();
   const isCurrent = caseKey && dataItem.caseId === caseKey;
+
   // const linkURL = PCore.getSemanticUrlUtils().getResolvedSemanticURL(
   //   PCore.getSemanticUrlUtils().getActions().ACTION_OPENWORKBYHANDLE,
   //   { caseClassName: dataItem.caseClass },
@@ -35,8 +36,9 @@ export const mapRatingDataItem = (
   //         : dataItem.caseId
   //   }
   // );
+
   const environmentInfo = PCore.getEnvironmentInfo();
-  const timezone = environmentInfo && environmentInfo.getTimeZone();
+  const timezone = environmentInfo?.getTimeZone();
 
   const items: ReactNode[] = [
     // <Link
@@ -51,7 +53,6 @@ export const mapRatingDataItem = (
     // >
     //   {dataItem.caseId.split(' ')[1]}
     // </Link>,
-
     <DateTimeDisplay
       value={dayjs(dataItem.updateDateTime).tz(timezone).format()}
       variant='datetime'
