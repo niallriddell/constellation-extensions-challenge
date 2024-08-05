@@ -1,10 +1,11 @@
 import {
+  // Link,
+  Text,
   Rating as CosmosRating,
   createUID,
   MetaList,
   DateTimeDisplay,
-  Action,
-  Link
+  Action
 } from '@pega/cosmos-react-core';
 import dayjs from 'dayjs';
 import tzone from 'dayjs/plugin/timezone';
@@ -24,37 +25,40 @@ export const mapRatingDataItem = (
 ): DataItemSummaryListItem<Rating> => {
   const caseKey = getPConnect().getCaseInfo().getKey();
   const isCurrent = caseKey && dataItem.caseId === caseKey;
-  const linkURL = PCore.getSemanticUrlUtils().getResolvedSemanticURL(
-    PCore.getSemanticUrlUtils().getActions().ACTION_OPENWORKBYHANDLE,
-    { caseClassName: dataItem.caseClass },
-    {
-      workID:
-        dataItem.caseId.split(' ').length > 1
-          ? dataItem.caseId.split(' ')[1]
-          : dataItem.caseId
-    }
-  );
+  // const linkURL = PCore.getSemanticUrlUtils().getResolvedSemanticURL(
+  //   PCore.getSemanticUrlUtils().getActions().ACTION_OPENWORKBYHANDLE,
+  //   { caseClassName: dataItem.caseClass },
+  //   {
+  //     workID:
+  //       dataItem.caseId.split(' ').length > 1
+  //         ? dataItem.caseId.split(' ')[1]
+  //         : dataItem.caseId
+  //   }
+  // );
   const environmentInfo = PCore.getEnvironmentInfo();
   const timezone = environmentInfo && environmentInfo.getTimeZone();
 
   const items: ReactNode[] = [
-    <Link
-      href={linkURL}
-      variant='link'
-      previewable
-      onPreview={() =>
-        getPConnect().getActionsApi().showCasePreview(dataItem.caseId, {
-          caseClassName: dataItem.caseClass
-        })
-      }
-    >
-      {dataItem.caseId.split(' ')[1]}
-    </Link>,
+    // <Link
+    //   href={linkURL}
+    //   variant='link'
+    //   previewable
+    //   onPreview={() =>
+    //     getPConnect().getActionsApi().showCasePreview(dataItem.caseId, {
+    //       caseClassName: dataItem.caseClass
+    //     })
+    //   }
+    // >
+    //   {dataItem.caseId.split(' ')[1]}
+    // </Link>,
+
     <DateTimeDisplay
       value={dayjs(dataItem.updateDateTime).tz(timezone).format()}
       variant='datetime'
       format='short'
-    />
+    />,
+    <Text>{dataItem.caseClass}</Text>,
+    <Text>{dataItem.caseId}</Text>
   ];
 
   const actions: Action[] = isCurrent
