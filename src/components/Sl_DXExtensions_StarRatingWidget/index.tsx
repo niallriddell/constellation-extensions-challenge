@@ -45,26 +45,22 @@ export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
 // - [Optional] - Add websocket handler to update utilities panel count on server
 //                change
 
-const SlDxExtensionsStarRatingWidget = ({
-  getPConnect,
-  label,
-  customerId,
-  ratingDataClass,
-  ratingLookupDatapage,
-  ratingListDatapage,
-  ratingSavableDatapage
-}: SlDxExtensionsStarRatingWidgetProps) => {
-  const lookup = ratingLookupDatapage[0];
-  const list = ratingListDatapage[0];
-  const savable = ratingSavableDatapage[0];
-
-  // eslint-disable-next-line no-console
-  console.log(
+const SlDxExtensionsStarRatingWidget = (
+  props: SlDxExtensionsStarRatingWidgetProps
+) => {
+  const {
+    getPConnect,
+    label,
+    customerId,
     ratingDataClass,
     ratingLookupDatapage,
     ratingListDatapage,
     ratingSavableDatapage
-  );
+  } = props;
+  const lookup = ratingLookupDatapage[0];
+  const list = ratingListDatapage[0];
+  const savable = ratingSavableDatapage[0];
+
   // eslint-disable-next-line no-console
   console.log(ratingDataClass, lookup, list, savable);
   // At this stage our widget is a CASE widget only and etherefore we know we're in the

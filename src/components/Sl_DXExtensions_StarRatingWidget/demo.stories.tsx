@@ -58,7 +58,7 @@ const mockGetDataAsync = (
   const filter = args[4]?.filter as Filter;
   const queryCustomerID = filter?.filterConditions.F1.rhs.value;
   let { data } = mockRatingData;
-  if (queryCustomerID && queryCustomerID.length)
+  if (queryCustomerID?.length)
     data = data.filter(rating => rating.CustomerID === queryCustomerID);
 
   return Promise.resolve({ data, status: 200 });
@@ -131,11 +131,7 @@ export const StarRatingWidgetWithCurrentCaseRating: Story = (
     getPConnect: mockPConnect as () => typeof PConnect
   };
 
-  return (
-    <>
-      <SlDxExtensionsStarRatingWidget {...props} {...args} />
-    </>
-  );
+  return <SlDxExtensionsStarRatingWidget {...props} {...args} />;
 };
 
 StarRatingWidgetWithCurrentCaseRating.args = {
@@ -154,11 +150,7 @@ export const StarRatingWidgetWithoutCurrentCaseRating: Story = (
     getPConnect: mockPConnect as () => typeof PConnect
   };
 
-  return (
-    <>
-      <SlDxExtensionsStarRatingWidget {...props} {...args} />
-    </>
-  );
+  return <SlDxExtensionsStarRatingWidget {...props} {...args} />;
 };
 
 StarRatingWidgetWithoutCurrentCaseRating.args = {

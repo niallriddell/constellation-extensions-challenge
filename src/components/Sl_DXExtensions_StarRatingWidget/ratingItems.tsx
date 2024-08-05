@@ -23,6 +23,9 @@ export const mapRatingDataItem = (
   getPConnect: () => typeof PConnect,
   onClickHandler: ActionWithDataItem<Rating> | Action['onClick']
 ): DataItemSummaryListItem<Rating> => {
+  const localizedVal = getPConnect().getLocalizedValue;
+  const localeRuleKey = `${dataItem.caseClass.toUpperCase()}!PAGE!PYDETAILS`;
+
   const caseKey = getPConnect().getCaseInfo().getKey();
   const isCurrent = caseKey && dataItem.caseId === caseKey;
   const linkURL = PCore.getSemanticUrlUtils().getResolvedSemanticURL(
@@ -36,7 +39,7 @@ export const mapRatingDataItem = (
     }
   );
   const environmentInfo = PCore.getEnvironmentInfo();
-  const timezone = environmentInfo && environmentInfo.getTimeZone();
+  const timezone = environmentInfo?.getTimeZone();
 
   const items: ReactNode[] = [
     <Link
@@ -60,7 +63,7 @@ export const mapRatingDataItem = (
 
   if (isCurrent)
     items.push(
-      <Text>{`${getPConnect().getLocalizedValue('Current case')}`}</Text>
+      <Text>{`${localizedVal('Current case', undefined, localeRuleKey)}`}</Text>
     );
 
   const actions: Action[] = isCurrent
@@ -75,8 +78,10 @@ export const mapRatingDataItem = (
       <CosmosRating
         key={`${dataItem.guid ?? createUID()}-rating`}
         value={dataItem.rating}
-        metaInfo={`${dataItem.rating} ${getPConnect().getLocalizedValue(
-          'of'
+        metaInfo={`${dataItem.rating} ${localizedVal(
+          'of',
+          undefined,
+          localeRuleKey
         )} ${dataItem.stars}`}
       />
     ),

@@ -22,6 +22,11 @@ const createAction = <T>(
   onClickHandler?: ActionWithDataItem<T> | Action['onClick'],
   dataItem?: T
 ): Action => {
+  const localizedVal = getPConnect().getLocalizedValue;
+  const localeRuleKey = `${getPConnect()
+    .getCaseInfo()
+    .getClassName()}!PAGE!PYDETAILS`;
+
   const actionConfig = {
     Add: {
       text: 'Add',
@@ -42,13 +47,13 @@ const createAction = <T>(
 
   const { text, id, icon } = actionConfig[actionType];
   return {
-    text: getPConnect().getLocalizedValue(text),
+    text: localizedVal(text, undefined, localeRuleKey),
     id,
     icon,
     onClick: (...args) => {
       if (onClickHandler === undefined) return undefined;
       if (isActionWithDataItem(onClickHandler)) {
-        onClickHandler(dataItem || undefined, ...args);
+        onClickHandler(dataItem ?? undefined, ...args);
       } else {
         onClickHandler(...args);
       }
