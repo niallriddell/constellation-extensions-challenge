@@ -79,13 +79,13 @@ const SlDxExtensionsStarRatingWidget = ({
   const caseClass = getPConnect().getCaseInfo().getClassName();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [inError, setinError] = useState(false);
+  const [inError, setInError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [data, setData] = useState<Array<DataItem>>([]);
   const [actionId, setActionId] = useState<string | undefined>();
   const [dataItem, setDataItem] = useState<DataItem>({
     rating: 0,
-    customerId: customerId || 'No Customer',
+    customerId: customerId ?? 'No Customer',
     stars: 5,
     caseClass,
     caseId: caseKey
@@ -103,7 +103,7 @@ const SlDxExtensionsStarRatingWidget = ({
   // associated with the data class.
   // Persist your data to the server first and update the UI to align.
   const onUpdateRating = (updatedRating: DataItem) => {
-    updatedRating.guid = updatedRating?.guid || 'NEW';
+    updatedRating.guid = updatedRating?.guid ?? 'NEW';
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
@@ -162,14 +162,14 @@ const SlDxExtensionsStarRatingWidget = ({
 
     const fetchRatings = async () => {
       try {
-        setinError(false);
+        setInError(false);
         const allRatings = await getRatings(list, customerId, contextName);
 
         if (allRatings && allRatings.length > 0) {
           setData(processRatings(allRatings));
         }
       } catch (error) {
-        setinError(true);
+        setInError(true);
         setData([]);
       } finally {
         setIsLoading(false);

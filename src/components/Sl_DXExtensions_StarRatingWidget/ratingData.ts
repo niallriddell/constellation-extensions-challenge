@@ -3,7 +3,7 @@ import type {
   Filter,
   Query
 } from '@pega/pcore-pconnect-typedefs/datapage/types';
-import { BiMap } from './bimap';
+import BiMap from './bimap';
 
 // All mapping between the component internal data model and the external data model
 // is done here.  This is not strictly necessary and the approach taken here can be
@@ -158,39 +158,45 @@ export const updateRating = async (
   context?: string,
   classId?: string
 ): Promise<Rating | undefined> => {
-  const optionsObject = {
-    body: {
-      data: {
-        [mapper.getValue('rating') as string]: rating.rating,
-        [mapper.getValue('stars') as string]: rating.stars,
-        [mapper.getValue('caseId') as string]: rating.caseId,
-        [mapper.getValue('customerId') as string]: rating.customerId,
-        [mapper.getValue('caseClass') as string]: rating.caseClass,
-        [mapper.getValue('guid') as string]: rating.guid
-      }
-    },
-    queryPayload: {
-      data_view_ID: dataView
-    }
-  };
+  // const optionsObject = {
+  //   body: {
+  //     data: {
+  //       [mapper.getValue('rating') as string]: rating.rating,
+  //       [mapper.getValue('stars') as string]: rating.stars,
+  //       [mapper.getValue('caseId') as string]: rating.caseId,
+  //       [mapper.getValue('customerId') as string]: rating.customerId,
+  //       [mapper.getValue('caseClass') as string]: rating.caseClass,
+  //       [mapper.getValue('guid') as string]: rating.guid
+  //     }
+  //   },
+  //   queryPayload: {
+  //     data_view_ID: dataView
+  //   }
+  // };
+  //
+  // const response = await PCore.getRestClient().invokeRestApi(
+  //   'updateDataObject',
+  //   optionsObject,
+  //   context
+  // );
+  //
+  // if (response?.status === 200) {
+  //   if (classId) {
+  //     PCore.getPubSubUtils().publish(
+  //       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
+  //       {
+  //         classId
+  //       }
+  //     );
+  //   }
+  //   return mapRatingDataToRating([response.data.responseData], mapper)[0];
+  // }
 
-  const response = await PCore.getRestClient().invokeRestApi(
-    'updateDataObject',
-    optionsObject,
-    context
-  );
-
-  if (response?.status === 200) {
-    if (classId) {
-      PCore.getPubSubUtils().publish(
-        PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
-        {
-          classId
-        }
-      );
-    }
-    return mapRatingDataToRating([response.data.responseData], mapper)[0];
-  }
+  // eslint-disable-next-line no-console
+  console.log('createRating:', dataView, rating, context, classId);
+  rating.updateDateTime = new Date().toISOString();
+  // Tempoary guid purely for mock implementation.
+  return rating as Rating;
 };
 
 // TODO: Add in the createDataObject rest api endpoint
@@ -200,40 +206,42 @@ export const createRating = async (
   context?: string,
   classId?: string
 ): Promise<Rating | undefined> => {
-  const optionsObject = {
-    body: {
-      data: {
-        [mapper.getValue('rating') as string]: rating.rating,
-        [mapper.getValue('stars') as string]: rating.stars,
-        [mapper.getValue('caseId') as string]: rating.caseId,
-        [mapper.getValue('customerId') as string]: rating.customerId,
-        [mapper.getValue('caseClass') as string]: rating.caseClass
-      }
-    },
-    queryPayload: {
-      data_view_ID: dataView
-    }
-  };
-
-  const response = await PCore.getRestClient().invokeRestApi(
-    'createDataObject',
-    optionsObject,
-    context
-  );
-
-  if (response?.status === 200) {
-    if (classId) {
-      PCore.getPubSubUtils().publish(
-        PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
-        {
-          classId
-        }
-      );
-    }
-    return mapRatingDataToRating([response.data.responseData], mapper)[0];
-  }
-  // rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
-  // console.log("createRating:", dataView, rating, context);
-  // // Tempoary guid purely for mock implementation.
-  // return rating as Rating;
+  // const optionsObject = {
+  //   body: {
+  //     data: {
+  //       [mapper.getValue('rating') as string]: rating.rating,
+  //       [mapper.getValue('stars') as string]: rating.stars,
+  //       [mapper.getValue('caseId') as string]: rating.caseId,
+  //       [mapper.getValue('customerId') as string]: rating.customerId,
+  //       [mapper.getValue('caseClass') as string]: rating.caseClass
+  //     }
+  //   },
+  //   queryPayload: {
+  //     data_view_ID: dataView
+  //   }
+  // };
+  //
+  // const response = await PCore.getRestClient().invokeRestApi(
+  //   'createDataObject',
+  //   optionsObject,
+  //   context
+  // );
+  //
+  // if (response?.status === 200) {
+  //   if (classId) {
+  //     PCore.getPubSubUtils().publish(
+  //       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
+  //       {
+  //         classId
+  //       }
+  //     );
+  //   }
+  //   return mapRatingDataToRating([response.data.responseData], mapper)[0];
+  // }
+  rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
+  rating.updateDateTime = new Date().toISOString();
+  // eslint-disable-next-line no-console
+  console.log('createRating:', dataView, rating, context, classId);
+  // Tempoary guid purely for mock implementation.
+  return rating as Rating;
 };
