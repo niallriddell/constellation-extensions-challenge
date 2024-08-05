@@ -161,12 +161,12 @@ export const updateRating = async (
   // const optionsObject = {
   //   body: {
   //     data: {
-  //       [mapper.getValue('rating') as string]: rating.rating,
-  //       [mapper.getValue('stars') as string]: rating.stars,
-  //       [mapper.getValue('caseId') as string]: rating.caseId,
-  //       [mapper.getValue('customerId') as string]: rating.customerId,
-  //       [mapper.getValue('caseClass') as string]: rating.caseClass,
-  //       [mapper.getValue('guid') as string]: rating.guid
+  //       CustomerRating: rating.rating,
+  //       NumberOfStars: rating.stars,
+  //       CaseID: rating.caseId,
+  //       CustomerID: rating.customerId,
+  //       CaseClassName: rating.caseClass,
+  //       pyGUID: rating.guid
   //     }
   //   },
   //   queryPayload: {
@@ -189,7 +189,25 @@ export const updateRating = async (
   //       }
   //     );
   //   }
-  //   return mapRatingDataToRating([response.data.responseData], mapper)[0];
+  //   const {
+  //     CustomerRating,
+  //     NumberOfStars,
+  //     CaseID,
+  //     CustomerID,
+  //     CaseClassName,
+  //     pyGUID,
+  //     pxUpdateDateTime
+  //   }: RatingData = response.data.responseData;
+  //
+  //   return {
+  //     rating: CustomerRating,
+  //     stars: NumberOfStars,
+  //     caseId: CaseID,
+  //     customerId: CustomerID,
+  //     caseClass: CaseClassName,
+  //     guid: pyGUID,
+  //     udpateDataTime: pxUpdateDateTime
+  //   } as Rating;
   // }
 
   // eslint-disable-next-line no-console
@@ -209,11 +227,11 @@ export const createRating = async (
   // const optionsObject = {
   //   body: {
   //     data: {
-  //       [mapper.getValue('rating') as string]: rating.rating,
-  //       [mapper.getValue('stars') as string]: rating.stars,
-  //       [mapper.getValue('caseId') as string]: rating.caseId,
-  //       [mapper.getValue('customerId') as string]: rating.customerId,
-  //       [mapper.getValue('caseClass') as string]: rating.caseClass
+  //       CustomerRating: rating.rating,
+  //       NumberOfStars: rating.stars,
+  //       CaseID: rating.caseId,
+  //       CustomerID: rating.customerId,
+  //       CaseClassName: rating.caseClass
   //     }
   //   },
   //   queryPayload: {
@@ -236,8 +254,27 @@ export const createRating = async (
   //       }
   //     );
   //   }
-  //   return mapRatingDataToRating([response.data.responseData], mapper)[0];
+  //   const {
+  //     CustomerRating,
+  //     NumberOfStars,
+  //     CaseID,
+  //     CustomerID,
+  //     CaseClassName,
+  //     pyGUID,
+  //     pxUpdateDateTime
+  //   }: RatingData = response.data.responseData;
+  //
+  //   return {
+  //     rating: CustomerRating,
+  //     stars: NumberOfStars,
+  //     caseId: CaseID,
+  //     customerId: CustomerID,
+  //     caseClass: CaseClassName,
+  //     guid: pyGUID,
+  //     udpateDataTime: pxUpdateDateTime
+  //   } as Rating;
   // }
+
   rating.guid = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
   rating.updateDateTime = new Date().toISOString();
   // eslint-disable-next-line no-console
