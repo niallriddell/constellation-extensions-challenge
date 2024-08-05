@@ -61,6 +61,7 @@ const SlDxExtensionsStarRatingWidget = ({
   customerId
 }: SlDxExtensionsStarRatingWidgetProps) => {
   const list = 'D_List';
+  const savable = 'D_Savable';
 
   // const lookup = ratingLookupDatapage[0];
   // const list = ratingListDatapage[0];
@@ -116,7 +117,7 @@ const SlDxExtensionsStarRatingWidget = ({
 
     // TODO: Add in the correct data page selected in authoring. The property that
     // will contain the savable data page will be specified later in the config.json.
-    upsert('D_Savable', updatedRating).then(rating =>
+    upsert(savable, updatedRating).then(rating =>
       rating
         ? setData([rating, ...(upsert === createRating ? data : data.slice(1))])
         : undefined
