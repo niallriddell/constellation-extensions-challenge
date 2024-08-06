@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import type { Action, ModalMethods } from '@pega/cosmos-react-core';
+import { Action, ModalMethods, useUID } from '@pega/cosmos-react-core';
 import {
   SummaryList,
   withConfiguration,
@@ -85,6 +85,35 @@ const SlDxExtensionsStarRatingWidget = ({
   // Constellation design system hooks for creating modal dialogs
   // and Popover positioning support
   const { create: createModal } = useModalManager();
+
+  // TODO: Do something useful with these events, (e.g. show a Toast)
+  // useEffect(() => {
+  //   const subCreateId = 'rating-data-create';
+  //   const subUpdateId = 'rating-data-update';
+  //   PCore.getPubSubUtils().subscribe(
+  //     PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
+  //     // eslint-disable-next-line no-console
+  //     (payload: any) => console.log(payload),
+  //     subCreateId
+  //   );
+  //   PCore.getPubSubUtils().subscribe(
+  //     PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
+  //     // eslint-disable-next-line no-console
+  //     (payload: any) => console.log(payload),
+  //     subUpdateId
+  //   );
+  //
+  //   return () => {
+  //     PCore.getPubSubUtils().unsubscribe(
+  //       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
+  //       subCreateId
+  //     );
+  //     PCore.getPubSubUtils().unsubscribe(
+  //       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
+  //       subUpdateId
+  //     );
+  //   };
+  // }, []);
 
   const publishWidgetCountUpdated = () => {
     // PCore.getPubSubUtils().publish('WidgetUpdated', {
