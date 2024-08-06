@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Action, ModalMethods, useUID } from '@pega/cosmos-react-core';
+import { Action, ModalMethods } from '@pega/cosmos-react-core';
 import {
   SummaryList,
   withConfiguration,
