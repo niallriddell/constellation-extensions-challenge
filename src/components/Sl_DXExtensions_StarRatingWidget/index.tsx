@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Action, ModalMethods } from '@pega/cosmos-react-core';
+import type { Action, ModalMethods } from '@pega/cosmos-react-core';
 import {
   SummaryList,
   withConfiguration,
@@ -67,6 +67,11 @@ const SlDxExtensionsStarRatingWidget = ({
   const contextName = getPConnect().getContextName();
   const caseKey = getPConnect().getCaseInfo().getKey();
   const caseClass = getPConnect().getCaseInfo().getClassName();
+
+  const localizedVal = getPConnect().getLocalizedValue;
+  const localeRuleKey = `${getPConnect()
+    .getCaseInfo()
+    .getClassName()}!PAGE!PYDETAILS`;
 
   const [isLoading, setIsLoading] = useState(true);
   const [inError, setInError] = useState(false);
@@ -259,7 +264,7 @@ const SlDxExtensionsStarRatingWidget = ({
         loading={isLoading}
         count={!isLoading ? items.length : undefined}
         headingTag='h3'
-        name={label}
+        name={localizedVal(label, undefined, localeRuleKey)}
         actions={actions}
         onViewAll={openViewAll}
       />
