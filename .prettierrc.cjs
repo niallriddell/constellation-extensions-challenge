@@ -1,6 +1,7 @@
-const companyPrettierConfig = require("@pega/prettier-config");  
-  
-module.exports = {  
-  ...companyPrettierConfig,  
-  printWidth: 80,  
-};  
+const companyPrettierConfig = require('@pega/prettier-config');
+
+module.exports = {
+  ...companyPrettierConfig,
+  printWidth: 80,
+  proseWrap: 'always'
+};

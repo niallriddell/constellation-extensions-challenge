@@ -32,7 +32,8 @@ import StarRatingPopover from './StarRatingPopover';
 
 registerIcon(star);
 
-// TODO: Add any additional properties here that are configured in the config.json
+// TODO: Add any additional properties here that are configured in the
+// config.json
 export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
   customerId?: string;
   ratingDataClass: string;
@@ -41,10 +42,9 @@ export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
   ratingSavableDatapage: string[];
 }
 // TODO:
-// - [Optional] - Add websocket handler to update utilities panel count on server
-//                change
+// - [Optional] - Add websocket handler to update utilities panel count on
+//  server change
 
-// TODO: Add any additional properties here that are configured in the config.json
 const SlDxExtensionsStarRatingWidget = ({
   getPConnect,
   label,
@@ -59,16 +59,9 @@ const SlDxExtensionsStarRatingWidget = ({
   const savable = ratingSavableDatapage[0];
 
   // eslint-disable-next-line no-console
-  console.log(
-    ratingDataClass,
-    ratingLookupDatapage,
-    ratingListDatapage,
-    ratingSavableDatapage
-  );
-  // eslint-disable-next-line no-console
   console.log(ratingDataClass, lookup, list, savable);
-  // At this stage our widget is a CASE widget only and etherefore we know we're in the
-  // current case context during runtime.
+  // At this stage our widget is a CASE widget only and etherefore we know
+  // we're in the current case context during runtime.
   // Utility widgets do not store their data in the case directly so can also
   // be used on Resolved cases.
   const contextName = getPConnect().getContextName();
@@ -76,13 +69,13 @@ const SlDxExtensionsStarRatingWidget = ({
   const caseClass = getPConnect().getCaseInfo().getClassName();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [inError, setinError] = useState(false);
+  const [inError, setInError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [data, setData] = useState<Array<DataItem>>([]);
   const [actionId, setActionId] = useState<string | undefined>();
   const [dataItem, setDataItem] = useState<DataItem>({
     rating: 0,
-    customerId: customerId || 'No Customer',
+    customerId: customerId ?? 'No Customer',
     stars: 5,
     caseClass,
     caseId: caseKey
@@ -94,24 +87,25 @@ const SlDxExtensionsStarRatingWidget = ({
   const { create: createModal } = useModalManager();
 
   const publishWidgetCountUpdated = () => {
-    PCore.getPubSubUtils().publish('WidgetUpdated', {
-      widget: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
-      count: data.length + 1,
-      caseID: caseKey
-    });
+    // PCore.getPubSubUtils().publish('WidgetUpdated', {
+    //   widget: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
+    //   count: data.length + 1,
+    //   caseID: caseKey
+    // });
   };
 
   // All non-transient updates to rating data are performed via this function.
-  // New rating objects don't yet have a GUID as this is created by Infinity, so we
-  // assign a temporary one until we perform a successful create.  Updates use the
-  // existing GUID to lookup and update the data object via the savable data page
-  // associated with the data class.
+  // New rating objects don't yet have a GUID as this is created by Infinity,
+  // so we assign a temporary one until we perform a successful create.
+  // Updates use the existing GUID to lookup and update the data object via the
+  // savable data page associated with the data class.
   // Persist your data to the server first and update the UI to align.
   const onUpdateRating = (updatedRating: DataItem) => {
-    updatedRating.guid = updatedRating?.guid || 'NEW';
+    updatedRating.guid = updatedRating?.guid ?? 'NEW';
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
+    // upsert(savable, updatedRating, undefined, ratingDataClass).then(rating => {
     upsert(savable, updatedRating).then(rating => {
       if (rating) {
         setData([rating, ...(upsert === createRating ? data : data.slice(1))]);
@@ -131,16 +125,19 @@ const SlDxExtensionsStarRatingWidget = ({
     if (actionDataItem) setDataItem(actionDataItem);
   };
 
-  // We iterate over the ratings to create the SummaryItems.  Memoization helps to
-  // avoid re-running expensive operations.  In our case it saves one execution on rerender.
-  // On a small dataset it may not be worth memoizing as there is a tradeoff.
-  // We need to capture the selected rating so we know which rating to perform actions on.
+  // We iterate over the ratings to create the SummaryItems.  Memoization helps
+  // to avoid re-running expensive operations.  In our case it saves one
+  // execution on rerender.  On a small dataset it may not be worth memoizing
+  // as there is a tradeoff.
+  // We need to capture the selected rating so we know which rating to perform
+  // actions on.
 
   const items = createItems(data, getPConnect, mapDataItem, onActionItemClick);
 
-  // An effect is required here because we're synchronising the open modal with changes in the
-  // data manged by the parent component.
-  // When and when not to use an effect is well documented here: https://react.dev/learn/you-might-not-need-an-effect
+  // An effect is required here because we're synchronising the open modal with
+  // changes in the data manged by the parent component.
+  // When and when not to use an effect is well documented here:
+  // https://react.dev/learn/you-might-not-need-an-effect
   useEffect(() => {
     modalRef.current?.update({
       items: createItems(data, getPConnect, mapDataItem, onActionItemClick)
@@ -148,8 +145,9 @@ const SlDxExtensionsStarRatingWidget = ({
   });
 
   useEffect(() => {
-    // We don't anticipate a large number of ratings per customer, so for now we can
-    // use array processing to find the current case rating in the ratings array.
+    // We don't anticipate a large number of ratings per customer, so for now we
+    // can use array processing to find the current case rating in the ratings
+    // array.
     const processRatings = (allRatings: Array<DataItem>) => {
       if (!customerId || !caseKey) {
         return allRatings;
@@ -168,14 +166,14 @@ const SlDxExtensionsStarRatingWidget = ({
 
     const fetchRatings = async () => {
       try {
-        setinError(false);
+        setInError(false);
         const allRatings = await getRatings(list, customerId, contextName);
 
         if (allRatings && allRatings.length > 0) {
           setData(processRatings(allRatings));
         }
       } catch (error) {
-        setinError(true);
+        setInError(true);
         setData([]);
       } finally {
         setIsLoading(false);
@@ -195,8 +193,8 @@ const SlDxExtensionsStarRatingWidget = ({
     data.filter(item => item.caseId === caseKey).length === 0;
 
   // As we always insert the current case rating at the top of the ratings array
-  // we check if the first element of the array is for the current case.  If not we
-  // display the 'Add' action.
+  // we check if the first element of the array is for the current case.  If not
+  // we display the 'Add' action.
   const actions =
     isEmptyData || isCaseKeyAbsent
       ? [createAction('Add', getPConnect, onActionClick)]
