@@ -1,7 +1,4 @@
-import type {
-  TableProps,
-  DefaultRowData
-} from '@pega/cosmos-react-core/lib/components/Table/Table';
+import type { TableProps } from '@pega/cosmos-react-core/lib/components/Table/Table';
 import { Rating } from '@pega/cosmos-react-core';
 
 export type RatingDataItem = {
@@ -14,17 +11,23 @@ export type RatingDataItem = {
   pxUpdateDateTime?: string;
 };
 
-export interface RatingTableRow extends DefaultRowData {
+type RatingItem = {
   caseId: string;
   rating: number | JSX.Element;
   updated: string;
   customerId: string;
-}
+};
+
+export type RatingTableRow = TableProps<
+  RatingItem & {
+    id: number;
+  }
+>;
 
 export const mapRatingDataItem = (
   entry: RatingDataItem,
   index: number
-): RatingTableRow => ({
+): RatingItem & { id: number } => ({
   updated: entry.pxUpdateDateTime
     ? new Date(entry.pxUpdateDateTime).toLocaleString()
     : 'No data',
@@ -41,7 +44,7 @@ export const mapRatingDataItem = (
 
 export const createRatingTableSchema = (
   getPConnect: () => typeof PConnect
-): TableProps<RatingTableRow>['columns'] => {
+): RatingTableRow['columns'] => {
   return [
     {
       renderer: 'updated',

@@ -32,9 +32,9 @@ export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
 function SlDxExtensionsStarRatingWidget(
   props: SlDxExtensionsStarRatingWidgetProps
 ) {
-  const { getPConnect, label, listDataPage } = props;
+  const { getPConnect, label, listDataPage = 'D_CustomerRatingList' } = props;
   const pConn = getPConnect();
-  const [data, setData] = useState<TableProps<TableRow>['data']>();
+  const [data, setData] = useState<TableRow['data']>();
   const [isLoading, setIsLoading] = useState(true);
   const caseProp: string = PCore.getConstants().CASE_INFO.CASE_INFO_ID;
   const caseID: string = pConn.getValue(caseProp, '');

@@ -1,8 +1,6 @@
-import type {
-  TableProps,
-  DefaultRowData
-} from '@pega/cosmos-react-core/lib/components/Table/Table';
+import type { TableProps } from '@pega/cosmos-react-core/lib/components/Table/Table';
 import { Text } from '@pega/cosmos-react-core';
+import { ReactNode } from 'react';
 
 export type HistoryDataItem = {
   pxTimeCreated: string;
@@ -17,16 +15,19 @@ export type HistoryDataItem = {
   pxLatitude: string | null;
 };
 
-export interface HistoryTableRow extends DefaultRowData {
+type HistoryItem = {
   date: string;
-  description: string | JSX.Element;
+  description: ReactNode;
   user: string;
-}
+  id: number;
+};
+
+export type HistoryTableRow = TableProps<HistoryItem>;
 
 export const mapHistoryDataItem = (
   entry: HistoryDataItem,
   index: number
-): HistoryTableRow => ({
+): HistoryItem => ({
   date: new Date(entry.pxTimeCreated).toLocaleString(),
   description: (
     <Text style={{ wordBreak: 'break-word' }}>{entry.pyMessageKey}</Text>
@@ -37,7 +38,7 @@ export const mapHistoryDataItem = (
 
 export const createHistoryTableSchema = (
   getPConnect: () => typeof PConnect
-): TableProps<HistoryTableRow>['columns'] => {
+): HistoryTableRow['columns'] => {
   return [
     {
       renderer: 'date',

@@ -98,6 +98,11 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = (
 };
 
 BaseSlDxExtensionsStarRatingWidget.args = {
-  label: 'Rating history',
-  listDataPage: 'D_RatingList'
+  label: 'Work history',
+  listDataPage: 'D_pyWorkHistory'
 };
+
+// BaseSlDxExtensionsStarRatingWidget.args = {
+//   label: 'Rating history',
+//   listDataPage: 'D_CustomerRatingList'
+// };
