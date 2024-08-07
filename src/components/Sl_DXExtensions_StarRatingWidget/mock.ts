@@ -1,4 +1,4 @@
-// @ts-nocheck
+/* eslint-disable sonarjs/no-duplicate-string */
 const historyData = {
   data: {
     fetchDateTime: '2023-01-18T12:04:56.517Z',
@@ -11,7 +11,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214633.339 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214633.339 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214633.339 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pyMemo: null,
@@ -22,9 +23,11 @@ const historyData = {
         pxObjClass: 'History-DXIL-DigV2-Work',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214633.332 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214633.332 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214633.332 GMT',
         pxLongitude: null,
-        pyMessageKey: "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
+        pyMessageKey:
+          "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMemo: null,
         pxLatitude: null
@@ -34,7 +37,8 @@ const historyData = {
         pxObjClass: 'History-DXIL-DigV2-Work',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214632.005 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214632.005 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214632.005 GMT',
         pxLongitude: null,
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
@@ -46,7 +50,8 @@ const historyData = {
         pxObjClass: 'History-DXIL-DigV2-Work',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214631.998 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214631.998 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214631.998 GMT',
         pxLongitude: null,
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assignment to 'complete task' removed via ticket.",
@@ -59,7 +64,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214631.175 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214631.175 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214631.175 GMT',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pxLatitude: null,
@@ -70,10 +76,12 @@ const historyData = {
         pxObjClass: 'History-DXIL-DigV2-Work',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214631.168 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214631.168 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214631.168 GMT',
         pxLongitude: null,
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
-        pyMessageKey: "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
+        pyMessageKey:
+          "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
         pyMemo: null,
         pxLatitude: null
       },
@@ -82,7 +90,8 @@ const historyData = {
         pxTimeCreated: '2023-01-13T21:46:29.893Z',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214629.893 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214629.893 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214629.893 GMT',
         pxLongitude: null,
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
@@ -95,7 +104,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214629.887 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214629.887 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214629.887 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assignment to 'complete task' removed via ticket.",
         pxLatitude: null,
@@ -107,7 +117,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214628.248 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214628.248 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214628.248 GMT',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pxLatitude: null,
@@ -119,8 +130,10 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214628.242 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214628.242 GMT',
-        pyMessageKey: "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214628.242 GMT',
+        pyMessageKey:
+          "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMemo: null,
         pxLatitude: null
@@ -131,7 +144,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214608.399 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214608.399 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214608.399 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pxLatitude: null,
@@ -143,7 +157,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214608.393 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214608.393 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214608.393 GMT',
         pyMessageKey: "Assignment to 'complete task' removed via ticket.",
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pxLatitude: null,
@@ -155,7 +170,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214607.584 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214607.584 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214607.584 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pyMemo: null,
@@ -166,10 +182,12 @@ const historyData = {
         pxTimeCreated: '2023-01-13T21:46:07.579Z',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214607.579 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214607.579 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214607.579 GMT',
         pxLongitude: null,
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
-        pyMessageKey: "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
+        pyMessageKey:
+          "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
         pxLatitude: null,
         pyMemo: null
       },
@@ -179,7 +197,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214606.262 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214606.262 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214606.262 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pyMemo: null,
@@ -191,7 +210,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214606.256 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214606.256 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214606.256 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assignment to 'complete task' removed via ticket.",
         pxLatitude: null,
@@ -203,7 +223,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214557.503 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214557.503 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214557.503 GMT',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pxLatitude: null,
@@ -215,9 +236,11 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214557.496 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214557.496 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214557.496 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
-        pyMessageKey: "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
+        pyMessageKey:
+          "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
         pyMemo: null,
         pxLatitude: null
       },
@@ -227,7 +250,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214536.250 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214536.250 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214536.250 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pxLatitude: null,
@@ -239,7 +263,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214536.244 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214536.244 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214536.244 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assignment to 'complete task' removed via ticket.",
         pxLatitude: null,
@@ -251,7 +276,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214535.364 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214535.364 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214535.364 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pxLatitude: null,
@@ -262,9 +288,11 @@ const historyData = {
         pxObjClass: 'History-DXIL-DigV2-Work',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214535.356 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214535.356 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214535.356 GMT',
         pxLongitude: null,
-        pyMessageKey: "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
+        pyMessageKey:
+          "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMemo: null,
         pxLatitude: null
@@ -275,7 +303,8 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214533.224 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214533.224 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214533.224 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pxLatitude: null,
@@ -286,7 +315,8 @@ const historyData = {
         pxObjClass: 'History-DXIL-DigV2-Work',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214533.218 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214533.218 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214533.218 GMT',
         pxLongitude: null,
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assignment to 'complete task' removed via ticket.",
@@ -298,7 +328,8 @@ const historyData = {
         pxObjClass: 'History-DXIL-DigV2-Work',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214532.436 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214532.436 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214532.436 GMT',
         pxLongitude: null,
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
@@ -311,8 +342,10 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214532.430 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214532.430 GMT',
-        pyMessageKey: "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214532.430 GMT',
+        pyMessageKey:
+          "Assignment to 'complete task' completed by performing a 'EmbeddedData'.",
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pxLatitude: null,
         pyMemo: null
@@ -322,7 +355,8 @@ const historyData = {
         pxObjClass: 'History-DXIL-DigV2-Work',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214525.003 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214525.003 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214525.003 GMT',
         pxLongitude: null,
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
@@ -335,9 +369,11 @@ const historyData = {
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214524.994 GMT',
         pxLongitude: null,
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214524.994 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214524.994 GMT',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
-        pyMessageKey: "Assignment to 'complete task' completed by performing a 'Select Test'.",
+        pyMessageKey:
+          "Assignment to 'complete task' completed by performing a 'Select Test'.",
         pyMemo: null,
         pxLatitude: null
       },
@@ -346,7 +382,8 @@ const historyData = {
         pxTimeCreated: '2023-01-13T21:45:23.570Z',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214523.570 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214523.570 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214523.570 GMT',
         pxLongitude: null,
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
         pyMessageKey: "Assigned to User DigV2 to 'complete task' ",
@@ -358,7 +395,8 @@ const historyData = {
         pxTimeCreated: '2023-01-13T21:45:23.563Z',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214523.563 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214523.563 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214523.563 GMT',
         pxLongitude: null,
         pyMessageKey: 'ChangeStageAutomatic\tCreate\tPick Test',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
@@ -370,7 +408,8 @@ const historyData = {
         pxTimeCreated: '2023-01-13T21:45:23.550Z',
         pyPerformer: 'User DigV2',
         pxInsName: 'DXIL-DIGV2-WORK C-7430!20230113T214523.550 GMT',
-        pzInsKey: 'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214523.550 GMT',
+        pzInsKey:
+          'HISTORY-DXIL-DIGV2-WORK DXIL-DIGV2-WORK C-7430!20230113T214523.550 GMT',
         pxLongitude: null,
         pyMessageKey: 'Item created.',
         pxHistoryForReference: 'DXIL-DIGV2-WORK C-7430',
