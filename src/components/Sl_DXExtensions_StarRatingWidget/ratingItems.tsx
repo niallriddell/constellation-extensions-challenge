@@ -25,6 +25,9 @@ export const mapRatingDataItem = (
 ): DataItemSummaryListItem<Rating> => {
   const caseKey = getPConnect().getCaseInfo().getKey();
   const isCurrent = caseKey && dataItem.caseId === caseKey;
+  const localizedVal = getPConnect().getLocalizedValue;
+  const localeRuleKey = `${dataItem.caseClass}!PAGE!PYDETAILS`;
+
   const linkURL = PCore.getSemanticUrlUtils().getResolvedSemanticURL(
     PCore.getSemanticUrlUtils().getActions().ACTION_OPENWORKBYHANDLE,
     { caseClassName: dataItem.caseClass },
@@ -60,7 +63,7 @@ export const mapRatingDataItem = (
 
   if (isCurrent)
     items.push(
-      <Text>{`${getPConnect().getLocalizedValue('Current case')}`}</Text>
+      <Text>{`${localizedVal('Current case', undefined, localeRuleKey)}`}</Text>
     );
 
   const actions: Action[] = isCurrent
@@ -75,8 +78,10 @@ export const mapRatingDataItem = (
       <CosmosRating
         key={`${dataItem.guid ?? createUID()}-rating`}
         value={dataItem.rating}
-        metaInfo={`${dataItem.rating} ${getPConnect().getLocalizedValue(
-          'of'
+        metaInfo={`${dataItem.rating} ${localizedVal(
+          'of',
+          undefined,
+          localeRuleKey
         )} ${dataItem.stars}`}
       />
     ),

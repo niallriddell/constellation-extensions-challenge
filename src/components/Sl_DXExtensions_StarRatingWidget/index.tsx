@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
+  // debounce,
   Action,
-  debounce,
   ModalMethods,
   withConfiguration,
   useModalManager,
@@ -13,7 +13,7 @@ import {
 
 import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
 
-import type { PConnFieldProps } from './PConnProps';
+import type { PConnFieldProps } from '../../utils/PConnProps';
 
 import {
   createRating,
@@ -47,6 +47,8 @@ export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
 // - [Optional] - Add support for data object deletion
 // - [Optional] - Add support for in array replacement of changed and
 //                new data objects via pubsub handler and using lookup data page
+// - [Optional] - Create a React context to use for localization across the
+// components
 const SlDxExtensionsStarRatingWidget = ({
   getPConnect,
   label,
@@ -61,13 +63,6 @@ const SlDxExtensionsStarRatingWidget = ({
   const savable = ratingSavableDatapage[0];
 
   // eslint-disable-next-line no-console
-  console.log(
-    ratingDataClass,
-    ratingLookupDatapage,
-    ratingListDatapage,
-    ratingSavableDatapage
-  );
-  // eslint-disable-next-line no-console
   console.log(ratingDataClass, lookup, list, savable);
   // At this stage our widget is a CASE widget only and etherefore we know we're in the
   // current case context during runtime.
@@ -76,6 +71,11 @@ const SlDxExtensionsStarRatingWidget = ({
   const contextName = getPConnect().getContextName();
   const caseKey = getPConnect().getCaseInfo().getKey();
   const caseClass = getPConnect().getCaseInfo().getClassName();
+
+  const localizedVal = getPConnect().getLocalizedValue;
+  const localeRuleKey = `${getPConnect()
+    .getCaseInfo()
+    .getClassName()}!PAGE!PYDETAILS`;
 
   const [isLoading, setIsLoading] = useState(true);
   const [inError, setinError] = useState(false);
@@ -197,20 +197,20 @@ const SlDxExtensionsStarRatingWidget = ({
   }, [fetchRatings]);
 
   useEffect(() => {
-    const ratingSubObject = {
-      matcher: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
-      criteria: {
-        ID: customerId ?? ''
-      }
-    };
-
-    const ratingSubId = PCore.getMessagingServiceManager().subscribe(
-      ratingSubObject,
-      debounce(() => {
-        fetchRatings();
-      }, 10),
-      getPConnect().getContextName()
-    );
+    // const ratingSubObject = {
+    //   matcher: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
+    //   criteria: {
+    //     ID: customerId ?? ''
+    //   }
+    // };
+    //
+    // const ratingSubId = PCore.getMessagingServiceManager().subscribe(
+    //   ratingSubObject,
+    //   debounce(() => {
+    //     fetchRatings();
+    //   }, 10),
+    //   getPConnect().getContextName()
+    // );
 
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
@@ -224,7 +224,7 @@ const SlDxExtensionsStarRatingWidget = ({
     );
 
     return () => {
-      PCore.getMessagingServiceManager().unsubscribe(ratingSubId);
+      // PCore.getMessagingServiceManager().unsubscribe(ratingSubId);
       PCore.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
         'updateSubId'
@@ -283,7 +283,7 @@ const SlDxExtensionsStarRatingWidget = ({
         loading={isLoading}
         count={!isLoading ? items.length : undefined}
         headingTag='h3'
-        name={label}
+        name={localizedVal(label, undefined, localeRuleKey)}
         actions={actions}
         onViewAll={openViewAll}
       />

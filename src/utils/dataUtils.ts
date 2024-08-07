@@ -1,5 +1,5 @@
 import type { Query } from '@pega/pcore-pconnect-typedefs/datapage/types';
-import { BiMap } from './bimap';
+import BiMap from './bimap';
 
 export type TransformFunction<InputValue, OutputValue> = (
   value: InputValue,
