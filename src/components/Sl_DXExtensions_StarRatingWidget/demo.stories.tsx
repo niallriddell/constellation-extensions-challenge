@@ -1,103 +1,87 @@
-import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
-import type { publicConstants } from '@pega/pcore-pconnect-typedefs/constants';
-import type DataApiUtils from '@pega/pcore-pconnect-typedefs/data-view/DataApiUtils';
+
+/* eslint-disable react/jsx-no-useless-fragment */
+// @ts-nocheck
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SlDxExtensionsStarRatingWidget, {
-  type SlDxExtensionsStarRatingWidgetProps
-} from './index';
+import SlDxExtensionsStarRatingWidget from './index';
 
-import mockRatingData from './mock.ratingData';
-import mockHistoryData from './mock.historyData';
-import type ActionsApi from '@pega/pcore-pconnect-typedefs/actions/api';
-import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+import historyData from './mock';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
-  title: 'SL/Star Rating Widget',
-  component: SlDxExtensionsStarRatingWidget
+  title: 'SlDxExtensionsStarRatingWidget',
+  component: SlDxExtensionsStarRatingWidget,
+  excludeStories: /.*Data$/
 };
 
 export default meta;
 type Story = StoryObj<typeof SlDxExtensionsStarRatingWidget>;
 
-const mockPCore: Partial<typeof PCore> = {};
 if (!window.PCore) {
-  window.PCore = mockPCore as typeof PCore;
+  window.PCore = {};
 }
-const mockCaseInfo: Partial<(typeof publicConstants)['CASE_INFO']> = {
-  CASE_INFO_ID: 'caseInfo.Id'
+
+window.PCore.getConstants = () => {
+  return {
+    CASE_INFO: {
+      CASE_INFO_ID: 'caseInfo.ID'
+    }
+  };
 };
-const mockConstants = (): Partial<typeof publicConstants> => {
-  return { CASE_INFO: mockCaseInfo as (typeof publicConstants)['CASE_INFO'] };
-};
-window.PCore.getConstants = mockConstants as () => typeof publicConstants;
 
 window.PCore.getLocaleUtils = () => {
   return {
     getLocaleValue: value => {
       return value;
     }
-  } as LocaleUtils;
+  };
 };
 
-const mockDataApiUtils = (): Partial<typeof DataApiUtils> => {
+window.PCore.getDataApiUtils = () => {
   return {
-    getData(...args): Promise<DataResponse> {
-      const mockData =
-        args[0] === 'D_pyWorkHistory' ? mockHistoryData : mockRatingData;
+    getData: () => {
       return new Promise(resolve => {
-        resolve(mockData as DataResponse);
+        resolve(historyData);
       });
     }
   };
 };
-window.PCore.getDataApiUtils = mockDataApiUtils as () => typeof DataApiUtils;
 
-export const BaseSlDxExtensionsStarRatingWidget: Story = (
-  args: SlDxExtensionsStarRatingWidgetProps
-) => {
-  const mockActionsApi = (): Partial<ActionsApi> => ({
-    updateFieldValue: () => ({
-      /* nothing */
-    }),
-    triggerFieldChange: () => {
-      /* nothing */
-    }
-  });
-
-  const mockPConnect = (): Partial<typeof PConnect> => ({
-    getValue: value => {
-      return value;
-    },
-    getContextName: () => {
-      return 'app/primary_1';
-    },
-    getLocalizedValue: value => {
-      return value;
-    },
-    getActionsApi: mockActionsApi as () => ActionsApi,
-    ignoreSuggestion: () => {
-      /* nothing */
-    },
-    acceptSuggestion: () => {
-      /* nothing */
-    },
-    setInheritedProp: () => ({
-      /* nothing */
-    }),
-    resolveConfigProps: () => ({
-      /* nothing */
-    })
-  });
+export const BaseSlDxExtensionsStarRatingWidget: Story = args => {
 
   const props = {
-    getPConnect: mockPConnect as () => typeof PConnect
-  };
 
-  return <SlDxExtensionsStarRatingWidget {...props} {...args} />;
+    getPConnect: () => {
+      return {
+        getValue: value => {
+          return value;
+        },
+        getContextName: () => {
+          return 'app/primary_1';
+        },
+        getLocalizedValue: value => {
+          return value;
+        },
+        getActionsApi: () => {
+          return {
+            updateFieldValue: () => {/* nothing */},
+            triggerFieldChange: () => {/* nothing */}
+          };
+        },
+        ignoreSuggestion: () => {/* nothing */},
+        acceptSuggestion: () => {/* nothing */},
+        setInheritedProps: () => {/* nothing */},
+        resolveConfigProps: () => {/* nothing */}
+      };
+    }
+};
+
+return (
+    <>
+      <SlDxExtensionsStarRatingWidget {...props} {...args} />
+    </>
+  );
 };
 
 BaseSlDxExtensionsStarRatingWidget.args = {
-  label: 'Rating history',
-  listDataPage: 'D_RatingList'
+  label: 'Case history',
 };

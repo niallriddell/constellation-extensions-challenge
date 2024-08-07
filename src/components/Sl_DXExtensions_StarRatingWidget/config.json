@@ -9,14 +9,15 @@
   "componentKey": "Sl_DXExtensions_StarRatingWidget",
   "type": "Widget",
   "subtype": "CASE",
+  "icon": "OneColumnPage.svg",
   "properties": [
-    {
+   {
       "name": "label",
       "label": "Label value",
       "format": "TEXT"
     }
   ],
   "defaultConfig": {
-    "label": "@L Star Rating Widget"
+     "label": "@L Star Rating Widget"
   }
 }
