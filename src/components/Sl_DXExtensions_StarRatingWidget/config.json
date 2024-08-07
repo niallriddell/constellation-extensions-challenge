@@ -3,7 +3,7 @@
   "label": "Star Rating Widget",
   "description": "Star Rating Widget",
   "organization": "Sl",
-  "version": "1.0.0",
+  "version": "0.0.13",
   "library": "DXExtensions",
   "allowedApplications": [],
   "componentKey": "Sl_DXExtensions_StarRatingWidget",
