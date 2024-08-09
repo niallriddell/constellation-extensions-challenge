@@ -78,7 +78,7 @@ const SlDxExtensionsStarRatingWidget = ({
     .getClassName()}!PAGE!PYDETAILS`;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [inError, setinError] = useState(false);
+  const [inError, setInError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [data, setData] = useState<Array<DataItem>>([]);
   const [actionId, setActionId] = useState<string | undefined>();
@@ -178,7 +178,7 @@ const SlDxExtensionsStarRatingWidget = ({
         setData(processRatings(allRatings));
       }
     } catch (error) {
-      setinError(true);
+      setInError(true);
     } finally {
       setIsLoading(false);
     }
