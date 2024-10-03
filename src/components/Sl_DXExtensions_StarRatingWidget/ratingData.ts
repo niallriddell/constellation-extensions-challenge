@@ -3,7 +3,7 @@ import type {
   Filter,
   Query
 } from '@pega/pcore-pconnect-typedefs/datapage/types';
-import { BiMap } from './../../utils/bimap';
+import BiMap from './../../utils/bimap';
 
 // All mapping between the component internal data model and the external data model
 // is done here.  This is not strictly necessary and the approach taken here can be
@@ -66,13 +66,19 @@ function mapRatingDataToRating(
   biMap: BiMap<keyof Rating, keyof RatingData>
 ): Array<Rating> {
   return ratingDataArray.map(ratingData => {
-    const rating: Partial<Rating> = {};
+    const rating: Record<keyof Rating, any> = {
+      rating: -1,
+      stars: -1,
+      caseId: '',
+      caseClass: '',
+      customerId: '',
+      guid: '',
+      updateDateTime: ''
+    };
     biMap.getKeyToValueMap().forEach((value, key) => {
-      rating[key as keyof Rating] = ratingData[
-        value as keyof RatingData
-      ] as any;
+      rating[key] = ratingData[value];
     });
-    return rating as Rating;
+    return rating;
   });
 }
 // Uses getPageDataAsync api to fetch a single Rating.

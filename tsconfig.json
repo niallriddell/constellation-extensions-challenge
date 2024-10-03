@@ -4,6 +4,10 @@
     "./**/*",
     ".storybook/**/*"
   ],
+  "exclude": [
+    "node_modules",
+    "node_modules/@pega/pcore-pconnect-typedefs/*"
+  ],
   "compilerOptions": {
     "noEmit": true,
     "allowJs": true,
@@ -11,6 +15,7 @@
     "baseUrl": "./",
     "paths": {  
       "@pega/pcore-pconnect-typedefs/*": ["node_modules/@pega/pcore-pconnect-typedefs/*"]  
-    } 
+    },
+    "skipLibCheck": true
   }
 }

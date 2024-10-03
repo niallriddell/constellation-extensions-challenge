@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
-  // debounce,
+  debounce,
   Action,
   ModalMethods,
   withConfiguration,
@@ -84,7 +84,7 @@ const SlDxExtensionsStarRatingWidget = ({
   const [actionId, setActionId] = useState<string | undefined>();
   const [dataItem, setDataItem] = useState<DataItem>({
     rating: 0,
-    customerId: customerId || 'No Customer',
+    customerId: customerId ?? 'No Customer',
     stars: 5,
     caseClass,
     caseId: caseKey
@@ -197,20 +197,20 @@ const SlDxExtensionsStarRatingWidget = ({
   }, [fetchRatings]);
 
   useEffect(() => {
-    // const ratingSubObject = {
-    //   matcher: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
-    //   criteria: {
-    //     ID: customerId ?? ''
-    //   }
-    // };
-    //
-    // const ratingSubId = PCore.getMessagingServiceManager().subscribe(
-    //   ratingSubObject,
-    //   debounce(() => {
-    //     fetchRatings();
-    //   }, 10),
-    //   getPConnect().getContextName()
-    // );
+    const ratingSubObject = {
+      matcher: 'SL_DXEXTENSIONS_STARRATINGWIDGET',
+      criteria: {
+        ID: customerId ?? ''
+      }
+    };
+
+    const ratingSubId = PCore.getMessagingServiceManager().subscribe(
+      ratingSubObject,
+      debounce(() => {
+        fetchRatings();
+      }, 10),
+      getPConnect().getContextName()
+    );
 
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
@@ -224,7 +224,7 @@ const SlDxExtensionsStarRatingWidget = ({
     );
 
     return () => {
-      // PCore.getMessagingServiceManager().unsubscribe(ratingSubId);
+      PCore.getMessagingServiceManager().unsubscribe(ratingSubId);
       PCore.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
         'updateSubId'
