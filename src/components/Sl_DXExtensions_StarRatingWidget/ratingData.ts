@@ -110,7 +110,10 @@ export const getRatings = async (
   customerId?: string,
   context?: string
 ): Promise<Array<Rating> | undefined> => {
-  if (context?.includes('authoring')) return []; // To handle preview mock data
+  if (
+    PCore.getContainerUtils().areContainerItemsPresent('root/authoring-preview')
+  )
+    return []; // To handle preview mock data
 
   const select = toSelectObject(mapper)?.select;
 
