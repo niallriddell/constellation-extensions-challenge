@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import type { Action, ModalMethods } from '@pega/cosmos-react-core';
 import {
   debounce,
-  Action,
-  ModalMethods,
   withConfiguration,
   useModalManager,
   useElement,
