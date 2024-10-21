@@ -84,7 +84,7 @@ const SlDxExtensionsStarRatingWidget = ({
   const [actionId, setActionId] = useState<string | undefined>();
   const [dataItem, setDataItem] = useState<DataItem>({
     rating: 0,
-    customerId: customerId || 'No Customer',
+    customerId: customerId ?? 'No Customer',
     stars: 5,
     caseClass,
     caseId: caseKey
@@ -110,7 +110,7 @@ const SlDxExtensionsStarRatingWidget = ({
   // associated with the data class.
   // Persist your data to the server first and update the UI to align.
   const onUpdateRating = (updatedRating: DataItem) => {
-    updatedRating.guid = updatedRating?.guid || 'NEW';
+    updatedRating.guid = updatedRating?.guid ?? 'NEW';
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
@@ -212,27 +212,24 @@ const SlDxExtensionsStarRatingWidget = ({
     //   getPConnect().getContextName()
     // );
 
+    const { DATA_OBJECT_CREATED, DATA_OBJECT_UPDATED } =
+      PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS;
+
     PCore.getPubSubUtils().subscribe(
-      PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
+      DATA_OBJECT_CREATED,
       handleDataObjectEvent,
       'updateSubId'
     );
     PCore.getPubSubUtils().subscribe(
-      PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
+      DATA_OBJECT_UPDATED,
       handleDataObjectEvent,
       'createSubId'
     );
 
     return () => {
       // PCore.getMessagingServiceManager().unsubscribe(ratingSubId);
-      PCore.getPubSubUtils().unsubscribe(
-        PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
-        'updateSubId'
-      );
-      PCore.getPubSubUtils().unsubscribe(
-        PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
-        'createSubId'
-      );
+      PCore.getPubSubUtils().unsubscribe(DATA_OBJECT_CREATED, 'updateSubId');
+      PCore.getPubSubUtils().unsubscribe(DATA_OBJECT_UPDATED, 'createSubId');
     };
   });
 
