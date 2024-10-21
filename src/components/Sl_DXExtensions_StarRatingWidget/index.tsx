@@ -93,16 +93,18 @@ const SlDxExtensionsStarRatingWidget = ({
 
   // TODO: Do something useful with these events, (e.g. show a Toast)
   // useEffect(() => {
+  //   const {DATA_OBJECT_CREATED,  DATA_OBJECT_UPDATED} = PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS;
+  //
   //   const subCreateId = 'rating-data-create';
   //   const subUpdateId = 'rating-data-update';
   //   PCore.getPubSubUtils().subscribe(
-  //     PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
+  //     DATA_OBJECT_CREATED,
   //     // eslint-disable-next-line no-console
   //     (payload: any) => console.log(payload),
   //     subCreateId
   //   );
   //   PCore.getPubSubUtils().subscribe(
-  //     PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
+  //     DATA_OBJECT_UPDATED,
   //     // eslint-disable-next-line no-console
   //     (payload: any) => console.log(payload),
   //     subUpdateId
@@ -110,11 +112,11 @@ const SlDxExtensionsStarRatingWidget = ({
   //
   //   return () => {
   //     PCore.getPubSubUtils().unsubscribe(
-  //       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
+  //       DATA_OBJECT_CREATED,
   //       subCreateId
   //     );
   //     PCore.getPubSubUtils().unsubscribe(
-  //       PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_UPDATED,
+  //       DATA_OBJECT_UPDATED,
   //       subUpdateId
   //     );
   //   };
