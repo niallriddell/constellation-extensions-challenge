@@ -2,7 +2,7 @@
   "components-directory-path": "src/components",
   "server-config": {
     "rulesetName": "SLConstellationDXComponents",
-    "rulesetVersion": "01-01-01",
+    "rulesetVersion": "01-01-02",
     "sourceOfComponents": "Server",
     "devBuild": true,
     "serverType": "infinity",
