@@ -1,65 +1,67 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { AxiosResponse } from 'axios';
+
 import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
 import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
-import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
-import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type EnvironmentInfo from '@pega/pcore-pconnect-typedefs/environment-info/index';
 import type RestClient from '@pega/pcore-pconnect-typedefs/rest-client';
 import type SemanticUrlUtils from '@pega/pcore-pconnect-typedefs/router/semanticurl-utils';
 import type PubSubUtils from '@pega/pcore-pconnect-typedefs/utils/pubsub-utils';
+import type MessagingServiceManager from '@pega/pcore-pconnect-typedefs/messagingservice/manager';
+import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
+import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
+import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 
 import SlDxExtensionsStarRatingWidget, {
   type SlDxExtensionsStarRatingWidgetProps
 } from './index';
 
 import mockRatingData, { newRating } from './mock.ratingData';
-import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
-import { AxiosResponse } from 'axios';
-import MessagingServiceManager from '@pega/pcore-pconnect-typedefs/messagingservice/manager';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
   title: 'SL/Star Rating Widget',
-  component: SlDxExtensionsStarRatingWidget,
-  excludeStories: /.*Data$/
+  component: SlDxExtensionsStarRatingWidget
 };
 
 export default meta;
 type Story = StoryObj<typeof SlDxExtensionsStarRatingWidget>;
 
-const mockPCore: Partial<typeof PCore> = {};
+const existingPCore = window.PCore;
+const constants = existingPCore?.getConstants();
 
-if (!window.PCore) {
-  window.PCore = mockPCore as typeof PCore;
-}
-
-window.PCore.getEnvironmentInfo = () => {
-  return {
-    getTimeZone: () => 'Europe/London'
-  } as typeof EnvironmentInfo;
-};
-
-window.PCore.getConstants = () => {
-  return {
-    CASE_INFO: {
-      CASE_INFO_ID: 'caseInfo.ID'
+window.PCore = {
+  ...existingPCore,
+  ...{
+    getEnvironmentInfo: () => {
+      return {
+        getTimeZone: () => 'Europe/London'
+      } as typeof EnvironmentInfo;
     },
-    PUB_SUB_EVENTS: {
-      DATA_EVENTS: {
-        DATA_OBJECT_CREATED: 'created',
-        DATA_OBJECT_UPDATED: 'updated'
-      }
-    }
-  } as Readonly<any>;
-};
+    getConstants: () => {
+      return {
+        ...constants,
+        CASE_INFO: {
+          CASE_INFO_ID: 'caseInfo.ID'
+        },
+        PUB_SUB_EVENTS: {
+          DATA_EVENTS: {
+            DATA_OBJECT_CREATED: 'created',
+            DATA_OBJECT_UPDATED: 'updated'
+          }
+        }
+      } as Readonly<any>;
+    },
 
-window.PCore.getLocaleUtils = () => {
-  return {
-    getLocaleValue: (value: string) => {
-      return value;
+    getLocaleUtils: () => {
+      return {
+        getLocaleValue: (value: string) => {
+          return value;
+        }
+      } as LocaleUtils;
     }
-  } as LocaleUtils;
-};
+  }
+} as typeof PCore;
 
 const mockGetDataAsync = (
   ...args: any[]
@@ -67,7 +69,7 @@ const mockGetDataAsync = (
   const filter = args[4]?.filter as Filter;
   const queryCustomerID = filter?.filterConditions.F1.rhs.value;
   let { data } = mockRatingData;
-  if (queryCustomerID && queryCustomerID.length)
+  if (queryCustomerID?.length)
     data = data.filter(rating => rating.CustomerID === queryCustomerID);
 
   return Promise.resolve({ data, status: 200 });
@@ -157,47 +159,41 @@ const mockMessagingServiceManager = (): Partial<
   };
 };
 
+// console.log(window.PCore);
+
 window.PCore.getMessagingServiceManager =
   mockMessagingServiceManager as () => typeof MessagingServiceManager;
 
-export const StarRatingWidgetWithCurrentCaseRating: Story = (
+const createStarRatingWidgetStory = (
   args: SlDxExtensionsStarRatingWidgetProps
-) => {
-  const props = {
-    getPConnect: mockPConnect as () => typeof PConnect
+): Story => {
+  const Template: Story = (storyArgs: SlDxExtensionsStarRatingWidgetProps) => {
+    const props = {
+      getPConnect: mockPConnect as () => typeof PConnect
+    };
+    storyArgs.label = `${args.label} for ${args.customerId}`;
+
+    return <SlDxExtensionsStarRatingWidget {...props} {...storyArgs} />;
   };
 
-  return <SlDxExtensionsStarRatingWidget {...props} {...args} />;
+  Template.args = args;
+  return Template;
 };
 
-StarRatingWidgetWithCurrentCaseRating.args = {
+const defaultArgs: Partial<SlDxExtensionsStarRatingWidgetProps> = {
   label: 'Ratings',
-  customerId: 'Q1234',
   ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
   ratingLookupDatapage: ['D_CustomerRating'],
   ratingListDatapage: ['D_CustomerRatingList'],
   ratingSavableDatapage: ['D_CustomerRatingSavable']
 };
 
-export const StarRatingWidgetWithoutCurrentCaseRating: Story = (
-  args: SlDxExtensionsStarRatingWidgetProps
-) => {
-  const props = {
-    getPConnect: mockPConnect as () => typeof PConnect
-  };
+export const WithCurrentCaseRating = createStarRatingWidgetStory({
+  ...defaultArgs,
+  customerId: 'Q1234'
+} as SlDxExtensionsStarRatingWidgetProps);
 
-  return (
-    <>
-      <SlDxExtensionsStarRatingWidget {...props} {...args} />
-    </>
-  );
-};
-
-StarRatingWidgetWithoutCurrentCaseRating.args = {
-  label: 'Ratings',
-  customerId: 'Q123',
-  ratingDataClass: 'SL-TellUsMore-Data-CustomerRating',
-  ratingLookupDatapage: ['D_CustomerRating'],
-  ratingListDatapage: ['D_CustomerRatingList'],
-  ratingSavableDatapage: ['D_CustomerRatingSavable']
-};
+export const WithoutCurrentCaseRating = createStarRatingWidgetStory({
+  ...defaultArgs,
+  customerId: 'Q123'
+} as SlDxExtensionsStarRatingWidgetProps);

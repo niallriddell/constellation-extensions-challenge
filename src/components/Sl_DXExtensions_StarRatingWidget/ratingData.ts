@@ -159,7 +159,7 @@ export const getRatings = async (
   return [];
 };
 
-// TODO: Add in the createDataObject rest api endpoint
+// TODO: Add in the updateDataObject rest api endpoint
 export const updateRating = async (
   dataView: string,
   rating: Partial<Rating>,
