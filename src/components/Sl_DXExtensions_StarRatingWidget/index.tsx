@@ -12,6 +12,7 @@ import {
 import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
 
 import type { PConnFieldProps } from './PConnProps';
+import './create-nonce';
 
 import {
   createRating,
