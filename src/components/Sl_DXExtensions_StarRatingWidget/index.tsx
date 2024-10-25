@@ -11,9 +11,8 @@ import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
 // import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
 
 import type { PConnFieldProps } from './PConnProps';
-
+import './create-nonce';
 import createItems from './dataUtils';
-
 import {
   type RatingDataItem as DataItem,
   mapRatingDataItem as mapDataItem
