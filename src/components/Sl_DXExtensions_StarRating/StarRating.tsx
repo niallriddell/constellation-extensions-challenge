@@ -27,10 +27,11 @@ import type { ForwardProps } from '@pega/cosmos-react-core';
 import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
 import * as starSolid from '@pega/cosmos-react-core/lib/components/Icon/icons/star-solid.icon';
 
-import type { StarRatingProps } from './StarRating.types';
 import type { PConnProps } from '../../utils/PConnProps';
+import './create-nonce';
 
 import { StyledStarWrapper, StyledStarRatingMetaInfo } from './styles';
+import type { StarRatingProps } from './StarRating.types';
 
 registerIcon(star, starSolid);
 
