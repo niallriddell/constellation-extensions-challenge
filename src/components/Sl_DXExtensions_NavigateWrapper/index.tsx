@@ -8,6 +8,7 @@ import {
 
 import type { PConnFieldProps } from './PConnProps';
 import StyledNavigateWrapper from './styles';
+import './create-nonce';
 
 import type { ComponentMetadataConfig } from '@pega/pcore-pconnect-typedefs/interpreter/types';
 

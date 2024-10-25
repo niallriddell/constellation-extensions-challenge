@@ -25,6 +25,7 @@ import * as starSolid from '@pega/cosmos-react-core/lib/components/Icon/icons/st
 
 import type { StarRatingProps } from './StarRating.types';
 import type { PConnProps } from '../../utils/PConnProps';
+import './create-nonce';
 
 import { StyledStarWrapper, StyledStarRatingMetaInfo } from './styles';
 

@@ -14,6 +14,7 @@ import * as plus from '@pega/cosmos-react-core/lib/components/Icon/icons/plus.ic
 
 import type { PConnFieldProps } from './PConnProps';
 import StyledSlDxExtensionsNavigateToStepWrapper from './styles';
+import './create-nonce';
 
 registerIcon(pencil, arrowBendLeft, arrowBendRight, check, undo, plus);
 
