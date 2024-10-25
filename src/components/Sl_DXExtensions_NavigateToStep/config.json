@@ -1,0 +1,131 @@
+{
+  "name": "Sl_DXExtensions_NavigateToStep",
+  "label": "Navigate to step",
+  "description": "Navigate to step",
+  "organization": "Sl",
+  "version": "1.0.0",
+  "library": "DXExtensions",
+  "allowedApplications": [],
+  "componentKey": "Sl_DXExtensions_NavigateToStep",
+  "type": "Field",
+  "subtype": "Text-URL",
+  "properties": [
+    {
+      "name": "label",
+      "label": "Label",
+      "format": "TEXT",
+      "required": true
+    },
+    {
+      "name": "text",
+      "label": "Text to be displayed",
+      "format": "TEXT",
+      "required": true
+    },
+    {
+      "name": "stepID",
+      "label": "The Task ID of the navigation step",
+      "format": "TEXT",
+      "required": true
+    },
+    {
+      "name": "tooltip",
+      "label": "Tooltip text",
+      "format": "TEXT"
+    },
+    {
+      "name": "variant",
+      "label": "Display as",
+      "format": "SELECT",
+      "defaultValue": "link",
+      "source": [
+        {
+          "key": "link",
+          "value": "link"
+        },
+        {
+          "key": "simple",
+          "value": "simple"
+        },
+        {
+          "key": "text",
+          "value": "text"
+        }
+      ]
+    },
+    {
+      "name": "compact",
+      "label": "Use compact mode",
+      "format": "BOOLEAN"
+    },
+    {
+      "name": "icon",
+      "label": "Display only icon",
+      "format": "BOOLEAN"
+    },
+    {
+      "label": "Icon settings",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "iconName",
+          "label": "Icon name",
+          "format": "SELECT",
+          "defaultValue": "pencil",
+          "source": [
+            {
+              "key": "pencil",
+              "value": "pencil"
+            },
+            {
+              "key": "arrow-bend-left",
+              "value": "arrow-bend-left"
+            },
+            {
+              "key": "arrow-bend-right",
+              "value": "arrow-bend-right"
+            },
+            {
+              "key": "check",
+              "value": "check"
+            },
+            {
+              "key": "undo",
+              "value": "undo"
+            },
+            {
+              "key": "plus",
+              "value": "plus"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY"
+        }
+      ]
+    },
+    {
+      "label": "Advanced",
+      "format": "GROUP",
+      "collapsible": true,
+      "properties": [
+        {
+          "name": "testId",
+          "label": "Test ID",
+          "format": "TEXT",
+          "ignorePattern": "[^-_\\p{N}\\p{L}]",
+          "includeAnnotations": false
+        }
+      ]
+    }
+  ],
+  "defaultConfig": {}
+}

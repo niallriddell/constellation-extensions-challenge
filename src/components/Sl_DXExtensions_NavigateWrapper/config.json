@@ -1,0 +1,21 @@
+{
+  "name": "Sl_DXExtensions_NavigateWrapper",
+  "label": "Navigate to step template",
+  "description": "Navigate to step template",
+  "organization": "Sl",
+  "version": "1.0.0",
+  "library": "DXExtensions",
+  "allowedApplications": [],
+  "componentKey": "Sl_DXExtensions_NavigateWrapper",
+  "type": "Template",
+  "subtype": "DETAILS",
+  "icon": "OneColumnDetails.svg",
+  "properties": [
+    {
+      "name": "A",
+      "label": "Region A",
+      "format": "CONTENTPICKER",
+      "addTypeList": ["Views"]
+    }
+  ]
+}
