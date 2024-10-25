@@ -12,6 +12,7 @@ import type {
   Ref,
   TouchEvent
 } from 'react';
+
 import {
   Flex,
   Icon,
@@ -23,12 +24,14 @@ import {
   cap
 } from '@pega/cosmos-react-core';
 import type { ForwardProps } from '@pega/cosmos-react-core';
-import type { StarRatingProps } from './StarRating.types';
-import type { PConnProps } from './PConnProps';
-
 import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
 import * as starSolid from '@pega/cosmos-react-core/lib/components/Icon/icons/star-solid.icon';
+
+import type { PConnProps } from './PConnProps';
+import './create-nonce';
+
 import { StyledStarWrapper, StyledStarRatingMetaInfo } from './styles';
+import type { StarRatingProps } from './StarRating.types';
 
 registerIcon(star, starSolid);
 
