@@ -6,8 +6,8 @@ import type { TableProps } from '@pega/cosmos-react-core/lib/components/Table/Ta
 import type { Payload } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
 import type { PConnFieldProps } from './PConnProps';
-
 import StyledSlDxExtensionsStarRatingWidgetWrapper from './styles';
+import './create-nonce';
 
 // interface for props
 interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
