@@ -6,6 +6,7 @@ import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { TableProps } from '@pega/cosmos-react-core/lib/components/Table/Table';
 
 import type { PConnFieldProps } from './PConnProps';
+import './create-nonce';
 
 import handleResponse from './dataUtils';
 
