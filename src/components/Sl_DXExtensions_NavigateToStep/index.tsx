@@ -13,8 +13,9 @@ import * as undo from '@pega/cosmos-react-core/lib/components/Icon/icons/undo.ic
 import * as plus from '@pega/cosmos-react-core/lib/components/Icon/icons/plus.icon';
 
 import type { PConnFieldProps } from './PConnProps';
-import StyledSlDxExtensionsNavigateToStepWrapper from './styles';
 import './create-nonce';
+
+import StyledSlDxExtensionsNavigateToStepWrapper from './styles';
 
 registerIcon(pencil, arrowBendLeft, arrowBendRight, check, undo, plus);
 
