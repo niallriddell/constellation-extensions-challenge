@@ -39,11 +39,12 @@ export const mapRatingDataItem = (
           : dataItem.caseId
     }
   );
-  const environmentInfo = PCore.getEnvironmentInfo();
-  const timezone = environmentInfo && environmentInfo.getTimeZone();
+
+  const timezone = PCore.getEnvironmentInfo().getTimeZone();
 
   const items: ReactNode[] = [
     <Link
+      key={`link-${dataItem.guid ?? createUID()}`}
       href={linkURL}
       variant='link'
       previewable
@@ -56,6 +57,7 @@ export const mapRatingDataItem = (
       {dataItem.caseId.split(' ')[1]}
     </Link>,
     <DateTimeDisplay
+      key={`datetimedisplay-${dataItem.guid ?? createUID()}`}
       value={dayjs(dataItem.updateDateTime).tz(timezone).format()}
       variant='datetime'
       format='short'
@@ -77,7 +79,7 @@ export const mapRatingDataItem = (
     actions,
     primary: (
       <CosmosRating
-        key={`${dataItem.guid ?? createUID()}-rating`}
+        key={`rating-${dataItem.guid ?? createUID()}`}
         value={dataItem.rating}
         metaInfo={`${dataItem.rating} ${localizedVal(
           'of',
@@ -88,7 +90,7 @@ export const mapRatingDataItem = (
     ),
     secondary: (
       <MetaList
-        key={`${dataItem.guid ?? createUID()}-metalist`}
+        key={`metalist-${dataItem.guid ?? createUID()}`}
         items={items}
       />
     )

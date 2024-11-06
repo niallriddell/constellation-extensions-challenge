@@ -70,7 +70,7 @@
   "devDependencies": {
     "@pega/configs": "^0.6.0",
     "@pega/custom-dx-components": "24.1.11",
-    "@pega/pcore-pconnect-typedefs": "3.2.0-rev-3",
+    "@pega/pcore-pconnect-typedefs": "3.2.0-alpha.2",
     "@storybook/addon-actions": "^7.6.7",
     "@storybook/addon-essentials": "^7.6.7",
     "@storybook/addon-links": "^7.6.7",

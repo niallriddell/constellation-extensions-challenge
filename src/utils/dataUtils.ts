@@ -12,6 +12,7 @@ export type TransformMap<InputData, OutputData> = {
     OutputData[keyof OutputData]
   >;
 };
+
 export type SortBy<T> = Array<{ field: keyof T; type: 'ASC' | 'DESC' }>;
 
 export type Filter<OutputData> = {
@@ -30,6 +31,7 @@ export type Filter<OutputData> = {
   };
   logic: string;
 };
+
 const mapDataToData = <
   InputData extends { [K in keyof InputData]?: any },
   OutputData extends { [K in keyof OutputData]?: any }
@@ -111,9 +113,7 @@ const getDataItems = async <
             {
               ...condition,
               lhs: {
-                field: mapper.getValue(
-                  condition.lhs.field as keyof OutputData
-                ) as string
+                field: mapper.getValue(condition.lhs.field) as string
               }
             }
           ])
