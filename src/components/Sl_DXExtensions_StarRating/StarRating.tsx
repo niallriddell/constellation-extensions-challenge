@@ -1,14 +1,18 @@
-import { useCallback, useEffect, useState, forwardRef } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+  forwardRef,
+  MouseEvent
+} from 'react';
 
 import type {
   KeyboardEvent,
   FunctionComponent,
   PropsWithoutRef,
   Ref,
-  TouchEvent,
-  MouseEvent
+  TouchEvent
 } from 'react';
-
 import {
   Flex,
   Icon,
@@ -24,7 +28,7 @@ import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.ic
 import * as starSolid from '@pega/cosmos-react-core/lib/components/Icon/icons/star-solid.icon';
 
 import type { StarRatingProps } from './StarRating.types';
-import type { PConnProps } from '../../utils/PConnProps';
+import type { PConnProps } from './PConnProps';
 import './create-nonce';
 
 import { StyledStarWrapper, StyledStarRatingMetaInfo } from './styles';
@@ -75,7 +79,7 @@ const SlDXExtensionsStarRating: FunctionComponent<
 
   const starRatingRef = useConsolidatedRef<HTMLDivElement>(ref);
 
-  const [inHover, setInHovering] = useState(false);
+  const [inHover, setInHover] = useState(false);
   const [currentHoverValue, setCurrentHoverValue] = useState<number>(value);
   const [currentValue, setCurrentValue] = useState<number>(value);
   const [metaInfoUpdated, setMetaInfoUpdated] = useState(metaInfo);
@@ -181,7 +185,7 @@ const SlDXExtensionsStarRating: FunctionComponent<
 
     if (newValue === currentValue) {
       setValue(0);
-      setInHovering(false);
+      setInHover(false);
       return;
     }
     setValue(newValue);
@@ -190,7 +194,7 @@ const SlDXExtensionsStarRating: FunctionComponent<
   const onMouseEnter = (e: MouseEvent) => {
     if (readOnly || disabled) return;
 
-    setInHovering(true);
+    setInHover(true);
     setCurrentHoverValue(getValueFromEventPosition(e));
   };
 
@@ -203,14 +207,14 @@ const SlDXExtensionsStarRating: FunctionComponent<
   const onMouseLeave = () => {
     if (readOnly || disabled) return;
 
-    setInHovering(false);
+    setInHover(false);
     setCurrentHoverValue(currentValue);
   };
 
   const onTouchStart = (e: TouchEvent) => {
     if (readOnly || disabled) return;
 
-    setInHovering(true);
+    setInHover(true);
     setCurrentHoverValue(getValueFromEventPosition(e));
 
     // Prevent scrolling when touch is initiated
@@ -226,7 +230,7 @@ const SlDXExtensionsStarRating: FunctionComponent<
   const onTouchEnd = () => {
     if (readOnly || disabled) return;
 
-    setInHovering(false);
+    setInHover(false);
   };
 
   return (
