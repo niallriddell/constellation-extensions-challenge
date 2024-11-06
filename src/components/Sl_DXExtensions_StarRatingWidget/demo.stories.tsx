@@ -5,6 +5,7 @@ import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type EnvironmentInfo from '@pega/pcore-pconnect-typedefs/environment-info/index';
+import type ContainerUtils from '@pega/pcore-pconnect-typedefs/container/container-utils';
 
 import SlDxExtensionsStarRatingWidget, {
   type SlDxExtensionsStarRatingWidgetProps
@@ -27,6 +28,15 @@ const mockPCore: Partial<typeof PCore> = {};
 if (!window.PCore) {
   window.PCore = mockPCore as typeof PCore;
 }
+
+const mockContainerUtils = (): Partial<typeof ContainerUtils> => {
+  return {
+    areContainerItemsPresent: () => false
+  };
+};
+
+window.PCore.getContainerUtils =
+  mockContainerUtils as () => typeof ContainerUtils;
 
 window.PCore.getEnvironmentInfo = () => {
   return {
