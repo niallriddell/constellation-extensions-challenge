@@ -12,6 +12,7 @@ import type MessagingServiceManager from '@pega/pcore-pconnect-typedefs/messagin
 import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
+import type ContainerUtils from '@pega/pcore-pconnect-typedefs/container/container-utils';
 
 import SlDxExtensionsStarRatingWidget, {
   type SlDxExtensionsStarRatingWidgetProps
@@ -29,6 +30,12 @@ type Story = StoryObj<typeof SlDxExtensionsStarRatingWidget>;
 
 const existingPCore = window.PCore;
 const constants = existingPCore?.getConstants();
+
+const mockContainerUtils = (): Partial<typeof ContainerUtils> => {
+  return {
+    areContainerItemsPresent: () => false
+  };
+};
 
 window.PCore = {
   ...existingPCore,
@@ -62,6 +69,9 @@ window.PCore = {
     }
   }
 } as typeof PCore;
+
+window.PCore.getContainerUtils =
+  mockContainerUtils as () => typeof ContainerUtils;
 
 const mockGetDataAsync = (
   ...args: any[]
