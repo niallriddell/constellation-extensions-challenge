@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/prefer-default-export
-export class BiMap<K, V> {
+export default class BiMap<K, V> {
   private keyToValue = new Map<K, V>();
   private valueToKey = new Map<V, K>();
 

@@ -1,9 +1,7 @@
 import { Rating } from './ratingData';
 
 // Demonstrates the ability to have different filter functions if required.
-export interface SearchFunction<T> {
-  (obj: T, str: string): boolean;
-}
+export type SearchFunction<T> = (obj: T, str: string) => boolean;
 
 const searchByRating: SearchFunction<Rating> = (
   rating: Rating,

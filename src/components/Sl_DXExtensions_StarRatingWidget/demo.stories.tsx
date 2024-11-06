@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
-import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
+import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage';
 import type { Filter } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type EnvironmentInfo from '@pega/pcore-pconnect-typedefs/environment-info/index';
@@ -56,7 +56,7 @@ const mockGetDataAsync = (
   const filter = args[4]?.filter as Filter;
   const queryCustomerID = filter?.filterConditions.F1.rhs.value;
   let { data } = mockRatingData;
-  if (queryCustomerID && queryCustomerID.length)
+  if (queryCustomerID?.length)
     data = data.filter(rating => rating.CustomerID === queryCustomerID);
 
   return Promise.resolve({ data, status: 200 });
@@ -96,11 +96,7 @@ export const StarRatingWidgetWithCurrentCaseRating: Story = (
     getPConnect: mockPConnect as () => typeof PConnect
   };
 
-  return (
-    <>
-      <SlDxExtensionsStarRatingWidget {...props} {...args} />
-    </>
-  );
+  return <SlDxExtensionsStarRatingWidget {...props} {...args} />;
 };
 
 StarRatingWidgetWithCurrentCaseRating.args = {
@@ -116,11 +112,7 @@ export const StarRatingWidgetWithoutCurrentCaseRating: Story = (
     getPConnect: mockPConnect as () => typeof PConnect
   };
 
-  return (
-    <>
-      <SlDxExtensionsStarRatingWidget {...props} {...args} />
-    </>
-  );
+  return <SlDxExtensionsStarRatingWidget {...props} {...args} />;
 };
 
 StarRatingWidgetWithoutCurrentCaseRating.args = {
