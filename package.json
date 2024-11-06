@@ -54,7 +54,7 @@
     "@pega/cosmos-react-condition-builder": "^6.0.3",
     "@pega/cosmos-react-core": "^6.0.3",
     "@pega/cosmos-react-work": "^6.0.3",
-    "dayjs": "^1.11.12",
+    "dayjs": "^1.11.10",
     "lodash.get": "^4.4.2",
     "polished": "^4.2.2",
     "prop-types": "^15.8.1",
@@ -70,7 +70,7 @@
   "devDependencies": {
     "@pega/configs": "^0.6.0",
     "@pega/custom-dx-components": "24.1.11",
-    "@pega/pcore-pconnect-typedefs": "3.2.0-alpha.2",
+    "@pega/pcore-pconnect-typedefs": "3.2.0-rev-3",
     "@storybook/addon-actions": "^7.6.7",
     "@storybook/addon-essentials": "^7.6.7",
     "@storybook/addon-links": "^7.6.7",
