@@ -1,6 +1,6 @@
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type { publicConstants } from '@pega/pcore-pconnect-typedefs/constants';
-import type DataApiUtils from '@pega/pcore-pconnect-typedefs/data-view/DataApiUtils';
+import type DataApiUtils from '@pega/pcore-pconnect-typedefs/data-view/data-api-utils';
 import type EnvironmentInfo from '@pega/pcore-pconnect-typedefs/environment-info/index';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -59,9 +59,7 @@ const mockDataApiUtils = (): Partial<typeof DataApiUtils> => {
         newMockRatingData.data.data = mockRatingData.data.data.filter(
           item => item.CustomerID === customerId
         );
-      return new Promise(resolve => {
-        resolve(newMockRatingData as DataResponse);
-      });
+      return Promise.resolve(newMockRatingData as DataResponse);
     }
   };
 };

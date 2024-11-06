@@ -35,8 +35,7 @@ export const mapRatingDataItem = (
       ]
     : [];
 
-  const environmentInfo = PCore.getEnvironmentInfo();
-  const timezone = environmentInfo && environmentInfo.getTimeZone();
+  const timezone = PCore.getEnvironmentInfo().getTimeZone();
 
   return {
     dataItem,
@@ -44,16 +43,17 @@ export const mapRatingDataItem = (
     actions,
     primary: (
       <Rating
-        key={`${dataItem.pyGUID ?? createUID()}-rating`}
+        key={`rating-${dataItem.pyGUID ?? createUID()}`}
         value={dataItem.CustomerRating}
         metaInfo={`${dataItem.CustomerRating} of ${dataItem.NumberOfStars}`}
       />
     ),
     secondary: (
       <MetaList
-        key={`${dataItem.pyGUID ?? createUID()}-metalist`}
+        key={`metalist-${dataItem.pyGUID ?? createUID()}`}
         items={[
           <DateTimeDisplay
+            key={`datatimedisplay-${dataItem.pyGUID ?? createUID()}`}
             value={dayjs(dataItem.pxUpdateDateTime).tz(timezone).format()}
             variant='datetime'
             format='short'
