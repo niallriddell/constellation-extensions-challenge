@@ -1,7 +1,7 @@
 {
   "extends": "@pega/tsconfig/index.json",
   "include": [
-    "./**/*",
+    "src/**/*",
     ".storybook/**/*",
     "types/global.d.ts"
   ],
