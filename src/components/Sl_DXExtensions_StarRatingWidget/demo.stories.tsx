@@ -1,6 +1,6 @@
 import type { LocaleUtils } from '@pega/pcore-pconnect-typedefs/locale/locale-utils';
 import type { publicConstants } from '@pega/pcore-pconnect-typedefs/constants';
-import type DataApiUtils from '@pega/pcore-pconnect-typedefs/data-view/DataApiUtils';
+import type DataApiUtils from '@pega/pcore-pconnect-typedefs/data-view/data-api-utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import SlDxExtensionsStarRatingWidget, {
