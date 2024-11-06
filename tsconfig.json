@@ -2,7 +2,8 @@
   "extends": "@pega/tsconfig/index.json",
   "include": [
     "./**/*",
-    ".storybook/**/*"
+    ".storybook/**/*",
+    "types/global.d.ts"
   ],
   "compilerOptions": {
     "noEmit": true,
