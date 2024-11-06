@@ -36,7 +36,7 @@ export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
 }
 
 function SlDxExtensionsStarRatingWidget(
-  props: SlDxExtensionsStarRatingWidgetProps
+  props: Readonly<SlDxExtensionsStarRatingWidgetProps>
 ) {
   const { getPConnect, label, listDataPage } = props;
   const pConn = getPConnect();
