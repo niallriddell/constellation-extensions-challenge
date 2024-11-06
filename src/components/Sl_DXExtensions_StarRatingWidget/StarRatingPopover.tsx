@@ -30,7 +30,7 @@ const StarRatingPopover = ({
   actionId?: string;
 }) => {
   const [ratingValue, setRatingValue] = useState<number>(
-    (currentRating && currentRating.rating) || 0
+    currentRating?.rating || 0
   );
   const pyId = currentRating?.caseId.split(' ')[1];
 

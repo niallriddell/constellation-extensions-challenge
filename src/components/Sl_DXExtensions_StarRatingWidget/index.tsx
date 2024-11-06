@@ -69,7 +69,7 @@ const SlDxExtensionsStarRatingWidget = ({
   // be used on Resolved cases.
   const [data, setData] = useState<DataItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [IsError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [actionTarget, setActionTarget] = useElement<HTMLElement>(null);
   const [actionId, setActionId] = useState<string>();
 
@@ -97,7 +97,7 @@ const SlDxExtensionsStarRatingWidget = ({
   // associated with the data class.
   // Persist your data to the server first and update the UI to align.
   const onUpdateRating = (updatedRating: DataItem) => {
-    updatedRating.guid = updatedRating?.guid || 'NEW';
+    updatedRating.guid = updatedRating?.guid ?? 'NEW';
 
     const upsert = updatedRating.guid === 'NEW' ? createRating : updateRating;
 
@@ -218,7 +218,7 @@ const SlDxExtensionsStarRatingWidget = ({
   return (
     <>
       <SummaryList
-        error={IsError}
+        error={isError}
         icon='star'
         items={
           // items

@@ -48,7 +48,7 @@ const createAction = <T>(
     onClick: (...args) => {
       if (onClickHandler === undefined) return undefined;
       if (isActionWithDataItem(onClickHandler)) {
-        onClickHandler(dataItem || undefined, ...args);
+        onClickHandler(dataItem ?? undefined, ...args);
       } else {
         onClickHandler(...args);
       }
