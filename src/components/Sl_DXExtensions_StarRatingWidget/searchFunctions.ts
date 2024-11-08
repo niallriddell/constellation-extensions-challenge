@@ -1,4 +1,4 @@
-import { Rating } from './ratingData';
+import type { Rating } from './ratingData';
 
 // Demonstrates the ability to have different filter functions if required.
 export interface SearchFunction<T> {
