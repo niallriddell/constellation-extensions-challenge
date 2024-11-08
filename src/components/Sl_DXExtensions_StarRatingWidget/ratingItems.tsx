@@ -1,11 +1,11 @@
 import {
-  Action,
   Rating,
   createUID,
   MetaList,
   Text,
   DateTimeDisplay
 } from '@pega/cosmos-react-core';
+import type { Action } from '@pega/cosmos-react-core';
 
 import createAction, { type ActionWithDataItem } from './actionUtils';
 import type { DataItemSummaryListItem } from './itemUtils';

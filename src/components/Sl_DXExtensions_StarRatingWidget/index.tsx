@@ -2,13 +2,13 @@
 import { useState, useEffect } from 'react';
 
 import {
-  Action,
   registerIcon,
   SummaryList,
   Text,
   // useElement,
   withConfiguration
 } from '@pega/cosmos-react-core';
+import type { Action } from '@pega/cosmos-react-core';
 
 import type { Payload } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
