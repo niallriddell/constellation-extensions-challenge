@@ -1,17 +1,12 @@
-import {
-  useCallback,
-  useEffect,
-  useState,
-  forwardRef,
-  MouseEvent
-} from 'react';
+import { useCallback, useEffect, useState, forwardRef } from 'react';
 
 import type {
   KeyboardEvent,
   FunctionComponent,
   PropsWithoutRef,
   Ref,
-  TouchEvent
+  TouchEvent,
+  MouseEvent
 } from 'react';
 import {
   Flex,
