@@ -1,6 +1,7 @@
+import type { ReactNode } from 'react';
+
 import type { TableProps } from '@pega/cosmos-react-core/lib/components/Table/Table';
 import { Text } from '@pega/cosmos-react-core';
-import { ReactNode } from 'react';
 
 export type HistoryDataItem = {
   pxTimeCreated: string;

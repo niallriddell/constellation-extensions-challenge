@@ -17,10 +17,13 @@ import handleResponse from './dataUtils';
 // } from './ratingData';
 
 import {
-  type HistoryDataItem as DataItem,
   createHistoryTableSchema as createTableSchema,
-  HistoryTableRow as TableRow,
   mapHistoryDataItem as mapDataItem
+} from './historyData';
+
+import type {
+  HistoryTableRow as TableRow,
+  HistoryDataItem as DataItem
 } from './historyData';
 
 // interface for props
