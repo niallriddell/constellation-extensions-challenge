@@ -3,15 +3,17 @@ import {
   createUID,
   MetaList,
   Text,
-  DateTimeDisplay,
-  Action
+  DateTimeDisplay
 } from '@pega/cosmos-react-core';
+import type { Action } from '@pega/cosmos-react-core';
+
 import dayjs from 'dayjs';
 import tzone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+
 import createAction, { type ActionWithDataItem } from './actionUtils';
 import type { DataItemSummaryListItem } from './itemUtils';
-import { RatingDataItem } from './ratingData';
+import type { RatingDataItem } from './ratingData';
 
 dayjs.extend(tzone);
 dayjs.extend(utc);

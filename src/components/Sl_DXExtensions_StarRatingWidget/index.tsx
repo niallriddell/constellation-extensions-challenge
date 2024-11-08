@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useEffect, MouseEvent } from 'react';
+import { useState, useEffect } from 'react';
+import type { MouseEvent } from 'react';
 
 import {
   SummaryList,
   withConfiguration,
   registerIcon,
-  Action,
   Popover,
   useElement,
   Button,
@@ -13,6 +13,8 @@ import {
   Slider,
   Text
 } from '@pega/cosmos-react-core';
+import type { Action } from '@pega/cosmos-react-core';
+
 import type { Payload } from '@pega/pcore-pconnect-typedefs/data-view/types';
 import type { Parameters } from '@pega/pcore-pconnect-typedefs/datapage/types';
 import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
