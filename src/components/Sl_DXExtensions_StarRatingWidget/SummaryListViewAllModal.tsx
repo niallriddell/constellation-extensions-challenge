@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useState, MouseEvent } from 'react';
-
+import { useCallback, useMemo, useState } from 'react';
+import type { MouseEvent } from 'react';
 import type { Action } from '@pega/cosmos-react-core';
 import {
   Modal,
@@ -9,8 +9,8 @@ import {
 } from '@pega/cosmos-react-core';
 
 import type { Rating } from './ratingData';
-import { SearchFunction } from './searchFunctions';
-import { DataItemSummaryListItem } from './itemUtils';
+import type { SearchFunction } from './searchFunctions';
+import type { DataItemSummaryListItem } from './itemUtils';
 import StarRatingPopover from './StarRatingPopover';
 
 export interface SummaryListViewAllProps {
