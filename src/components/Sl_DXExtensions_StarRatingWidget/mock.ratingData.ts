@@ -1,4 +1,4 @@
-/* eslint-disable sonarjs/no-duplicate-string */
+ 
 import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
 export const newRating = {
