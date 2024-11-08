@@ -1,4 +1,5 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 
 import { Table, Text, withConfiguration } from '@pega/cosmos-react-core';
 import type { TableProps } from '@pega/cosmos-react-core/lib/components/Table/Table';
@@ -20,8 +21,6 @@ type HistoryTableProps = TableProps<{
   description: ReactNode;
   user: string;
 }>;
-
-// Duplicated runtime code from Constellation Design System Component
 
 // props passed in combination of props from property panel (config.json) and run time props from Constellation
 // any default values in config.pros should be set in defaultProps at bottom of this file
@@ -55,7 +54,7 @@ function SlDxExtensionsStarRatingWidget(
         setIsLoading(false);
         if (response.data.data !== null) {
           setHistory(
-            response.data.data.map((entry, index) => {
+            response.data.data.map((entry: any, index: number) => {
               return {
                 date: new Date(entry.pxTimeCreated).toLocaleString(),
                 description: (

@@ -1,6 +1,5 @@
-
-/* eslint-disable react/jsx-no-useless-fragment */
 // @ts-nocheck
+// we wikll be adding typescript checks back in future branches
 import type { Meta, StoryObj } from '@storybook/react';
 
 import SlDxExtensionsStarRatingWidget from './index';
@@ -38,18 +37,12 @@ window.PCore.getLocaleUtils = () => {
 
 window.PCore.getDataApiUtils = () => {
   return {
-    getData: () => {
-      return new Promise(resolve => {
-        resolve(historyData);
-      });
-    }
+    getData: () => Promise.resolve(historyData)
   };
 };
 
 export const BaseSlDxExtensionsStarRatingWidget: Story = args => {
-
   const props = {
-
     getPConnect: () => {
       return {
         getValue: value => {
@@ -63,25 +56,33 @@ export const BaseSlDxExtensionsStarRatingWidget: Story = args => {
         },
         getActionsApi: () => {
           return {
-            updateFieldValue: () => {/* nothing */},
-            triggerFieldChange: () => {/* nothing */}
+            updateFieldValue: () => {
+              /* nothing */
+            },
+            triggerFieldChange: () => {
+              /* nothing */
+            }
           };
         },
-        ignoreSuggestion: () => {/* nothing */},
-        acceptSuggestion: () => {/* nothing */},
-        setInheritedProps: () => {/* nothing */},
-        resolveConfigProps: () => {/* nothing */}
+        ignoreSuggestion: () => {
+          /* nothing */
+        },
+        acceptSuggestion: () => {
+          /* nothing */
+        },
+        setInheritedProps: () => {
+          /* nothing */
+        },
+        resolveConfigProps: () => {
+          /* nothing */
+        }
       };
     }
-};
+  };
 
-return (
-    <>
-      <SlDxExtensionsStarRatingWidget {...props} {...args} />
-    </>
-  );
+  return <SlDxExtensionsStarRatingWidget {...props} {...args} />;
 };
 
 BaseSlDxExtensionsStarRatingWidget.args = {
-  label: 'Case history',
+  label: 'Case history'
 };

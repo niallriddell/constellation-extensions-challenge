@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 const historyData = {
   data: {
     fetchDateTime: '2023-01-18T12:04:56.517Z',
