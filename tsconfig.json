@@ -9,6 +9,7 @@
     "noEmit": true,
     "allowJs": true,
     "importsNotUsedAsValues": "remove",
+    "verbatimModuleSyntax": false,
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {  
