@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import type { DataResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
 
 const ratingData: Omit<DataResponse, 'config'> = {
