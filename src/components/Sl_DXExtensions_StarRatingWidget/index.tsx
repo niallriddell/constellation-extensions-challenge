@@ -23,12 +23,13 @@ import handleResponse from './dataUtils';
 // } from './ratingData';
 
 import {
-  type RatingDataItem as DataItem,
   createRatingTableSchema as createTableSchema,
-  RatingTableRow as TableRow,
   mapRatingDataItem as mapDataItem
 } from './ratingData';
-
+import type {
+  RatingDataItem as DataItem,
+  RatingTableRow as TableRow
+} from './ratingData';
 // interface for props
 export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
   listDataPage: string;
