@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import tzone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import createAction, { type ActionWithDataItem } from './actionUtils';
 
 import {
   Rating as CosmosRating,
@@ -14,6 +13,8 @@ import type { Action } from '@pega/cosmos-react-core';
 
 import type { DataItemSummaryListItem } from './itemUtils';
 import type { Rating } from './ratingData';
+import createAction from './actionUtils';
+import type { ActionWithDataItem } from './actionUtils';
 
 dayjs.extend(tzone);
 dayjs.extend(utc);
