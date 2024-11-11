@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 
 import type CaseInfo from '@pega/pcore-pconnect-typedefs/case/case-info';
 import type DataPageUtils from '@pega/pcore-pconnect-typedefs/datapage/index';
