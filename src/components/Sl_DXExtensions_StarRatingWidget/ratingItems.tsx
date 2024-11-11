@@ -1,19 +1,22 @@
+import type { ReactNode } from 'react';
+
+import dayjs from 'dayjs';
+import tzone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
 import {
   // Link,
   Text,
   Rating as CosmosRating,
   createUID,
   MetaList,
-  DateTimeDisplay,
-  Action
+  DateTimeDisplay
 } from '@pega/cosmos-react-core';
-import dayjs from 'dayjs';
-import tzone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-import { ReactNode } from 'react';
+import type { Action } from '@pega/cosmos-react-core';
+
 import createAction, { type ActionWithDataItem } from './actionUtils';
 import type { DataItemSummaryListItem } from './itemUtils';
-import { Rating } from './ratingData';
+import type { Rating } from './ratingData';
 
 dayjs.extend(tzone);
 dayjs.extend(utc);
