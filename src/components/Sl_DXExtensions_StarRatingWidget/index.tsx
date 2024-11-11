@@ -2,15 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   // debounce,
-  Action,
-  ModalMethods,
   withConfiguration,
   useModalManager,
   useElement,
   registerIcon,
   SummaryList
 } from '@pega/cosmos-react-core';
-
+import type { Action, ModalMethods } from '@pega/cosmos-react-core';
 import * as star from '@pega/cosmos-react-core/lib/components/Icon/icons/star.icon';
 
 import type { PConnFieldProps } from '../../utils/PConnProps';
@@ -26,12 +24,11 @@ import {
 
 import { searchByRating, searchByCustomer } from './searchFunctions';
 import mapDataItem from './ratingItems';
-import type { ActionWithDataItem } from './actionUtils';
 import createItems from './itemUtils';
 import createAction from './actionUtils';
-import SummaryListViewAllModal, {
-  type SummaryListViewAllProps
-} from './SummaryListViewAllModal';
+import type { ActionWithDataItem } from './actionUtils';
+import SummaryListViewAllModal from './SummaryListViewAllModal';
+import type { SummaryListViewAllProps } from './SummaryListViewAllModal';
 import StarRatingPopover from './StarRatingPopover';
 
 registerIcon(star);
