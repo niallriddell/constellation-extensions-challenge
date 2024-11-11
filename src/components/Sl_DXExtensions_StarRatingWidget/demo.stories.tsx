@@ -14,7 +14,7 @@ import SlDxExtensionsStarRatingWidget, {
 
 import mockRatingData, { newRating } from './mock.ratingData';
 import type { DataAsyncResponse } from '@pega/pcore-pconnect-typedefs/data-view/types';
-import { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 
 const meta: Meta<typeof SlDxExtensionsStarRatingWidget> = {
   title: 'SL/Star Rating Widget',
