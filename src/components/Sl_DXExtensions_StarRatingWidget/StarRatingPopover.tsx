@@ -1,4 +1,5 @@
-import { RefCallback, useState } from 'react';
+import { useState } from 'react';
+import type { RefCallback } from 'react';
 
 import {
   withConfiguration,
@@ -9,7 +10,7 @@ import {
 } from '@pega/cosmos-react-core';
 
 import StarRating from '../Sl_DXExtensions_StarRating';
-import { Rating } from './ratingData';
+import type { Rating } from './ratingData';
 
 // This form popover displays the Sl_DXExtensioms_StartRating component in context
 // of the action so as to make it easier to update or add a rating for the current
