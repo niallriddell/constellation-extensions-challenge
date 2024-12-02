@@ -136,3 +136,5 @@ lib
 tasks.config.json
 
 package-lock.json
+# store
+store
