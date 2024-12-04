@@ -6,7 +6,7 @@
     "sourceOfComponents": "Server",
     "devBuild": true,
     "serverType": "infinity",
-    "server": "https://ev0ktzzo.pegaacademy.net/prweb",
+    "server": "https://[your_academy_instance].pegaacademy.net/prweb",
     "clientId": "10095186356008396159",
     "clientSecret_comment": "Needed only when using 'passwordCreds' or 'clientCreds' grantType",
     "clientSecret": "",
@@ -25,7 +25,7 @@
     "questions_askAlways": "",
     "questions_askNever": "authService",
     "questions_askOnce": "server",
-    "questions_askedOnce": "server"
+    "questions_askedOnce": ""
   },
   "component": {
     "library": "DXExtensions",
@@ -37,3 +37,4 @@
   },
   "usePromotedWebPack": false
 }
+
