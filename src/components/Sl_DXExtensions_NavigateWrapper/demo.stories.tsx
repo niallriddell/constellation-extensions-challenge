@@ -70,3 +70,31 @@ export const WrappingViewsAndAddingNavigation: Story = {
     }
   }
 };
+
+  return (
+      <SlDxExtensionsNavigateWrapper {...props} {...args}>
+        <Region
+          {...{
+            getPConnect: () => ({
+              setInheritedProp: () => {},
+              getChildren: () =>
+                reviewInner.children[0].children.map((child, index) => {
+                  return {
+                    getPConnect: () => ({
+                      getRawMetadata: () => reviewInner.children[0].children[index],
+                      getConfigProps: () => {},
+                      resolveConfigProps: () => {
+                        return {
+                          hideLabel: true
+                        };
+                      },
+                      getComponent: config =>
+                        props.getPConnect().createComponent(reviewInner.children[0].children[index])
+                    })
+                  };
+                })
+            })
+          }}
+        />
+      </SlDxExtensionsNavigateWrapper>
+  );
