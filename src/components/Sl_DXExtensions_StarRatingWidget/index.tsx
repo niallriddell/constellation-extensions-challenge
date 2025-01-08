@@ -9,25 +9,25 @@ import './create-nonce';
 
 import handleResponse from './dataUtils';
 
-import type {
-  RatingDataItem as DataItem,
-  RatingTableRow as TableRow
-} from './ratingData';
-
-import {
-  createRatingTableSchema as createTableSchema,
-  mapRatingDataItem as mapDataItem
-} from './ratingData';
+// import type {
+//   RatingDataItem as DataItem,
+//   RatingTableRow as TableRow
+// } from './ratingData';
 
 // import {
-//   createHistoryTableSchema as createTableSchema,
-//   mapHistoryDataItem as mapDataItem
-// } from './historyData';
+//   createRatingTableSchema as createTableSchema,
+//   mapRatingDataItem as mapDataItem
+// } from './ratingData';
 
-// import type {
-//   HistoryTableRow as TableRow,
-//   HistoryDataItem as DataItem
-// } from './historyData';
+import {
+  createHistoryTableSchema as createTableSchema,
+  mapHistoryDataItem as mapDataItem
+} from './historyData';
+
+import type {
+  HistoryTableRow as TableRow,
+  HistoryDataItem as DataItem
+} from './historyData';
 
 // interface for props
 export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
