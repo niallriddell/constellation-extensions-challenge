@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactElement } from 'react';
 
 import type { TableProps } from '@pega/cosmos-react-core/lib/components/Table/Table';
 import { Text } from '@pega/cosmos-react-core';
@@ -18,7 +18,7 @@ export type HistoryDataItem = {
 
 type HistoryItem = {
   date: string;
-  description: ReactNode;
+  description: ReactElement;
   user: string;
   id: number;
 };
@@ -40,18 +40,19 @@ export const mapHistoryDataItem = (
 export const createHistoryTableSchema = (
   getPConnect: () => typeof PConnect
 ): HistoryTableRow['columns'] => {
+  const getLocalizedValue = getPConnect().getLocalizedValue;
   return [
     {
       renderer: 'date',
-      label: getPConnect().getLocalizedValue('Date', '', '')
+      label: getLocalizedValue('Date', '', '')
     },
     {
       renderer: 'description',
-      label: getPConnect().getLocalizedValue('Description', '', '')
+      label: getLocalizedValue('Description', '', '')
     },
     {
       renderer: 'user',
-      label: getPConnect().getLocalizedValue('Performed by', '', '')
+      label: getLocalizedValue('Performed by', '', '')
     }
   ];
 };
