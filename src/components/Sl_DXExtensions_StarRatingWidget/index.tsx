@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
+// import type { SummaryListItem } from '@pega/cosmos-react-core';
 // import {
-//   SummaryList,
-//   SummaryListItem,
-//   withConfiguration
+//   SummaryList,
+//   withConfiguration
 // } from '@pega/cosmos-react-core';
 
 import { Table, withConfiguration } from '@pega/cosmos-react-core';
@@ -17,10 +17,8 @@ import './create-nonce';
 
 import handleResponse from './dataUtils';
 
-// import {
-//   type RatingDataItem as DataItem,
-//   mapRatingDataItem as mapDataItem
-// } from './ratingData';
+// import type { RatingDataItem as DataItem } from './ratingData';
+// import { mapRatingDataItem as mapDataItem } from './ratingData';
 
 import {
   createRatingTableSchema as createTableSchema,
@@ -30,6 +28,7 @@ import type {
   RatingDataItem as DataItem,
   RatingTableRow as TableRow
 } from './ratingData';
+
 // interface for props
 export interface SlDxExtensionsStarRatingWidgetProps extends PConnFieldProps {
   listDataPage: string;
