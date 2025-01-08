@@ -45,23 +45,24 @@ export const mapRatingDataItem = (
 export const createRatingTableSchema = (
   getPConnect: () => typeof PConnect
 ): RatingTableRow['columns'] => {
+  const getLocalizedValue = getPConnect().getLocalizedValue;
   return [
     {
       renderer: 'updated',
-      label: getPConnect().getLocalizedValue('Updated', '', '')
+      label: getLocalizedValue('Updated', '', '')
     },
     {
       renderer: 'rating',
-      label: getPConnect().getLocalizedValue('Customer Rating', '', ''),
+      label: getLocalizedValue('Customer Rating', '', ''),
       noWrap: true
     },
     {
       renderer: 'caseId',
-      label: getPConnect().getLocalizedValue('Case ID', '', '')
+      label: getLocalizedValue('Case ID', '', '')
     },
     {
       renderer: 'customerId',
-      label: getPConnect().getLocalizedValue('Customer ID', '', ''),
+      label: getLocalizedValue('Customer ID', '', ''),
       noWrap: true
     }
   ];

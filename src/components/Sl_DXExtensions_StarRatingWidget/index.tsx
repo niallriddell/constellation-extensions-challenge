@@ -9,10 +9,13 @@ import './create-nonce';
 
 import handleResponse from './dataUtils';
 
+// import type {
+//   RatingDataItem as DataItem,
+//   RatingTableRow as TableRow
+// } from './ratingData';
+
 // import {
-//   type RatingDataItem as DataItem,
 //   createRatingTableSchema as createTableSchema,
-//   RatingTableRow as TableRow,
 //   mapRatingDataItem as mapDataItem
 // } from './ratingData';
 
