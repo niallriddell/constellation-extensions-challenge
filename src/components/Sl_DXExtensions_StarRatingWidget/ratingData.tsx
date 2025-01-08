@@ -2,8 +2,8 @@ import type {
   TableProps,
   DefaultRowData
 } from '@pega/cosmos-react-core/lib/components/Table/Table';
-// import { Rating, SummaryListItem } from '@pega/cosmos-react-core';
 import { Rating } from '@pega/cosmos-react-core';
+// import type { SummaryListItem } from '@pega/cosmos-react-core';
 
 export type RatingDataItem = {
   CaseClassName: string;
