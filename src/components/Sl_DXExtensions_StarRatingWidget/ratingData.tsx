@@ -5,8 +5,9 @@
 //   Text,
 //   DateTimeDisplay
 // } from '@pega/cosmos-react-core';
-import type { SummaryListItem } from '@pega/cosmos-react-core';
 import { Rating } from '@pega/cosmos-react-core';
+
+import type { SummaryListItem } from '@pega/cosmos-react-core';
 
 export type RatingDataItem = {
   CaseClassName: string;
