@@ -3,7 +3,7 @@
   "label": "Ratings",
   "description": "Ratings",
   "organization": "Sl",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "library": "DXExtensions",
   "allowedApplications": [],
   "componentKey": "Sl_DXExtensions_StarRatingsWidget",
