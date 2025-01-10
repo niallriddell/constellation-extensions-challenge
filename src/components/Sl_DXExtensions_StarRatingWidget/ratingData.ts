@@ -7,7 +7,7 @@ import BiMap from './bimap';
 
 // All mapping between the component internal data model and the external data model
 // is done here.  This is not strictly necessary and the approach taken here can be
-// generalized further to dynamically map the external data model to the staic internal
+// generalized further to dynamically map the external data model to the static internal
 // data model.  It's useful to define your internal data model in types so that you get
 // the benefit of IDE auto-completion and type-checking at development time.
 
@@ -44,7 +44,7 @@ mapper.set('stars', 'NumberOfStars');
 mapper.set('guid', 'pyGUID');
 mapper.set('updateDateTime', 'pxUpdateDateTime');
 
-// Utility funciton that auto-generates the select object.
+// Utility function that auto-generates the select object.
 // Currently adds all mapped properties.
 function toSelectObject<K extends keyof Rating, V extends keyof RatingData>(
   biMap: BiMap<K, V>
@@ -59,7 +59,7 @@ function toSelectObject<K extends keyof Rating, V extends keyof RatingData>(
 
 // Utility function that transforms external data to internal
 // data.  For large data sets this is likely to be to inefficient
-// as we iterate the ecternal data and create a new internal one with
+// as we iterate the external data and create a new internal one with
 // the remapped keys.
 function mapRatingDataToRating(
   ratingDataArray: Array<RatingData>,
@@ -68,9 +68,7 @@ function mapRatingDataToRating(
   return ratingDataArray.map(ratingData => {
     const rating: Partial<Rating> = {};
     biMap.getKeyToValueMap().forEach((value, key) => {
-      rating[key as keyof Rating] = ratingData[
-        value as keyof RatingData
-      ] as any;
+      rating[key] = ratingData[value] as any;
     });
     return rating as Rating;
   });
