@@ -76,7 +76,8 @@ function mapRatingDataToRating(
       caseClass: '',
       customerId: '',
       guid: '',
-      updateDateTime: ''
+      updateDateTime: '',
+      insKey: ''
     };
     biMap.getKeyToValueMap().forEach((value, key) => {
       rating[key] = ratingData[value] as any;
@@ -245,6 +246,7 @@ export const createRating = async (
   }
 };
 
+// Not tested and provided for reference only
 export const deleteRating = async (
   dataView: string,
   rating: Partial<Rating>,
@@ -254,7 +256,7 @@ export const deleteRating = async (
   const optionsObject = {
     queryPayload: {
       data_view_ID: dataView,
-      dataViewParamaters: encodeURI(`{
+      dataViewParamaters: encodeURIComponent(`{
         ${[mapper.getValue('guid') as string]}: ${rating.guid}
       }`)
     }
