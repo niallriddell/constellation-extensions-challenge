@@ -18,9 +18,9 @@ import {
   createRating,
   getRating,
   getRatings,
-  updateRating,
-  type Rating as DataItem
+  updateRating
 } from './ratingData';
+import type { Rating as DataItem } from './ratingData';
 
 import { searchByRating, searchByCustomer } from './searchFunctions';
 import mapDataItem from './ratingItems';

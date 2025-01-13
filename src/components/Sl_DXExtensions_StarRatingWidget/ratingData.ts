@@ -20,6 +20,7 @@ export interface Rating {
   stars: number;
   guid?: string;
   updateDateTime?: string;
+  insKey?: string;
 }
 
 // External data model
@@ -31,6 +32,7 @@ interface RatingData {
   NumberOfStars: number;
   pyGUID?: string;
   pxUpdateDateTime?: string;
+  pzInsKey?: string;
 }
 
 // Custom BiMap to allow two way lookup of keys
@@ -43,6 +45,7 @@ mapper.set('rating', 'CustomerRating');
 mapper.set('stars', 'NumberOfStars');
 mapper.set('guid', 'pyGUID');
 mapper.set('updateDateTime', 'pxUpdateDateTime');
+mapper.set('insKey', 'pzInsKey');
 
 // Utility function that auto-generates the select object.
 // Currently adds all mapped properties.
@@ -159,7 +162,6 @@ export const getRatings = async (
   return [];
 };
 
-// TODO: Add in the updateDataObject rest api endpoint
 export const updateRating = async (
   dataView: string,
   rating: Partial<Rating>,
@@ -202,7 +204,6 @@ export const updateRating = async (
   }
 };
 
-// TODO: Add in the createDataObject rest api endpoint
 export const createRating = async (
   dataView: string,
   rating: Partial<Rating>,
@@ -234,6 +235,44 @@ export const createRating = async (
     if (classId) {
       PCore.getPubSubUtils().publish(
         PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_CREATED,
+        {
+          classId,
+          guid: rating.guid
+        }
+      );
+    }
+    return mapRatingDataToRating([response.data.responseData], mapper)[0];
+  }
+};
+
+export const deleteRating = async (
+  dataView: string,
+  rating: Partial<Rating>,
+  context?: string,
+  classId?: string
+): Promise<Rating | undefined> => {
+  const optionsObject = {
+    queryPayload: {
+      data_view_ID: dataView,
+      dataViewParamaters: encodeURI(`{
+        ${[mapper.getValue('guid') as string]}: ${rating.guid}
+      }`)
+    }
+  };
+
+  const response = await PCore.getRestClient().invokeRestApi(
+    'deleteDataObject',
+    optionsObject,
+    context
+  );
+  if (
+    response?.status === 200 ||
+    response?.status === 204 ||
+    response?.status === 202
+  ) {
+    if (classId) {
+      PCore.getPubSubUtils().publish(
+        PCore.getConstants().PUB_SUB_EVENTS.DATA_EVENTS.DATA_OBJECT_DELETED,
         {
           classId,
           guid: rating.guid
