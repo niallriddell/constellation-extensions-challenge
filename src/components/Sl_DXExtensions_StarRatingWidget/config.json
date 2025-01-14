@@ -14,11 +14,6 @@
       "name": "label",
       "label": "Label value",
       "format": "TEXT"
-    },
-    {
-      "name": "customerId",
-      "label": "Customer unique id property on case",
-      "format": "PROPERTY"
     }
   ],
   "defaultConfig": {
